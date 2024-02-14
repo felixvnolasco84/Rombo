@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import CheckIcon from "@/public/svg/Check.svg";
 import Image from "next/image";
+import PricingButton from "./PricingButton";
 
 export type PricingItemType = {
   plan: string;
@@ -9,6 +10,7 @@ export type PricingItemType = {
   pageLink: string;
   phoneLink: string;
   features: feature[];
+  priceId: string;
 };
 
 export type feature = {
@@ -22,6 +24,7 @@ export default function PricingItem({ item }: { item: PricingItemType }) {
       <h3 className="text-center text-xl md:text-xl lg:text-2xl xl:text-3xl">
         {item.plan}
       </h3>
+
       <p className="text-center text-xs">
         Pausa o cancela en cualquier momento.
       </p>
@@ -41,15 +44,7 @@ export default function PricingItem({ item }: { item: PricingItemType }) {
       <p className="text-center text-xs text-[#AFAFAF] lg:mt-2 xl:mt-3">
         Pausa o cancela en cualquier momento
       </p>
-      <Link href={item.pageLink}>
-        <Button
-          variant="primary"
-          className="w-full lg:mt-8 xl:mt-16"
-          size={"lg"}
-        >
-          Comenzar gratis
-        </Button>
-      </Link>
+      <PricingButton priceId={item.priceId} />
       <div className="border-b-2 border-[#C8FA70] lg:pb-5 xl:pb-10">
         <Link href={item.phoneLink}>
           <Button variant="outline" className="mt-2 w-full xl:mt-4" size={"lg"}>

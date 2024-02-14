@@ -1,156 +1,181 @@
+import { Stripe } from "stripe";
+
 import Image from "next/image";
 import PricingItem, { PricingItemType } from "./PricingItem";
 import Smile from "@/public/svg/Alien.svg";
 import { Button } from "../ui/button";
 
-export const pricingItems: PricingItemType[] = [
-  {
-    plan: "Standard",
-    amount: 14900,
-    pageLink: "#",
-    phoneLink: "#",
-    features: [
-      {
-        title: "Gráficos de Redes Sociales",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Presentaciones",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: false,
-      },
-      {
-        title: "Reels y Motion Graphics",
-        included: false,
-      },
-      {
-        title: "Branding & Logotipos",
-        included: false,
-      },
-      {
-        title: "Ilustraciones",
-        included: false,
-      },
-      {
-        title: "Páginas Web",
-        included: false,
-      },
-    ],
-  },
+async function loadPrices() {
+  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+  const prices = await stripe.prices.list();
+  const sortedPrices = prices.data.sort(
+    (a, b) => (a.unit_amount || 0) - (b.unit_amount || 0)
+  );
+  return sortedPrices;
+}
 
-  {
-    plan: "Premium",
-    amount: 24900,
-    pageLink: "#",
-    phoneLink: "#",
-    features: [
-      {
-        title: "Gráficos de Redes Sociales",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Presentaciones",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: true,
-      },
-      {
-        title: "Reels y Motion Graphics",
-        included: true,
-      },
-      {
-        title: "Branding & Logotipos",
-        included: true,
-      },
-      {
-        title: "Ilustraciones",
-        included: false,
-      },
-      {
-        title: "Páginas Web",
-        included: false,
-      },
-    ],
-  },
-  {
-    plan: "Pro",
-    amount: 39900,
-    pageLink: "#",
-    phoneLink: "#",
-    features: [
-      {
-        title: "Gráficos de Redes Sociales",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: true,
-      },
-      {
-        title: "Papelería, Infografías, Folletos",
-        included: true,
-      },
-      {
-        title: "Presentaciones",
-        included: true,
-      },
-      {
-        title: "Fotos de Stock Ilimitadas",
-        included: true,
-      },
-      {
-        title: "Reels y Motion Graphics",
-        included: true,
-      },
-      {
-        title: "Branding & Logotipos",
-        included: true,
-      },
-      {
-        title: "Ilustraciones",
-        included: true,
-      },
-      {
-        title: "Páginas Web",
-        included: true,
-      },
-    ],
-  },
-];
-export default function PricingSection() {
+export default async function PricingSection() {
+  
+  const plans  = await loadPrices(); 
+
+  const firstPrice = plans[0];
+
+  const secondPrice = plans[1];
+
+  const thirdPrice = plans[2];
+
+  const pricingItems: PricingItemType[] = [
+    {
+      plan: "Standard",
+      amount: 14900,
+      pageLink: "#",
+      phoneLink: "#",
+      priceId: firstPrice.id,
+      features: [
+        {
+          title: "Gráficos de Redes Sociales",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Presentaciones",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: false,
+        },
+        {
+          title: "Reels y Motion Graphics",
+          included: false,
+        },
+        {
+          title: "Branding & Logotipos",
+          included: false,
+        },
+        {
+          title: "Ilustraciones",
+          included: false,
+        },
+        {
+          title: "Páginas Web",
+          included: false,
+        },
+      ],
+    },
+
+    {
+      plan: "Premium",
+      amount: 24900,
+      pageLink: "#",
+      phoneLink: "#",
+      priceId: secondPrice.id,
+      features: [
+        {
+          title: "Gráficos de Redes Sociales",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Presentaciones",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: true,
+        },
+        {
+          title: "Reels y Motion Graphics",
+          included: true,
+        },
+        {
+          title: "Branding & Logotipos",
+          included: true,
+        },
+        {
+          title: "Ilustraciones",
+          included: false,
+        },
+        {
+          title: "Páginas Web",
+          included: false,
+        },
+      ],
+    },
+    {
+      plan: "Pro",
+      amount: 39900,
+      pageLink: "#",
+      phoneLink: "#",
+      priceId: thirdPrice.id,
+      features: [
+        {
+          title: "Gráficos de Redes Sociales",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: true,
+        },
+        {
+          title: "Papelería, Infografías, Folletos",
+          included: true,
+        },
+        {
+          title: "Presentaciones",
+          included: true,
+        },
+        {
+          title: "Fotos de Stock Ilimitadas",
+          included: true,
+        },
+        {
+          title: "Reels y Motion Graphics",
+          included: true,
+        },
+        {
+          title: "Branding & Logotipos",
+          included: true,
+        },
+        {
+          title: "Ilustraciones",
+          included: true,
+        },
+        {
+          title: "Páginas Web",
+          included: true,
+        },
+      ],
+    },
+  ];
+
+
   return (
     <div className="lg:py-6 xl:py-12">
       <h3 className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl">
