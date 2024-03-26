@@ -9,7 +9,7 @@ import SloganComponent from "@/components/Slogan/SloganComponent";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-4 pb-12 lg:gap-7">
+    <main className="flex flex-col gap-4 lg:gap-7 pb-12">
       <HeroSection />
       <CTATrial />
       <Carrousel />

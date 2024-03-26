@@ -2,7 +2,9 @@ import { Stripe } from "stripe";
 
 import Image from "next/image";
 import PricingItem, { PricingItemType } from "./PricingItem";
-import Smile from "@/public/svg/Alien.svg";
+
+import Computer from "@/public/svg/Computer.svg";
+import Phone from "@/public/svg/Phone.svg";
 import { Button } from "../ui/button";
 
 async function loadPrices() {
@@ -15,8 +17,8 @@ async function loadPrices() {
 }
 
 export default async function PricingSection() {
-  
-  const plans  = await loadPrices(); 
+
+  const plans = await loadPrices();
 
   const firstPrice = plans[0];
 
@@ -178,24 +180,24 @@ export default async function PricingSection() {
 
   return (
     <div className="lg:py-6 xl:py-12">
-      <h3 className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+      <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
         Niveles de membresía
       </h3>
-      <p className="text-center text-base lg:mb-5 lg:text-lg xl:mb-10 xl:text-xl">
+      <p className="lg:block hidden lg:mb-5 xl:mb-10 text-center text-xl lg:text-2xl xl:text-3xl">
         Elige un plan que sea adecuado para ti.
       </p>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {pricingItems.map((item, index) => (
           <PricingItem key={index} item={item} />
         ))}
-        <div className="flex flex-col rounded-xl border border-gray-100 p-8 shadow-xl">
-          <div className="flex h-1/2 flex-col items-center text-center">
-            <div className="relative lg:mb-3 lg:h-[54px] lg:w-[68px] xl:mb-6 xl:h-[108px] xl:w-[136px]">
+        <div className="flex flex-col border-gray-100 shadow-xl p-8 border rounded-xl">
+          <div className="flex flex-col justify-center items-center h-1/2 text-center">
+            <div className="relative lg:mb-3 xl:mb-6 w-1/2 aspect-square">
               <Image
-                src={Smile}
+                src={Computer}
                 alt="Check Icon"
                 fill
-                className="object-cover object-center"
+                className="object-center object-fill"
               />
             </div>
             <p className="text-lg lg:text-xl xl:text-2xl">
@@ -208,13 +210,13 @@ export default async function PricingSection() {
               Agenda una llamada
             </Button>
           </div>
-          <div className="flex h-1/2 flex-col items-center border-t-2 border-[#C8FA70] text-center lg:pt-3 xl:pt-6">
-            <div className="relative lg:mb-3 lg:h-[54px] lg:w-[68px] xl:mb-6 xl:h-[108px] xl:w-[136px]">
+          <div className="flex flex-col justify-center items-center border-[#C8FA70] lg:pt-3 xl:pt-6 border-t-2 h-1/2 text-center">
+            <div className="relative lg:mb-3 xl:mb-6 w-1/2 aspect-square">
               <Image
-                src={Smile}
+                src={Phone}
                 alt="Check Icon"
                 fill
-                className="object-cover object-center"
+                className="object-center object-fill"
               />
             </div>
             <p className="text-lg lg:text-xl xl:text-2xl">Agenda una llamada</p>
