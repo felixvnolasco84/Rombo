@@ -5,7 +5,7 @@ import Next from "@/public/svg/Next.svg";
 
 export default function Features() {
   return (
-    <div className="bg-[#F2F2F2] pt-10 lg:pt-20 pb-7 lg:pb-14 rounded-xl">
+    <div className="bg-[#F2F2F2] pt-12 lg:pt-24 pb-12 rounded-xl">
       <div className="flex flex-col items-center mx-auto w-8/12 lg:w-full">
         <div className="flex flex-col justify-center items-center mx-auto w-1/2 text-[#121415] text-center">
           <h3 className="mb-10 lg:mb-0 text-2xl text-center md:text-2xl lg:text-5xl xl:text-6xl">

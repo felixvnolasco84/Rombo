@@ -33,43 +33,61 @@ const faqItems: FAQItemType[] = [
   },
 ];
 
+
+const lastItem: FAQItemType = {
+  answer: "   ¿Cómo realizo las solicitudes?",
+  question: "¿Cómo realizo las solicitudes?",
+}
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 export default function FAQComponent() {
   return (
-    <div className="rounded-xl bg-[#F2F2F2] text-[#121415]">
-      <h3 className="border-b-2 border-white py-4 text-center text-3xl md:text-4xl lg:py-8 lg:text-4xl xl:py-16 xl:text-5xl">
+    <div className="bg-[#F2F2F2] rounded-xl text-[#121415]">
+      <h3 className="border-white py-4 lg:py-8 xl:py-16 border-b-2 text-3xl text-center md:text-4xl lg:text-4xl xl:text-5xl">
         FAQ
       </h3>
-      {faqItems.map((item, index) => (
-        <FAQItem key={index} item={item} />
-      ))}
-      <div className="border-y-2 border-white py-4 lg:py-8 xl:py-16">
-        <div className="m-auto w-10/12 lg:w-2/3 xl:w-1/2">
-          <h3 className="text-lg lg:text-2xl xl:text-3xl">
-            ¿Cómo realizo las solicitudes?
-          </h3>
-          <p className="text-justify text-sm lg:mt-3 lg:text-base xl:mt-6 xl:text-lg">
-            Ofrecemos mucha flexibilidad en cómo solicitar diseños mediante
-            Monday o Notion. Algunas formas comunes en que los clientes
-            solicitan diseños es compartiendo documentos de Google o wireframes.
-          </p>
-          <p className="text-justify text-sm lg:mt-3 lg:text-base xl:mt-6 xl:text-lg">
-            Requerimos los siguientes puntos:
-          </p>
-          <ol className="list-inside list-decimal text-justify text-sm lg:mt-3 lg:text-base xl:mt-6 xl:text-lg">
-            <li>Descripción del tipo de diseño que necesitas.</li>
-            <li>
-              Texto e información para incluir en diseño (en caso de requerir)
-            </li>
-            <li>
-              Formato y dimensiones (tamaño de arte, tipo de archivo a entregar)
-            </li>
-            <li>
-              Archivos necesarios (logo, colores, presentación a diseñar etc)
-            </li>
-            <li>Imagen de referencia (en caso de contar con ella)</li>
-          </ol>
-        </div>
-      </div>
+
+      <Accordion type="single" collapsible>
+        {faqItems.map((item, index) => (
+          <FAQItem key={index} item={item} />
+        ))}
+      </Accordion>
+      <Accordion className="border-white border-y-2 py-4 lg:py-8 xl:py-16" type="single" collapsible>
+        <div className="">
+          <AccordionItem className="m-auto border-none w-10/12 lg:w-2/3 xl:w-1/2" value={"last"}>
+            <AccordionTrigger className="text-lg lg:text-xl xl:text-2xl">¿Cómo realizo las solicitudes?</AccordionTrigger>
+            <AccordionContent className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg">
+              <p className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg">
+                Ofrecemos mucha flexibilidad en cómo solicitar diseños mediante
+                Monday o Notion. Algunas formas comunes en que los clientes
+                solicitan diseños es compartiendo documentos de Google o wireframes.
+              </p>
+              <p className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg">
+                Requerimos los siguientes puntos:
+              </p>
+              <ol className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg list-decimal list-inside">
+                <li>Descripción del tipo de diseño que necesitas.</li>
+                <li>
+                  Texto e información para incluir en diseño (en caso de requerir)
+                </li>
+                <li>
+                  Formato y dimensiones (tamaño de arte, tipo de archivo a entregar)
+                </li>
+                <li>
+                  Archivos necesarios (logo, colores, presentación a diseñar etc)
+                </li>
+                <li>Imagen de referencia (en caso de contar con ella)</li>
+              </ol>
+            </AccordionContent>
+          </AccordionItem>
+        </div>.
+      </Accordion>
     </div>
   );
 }

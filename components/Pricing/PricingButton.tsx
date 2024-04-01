@@ -17,7 +17,7 @@ export default function PricingButton({ priceId }: { priceId: string }) {
         window.location.href = (await data).url;
       }}
       variant="primary"
-      className="w-full lg:mt-8 xl:mt-16"
+      className="lg:mt-8 xl:mt-16 w-full"
       size={"lg"}
     >
       Comenzar gratis

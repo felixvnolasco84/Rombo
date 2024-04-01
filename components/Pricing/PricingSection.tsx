@@ -83,6 +83,7 @@ export default async function PricingSection() {
       pageLink: "#",
       phoneLink: "#",
       priceId: secondPrice.id,
+      hasPromotion: true,
       features: [
         {
           title: "Gráficos de Redes Sociales",
@@ -180,17 +181,20 @@ export default async function PricingSection() {
 
   return (
     <div className="lg:py-6 xl:py-12">
+      <div className="py-12">
       <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
         Niveles de membresía
       </h3>
       <p className="lg:block hidden lg:mb-5 xl:mb-10 text-center text-xl lg:text-2xl xl:text-3xl">
         Elige un plan que sea adecuado para ti.
       </p>
-      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      </div>
+      
+      <div className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {pricingItems.map((item, index) => (
           <PricingItem key={index} item={item} />
         ))}
-        <div className="flex flex-col border-gray-100 shadow-xl p-8 border rounded-xl">
+        <div className="flex flex-col border-gray-100 shadow-xl p-9 border rounded-xl">
           <div className="flex flex-col justify-center items-center h-1/2 text-center">
             <div className="relative lg:mb-3 xl:mb-6 w-1/2 aspect-square">
               <Image
@@ -203,7 +207,7 @@ export default async function PricingSection() {
             <p className="text-lg lg:text-xl xl:text-2xl">
               Webflow Development
             </p>
-            <p className="text-sm lg:text-sm xl:text-base">
+            <p className="mt-2 text-sm lg:text-sm">
               Desarrollamos sitios web a medida con un enfoque en UX/UI.
             </p>
             <Button className="lg:mt-3 xl:mt-6" variant="primary" size="lg">
@@ -220,7 +224,7 @@ export default async function PricingSection() {
               />
             </div>
             <p className="text-lg lg:text-xl xl:text-2xl">Agenda una llamada</p>
-            <p className="text-sm lg:text-sm xl:text-base">
+            <p className="mt-2 text-sm lg:text-sm">
               Descubre más sobre cómo funciona rombo y cómo puede ayudarte.
             </p>
             <Button className="mt-6 lg:mt-3" variant="primary" size="lg">

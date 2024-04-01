@@ -83,3 +83,17 @@
   }
 
 }
+
+.carrousel {
+  cursor: grab;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.carrousel::-webkit-scrollbar { /* Chrome, Safari, Edge */
+  display: none;
+}
+
+.carrousel:active {
+  cursor: grabbing;
+}
