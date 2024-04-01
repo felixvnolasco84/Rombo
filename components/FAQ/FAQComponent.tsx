@@ -48,9 +48,10 @@ import {
 
 export default function FAQComponent() {
   return (
+    
     <div className="bg-[#F2F2F2] rounded-xl text-[#121415]">
       <h3 className="border-white py-4 lg:py-8 xl:py-16 border-b-2 text-3xl text-center md:text-4xl lg:text-4xl xl:text-5xl">
-        FAQ
+        FAQs
       </h3>
 
       <Accordion type="single" collapsible>
@@ -59,7 +60,7 @@ export default function FAQComponent() {
         ))}
       </Accordion>
       <Accordion className="border-white border-y-2 py-4 lg:py-8 xl:py-16" type="single" collapsible>
-        <div className="">
+        <div>
           <AccordionItem className="m-auto border-none w-10/12 lg:w-2/3 xl:w-1/2" value={"last"}>
             <AccordionTrigger className="text-lg lg:text-xl xl:text-2xl">¿Cómo realizo las solicitudes?</AccordionTrigger>
             <AccordionContent className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg">
@@ -72,7 +73,7 @@ export default function FAQComponent() {
                 Requerimos los siguientes puntos:
               </p>
               <ol className="lg:mt-3 xl:mt-6 text-justify text-sm lg:text-base xl:text-lg list-decimal list-inside">
-                <li>Descripción del tipo de diseño que necesitas.</li>
+                <li>Descripción del ti de diseño que necesitas.</li>
                 <li>
                   Texto e información para incluir en diseño (en caso de requerir)
                 </li>

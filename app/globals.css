@@ -75,11 +75,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-@media (min-width: 1400px) {
-  .container {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-}

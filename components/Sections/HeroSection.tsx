@@ -55,10 +55,10 @@ const firstItem = heroItems[0];
 
 export default function HeroSection() {
   return (
-    <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-4 lg:gap-3 lg:py-12 xl:gap-6">
-      <div className="col-span-2 row-span-2 flex items-end overflow-hidden rounded-lg bg-[#1214151A]">
-        <div className="flex h-fit flex-col items-center px-4 py-12 shadow-lg lg:items-start lg:px-4 lg:py-6 xl:px-9 xl:pb-9">
-          <div className="relative mb-12 h-[54px] w-[68px] lg:hidden">
+    <div className="lg:gap-3 xl:gap-6 grid grid-cols-1 lg:grid-cols-4 grid-rows-2">
+      <div className="flex items-end col-span-2 row-span-2 bg-[#1214151A] rounded-lg overflow-hidden">
+        <div className="flex flex-col items-center lg:items-start shadow-lg px-4 lg:px-4 xl:px-9 py-12 lg:py-6 xl:pb-9 h-fit">
+          <div className="relative lg:hidden mb-12 w-[68px] h-[54px]">
             <Image
               src={Smile}
               alt="Check Icon"
@@ -67,17 +67,17 @@ export default function HeroSection() {
               sizes="(100vw - 2rem) 100vh"
             />
           </div>
-          <h1 className="mb-4 w-11/12 text-center text-3xl lg:mb-3 lg:w-11/12 lg:text-left lg:text-4xl xl:mb-6 xl:text-6xl">
+          <h1 className="mb-4 lg:mb-3 xl:mb-6 w-11/12 lg:w-11/12 text-3xl text-center lg:text-left lg:text-4xl xl:text-6xl">
             Somos una agencia de diseno, pero diferente.
           </h1>
-          <p className="mb-8 text-center text-xs lg:mb-3 lg:text-left lg:text-base xl:mb-6 xl:text-lg">
+          <p className="mb-8 lg:mb-3 xl:mb-6 text-center text-xs lg:text-left lg:text-base xl:text-lg">
             Suscripciones de diseño para todos. Pausa o cancela en cualquier
             momento.
           </p>
           <Button className="w-fit" variant={"primary"} size={"xl"}>
             Ver planes
           </Button>
-          <p className="mt-4 pl-2 text-[9px] lg:mt-2 xl:mt-4 xl:text-sm">
+          <p className="mt-4 lg:mt-2 xl:mt-4 pl-2 text-[9px] xl:text-sm">
             Si no te encantan, te reembolsamos.
           </p>
         </div>

@@ -181,7 +181,7 @@ export default async function PricingSection() {
 
 
   return (
-    <div className="lg:py-6 xl:py-12">
+    <div>
       <div className="py-12">
         <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
           Niveles de membresía
@@ -191,11 +191,11 @@ export default async function PricingSection() {
         </p>
       </div>
 
-      <div className="gap-4 hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="gap-2 xl:gap-4 hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {pricingItems.map((item, index) => (
           <PricingItem key={index} item={item} />
         ))}
-        <div className="flex flex-col border-gray-100 shadow-xl p-9 border rounded-xl">
+        <div className="flex flex-col border-gray-100 shadow-xl p-3 xl:p-9 border rounded-xl">
           <div className="flex flex-col justify-center items-center h-1/2 text-center">
             <div className="relative lg:mb-3 xl:mb-6 w-1/2 aspect-square">
               <Image
@@ -205,10 +205,10 @@ export default async function PricingSection() {
                 className="object-center object-fill"
               />
             </div>
-            <p className="text-lg lg:text-xl xl:text-2xl">
+            <p className="text-lg xl:text-2xl">
               Webflow Development
             </p>
-            <p className="mt-2 text-sm lg:text-sm">
+            <p className="mt-2 text-xs xl:text-sm">
               Desarrollamos sitios web a medida con un enfoque en UX/UI.
             </p>
             <Button className="lg:mt-3 xl:mt-6" variant="primary" size="lg">
@@ -225,7 +225,7 @@ export default async function PricingSection() {
               />
             </div>
             <p className="text-lg lg:text-xl xl:text-2xl">Agenda una llamada</p>
-            <p className="mt-2 text-sm lg:text-sm">
+            <p className="mt-2 xl:text-sm lg:text-xs">
               Descubre más sobre cómo funciona rombo y cómo puede ayudarte.
             </p>
             <Button className="mt-6 lg:mt-3" variant="primary" size="lg">

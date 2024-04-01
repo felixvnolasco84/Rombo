@@ -17,6 +17,7 @@ export default function Home() {
       <PricingSection />
       <SloganComponent />
       <CTAContact />
+
       <FAQComponent />
     </main>
   );
