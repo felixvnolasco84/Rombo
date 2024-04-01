@@ -24,10 +24,6 @@ export default function Carrousel() {
       {/* <CarouselPrevious />
       <CarouselNext /> */}
     </Carousel>
-    // <div className="flex gap-4 overflow-x-auto carrousel">
-    //   {carrouselItems.map((item, index) => (
-    //     <CarrouselCard key={index} item={item} />
-    //   ))}
-    // </div>
+
   );
 }
