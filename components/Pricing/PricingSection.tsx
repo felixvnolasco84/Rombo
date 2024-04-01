@@ -6,6 +6,7 @@ import PricingItem, { PricingItemType } from "./PricingItem";
 import Computer from "@/public/svg/Computer.svg";
 import Phone from "@/public/svg/Phone.svg";
 import { Button } from "../ui/button";
+import CarrouselPlans from "../Carrousel/CarrouselPlans";
 
 async function loadPrices() {
   const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
@@ -182,15 +183,15 @@ export default async function PricingSection() {
   return (
     <div className="lg:py-6 xl:py-12">
       <div className="py-12">
-      <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
-        Niveles de membresía
-      </h3>
-      <p className="lg:block hidden lg:mb-5 xl:mb-10 text-center text-xl lg:text-2xl xl:text-3xl">
-        Elige un plan que sea adecuado para ti.
-      </p>
+        <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
+          Niveles de membresía
+        </h3>
+        <p className="lg:block hidden lg:mb-5 xl:mb-10 text-center text-xl lg:text-2xl xl:text-3xl">
+          Elige un plan que sea adecuado para ti.
+        </p>
       </div>
-      
-      <div className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+      <div className="gap-4 hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {pricingItems.map((item, index) => (
           <PricingItem key={index} item={item} />
         ))}
@@ -233,6 +234,8 @@ export default async function PricingSection() {
           </div>
         </div>
       </div>
+
+      <CarrouselPlans pricingItems={pricingItems} />
     </div>
   );
 }

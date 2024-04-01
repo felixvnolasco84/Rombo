@@ -24,7 +24,7 @@ export default function PricingItem({ item }: { item: PricingItemType }) {
     <div className="relative border-gray-100 col-span-1 bg-white shadow-xl px-6 py-9 border rounded-xl text-[#121415]">
       {
         item.hasPromotion && (
-          <div className="-top-8 left-0 absolute bg-[#C7A7FF] px-5 py-4 rounded-full text-black -rotate-6">
+          <div className="-top-0 lg:-top-8 left-0 absolute bg-[#C7A7FF] px-3 lg:px-5 py-2 lg:py-4 rounded-full text-black text-xs lg:text-base -rotate-6">
             <p className="">Más Popular</p>
           </div>
         )
