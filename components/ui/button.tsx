@@ -14,11 +14,12 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        primary: "bg-[#C8FA70] text-black hover:bg-green-800 hover:text-white",
+        primary: "bg-[#C8FA70] text-black hover:bg-green-900/80 hover:text-white",
         secondary: "bg-[#F2F2F2] text-[#282828] hover:bg-gray-400 hover:text-white",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        CTAUnderline: "border-b-[#D5D5D5] border-b-2 rounded-none w-full"
+        CTAUnderline: "border-b-[#D5D5D5] border-b-2 rounded-none w-full",
+        headerLogin: "bg-[#C7A7FF] text-[#282828] hover:bg-[#C7A7FF]/90",
       },
       size: {
         default: "h-10 px-4 rounded-xl py-2",
@@ -27,6 +28,7 @@ const buttonVariants = cva(
         xl: "rounded-xl px-6 py-3 text-sm lg:px-10 xl:px-16 lg:py-3 xl:py-4 lg:text-2xl xl:text-3xl leading-none",
         underline: "pb-1 rounded-none w-fit mx-auto",
         icon: "h-10 w-10",
+        headerLogin: "h-10 px-12 rounded-md py-2",
       },
     },
     defaultVariants: {
@@ -38,7 +40,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 

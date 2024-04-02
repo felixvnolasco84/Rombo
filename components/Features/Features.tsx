@@ -6,8 +6,8 @@ import Next from "@/public/svg/Next.svg";
 export default function Features() {
   return (
     <div className="bg-[#F2F2F2] pt-12 lg:pt-24 pb-12 rounded-xl">
-      <div className="flex flex-col items-center mx-auto w-8/12 lg:w-full">
-        <div className="flex flex-col justify-center items-center mx-auto w-1/2 text-[#121415] text-center">
+      <div className="flex flex-col items-center mx-auto lg:w-full">
+        <div className="flex flex-col justify-center items-center mx-auto w-3/4 text-[#121415] text-center">
           <h3 className="mb-10 lg:mb-0 text-2xl text-center md:text-2xl lg:text-5xl xl:text-6xl">
             Diseñamos una nueva manera de trabajar.
           </h3>
@@ -17,8 +17,8 @@ export default function Features() {
 
         </div>
 
-        <div className="flex lg:flex-row flex-col justify-center items-baseline gap-10 lg:gap-5 xl:gap-10 lg:p-12 xl:p-24">
-          <div className="flex flex-col flex-grow items-center lg:w-1/3">
+        <div className="flex lg:flex-row flex-col justify-center items-baseline gap-10 lg:gap-5 xl:gap-10 lg:p-12 xl:p-24 w-1/2 lg:w-full">
+          <div className="flex flex-col flex-grow items-center mx-auto lg:w-1/3">
             <div className="relative w-[68px] lg:w-[68px] xl:w-[136px] h-[54px] lg:h-[54px] xl:h-[108px]">
               <Image
                 src={CheckIcon}
@@ -32,7 +32,7 @@ export default function Features() {
               Suscríbete a un plan y solicita tantos diseños como desees.
             </p>
           </div>
-          <div className="flex flex-col flex-grow items-center lg:w-1/3">
+          <div className="flex flex-col flex-grow items-center mx-auto lg:w-1/3">
             <div className="relative w-[68px] lg:w-[68px] xl:w-[136px] h-[54px] lg:h-[54px] xl:h-[108px]">
               <Image
                 src={Next}
@@ -47,7 +47,7 @@ export default function Features() {
               ajustes necesarios.
             </p>
           </div>
-          <div className="flex flex-col flex-grow items-center lg:w-1/3">
+          <div className="flex flex-col flex-grow items-center mx-auto lg:w-1/3">
             <div className="relative w-[68px] lg:w-[68px] xl:w-[136px] h-[54px] lg:h-[54px] xl:h-[108px]">
               <Image
                 src={Smile}

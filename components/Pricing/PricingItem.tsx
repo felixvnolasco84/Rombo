@@ -40,7 +40,7 @@ export default function PricingItem({ item }: { item: PricingItemType }) {
       </div>
 
       <div className="flex flex-col">
-        <div className="flex justify-center items-center gap-2 lg:mt-8 xl:mt-16">
+        <div className="flex justify-center items-center gap-2 mt-8 xl:mt-16">
           <p className="text-xl md:text-xl lg:text-2xl xl:text-3xl">
             {item.amount.toLocaleString("es-MX", {
               style: "currency",
@@ -61,7 +61,7 @@ export default function PricingItem({ item }: { item: PricingItemType }) {
 
       <div className="flex flex-col gap-4">
         <PricingButton priceId={item.priceId} />
-        <div className="flex justify-center border-[#C8FA70] pb-6 xl:pb-12 border-b-2 w-full pb6-">
+        <div className="flex justify-center border-[#C8FA70] pb-6 xl:pb-12 border-b-2 w-full">
           <Link href={item.phoneLink} className="mx-auto">
             <Button variant="CTAUnderline" size={"underline"}>
               Agendar una llamada

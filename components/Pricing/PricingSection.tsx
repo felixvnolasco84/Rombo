@@ -32,7 +32,7 @@ export default async function PricingSection() {
       plan: "Standard",
       amount: 14900,
       pageLink: "#",
-      phoneLink: "#",
+      phoneLink: "https://api.whatsapp.com/send?phone=5215545009532&text=Hola!%20Me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20el%20plan%20Standard%20de%20Rombo!",
       priceId: firstPrice.id,
       features: [
         {
@@ -82,7 +82,7 @@ export default async function PricingSection() {
       plan: "Premium",
       amount: 24900,
       pageLink: "#",
-      phoneLink: "#",
+      phoneLink: "https://api.whatsapp.com/send?phone=5215545009532&text=Hola!%20Me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20el%20plan%20Premium%20de%20Rombo!",
       priceId: secondPrice.id,
       hasPromotion: true,
       features: [
@@ -132,7 +132,7 @@ export default async function PricingSection() {
       plan: "Pro",
       amount: 39900,
       pageLink: "#",
-      phoneLink: "#",
+      phoneLink: "https://api.whatsapp.com/send?phone=5215545009532&text=Hola!%20Me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20el%20plan%20Pro%20de%20Rombo!",
       priceId: thirdPrice.id,
       features: [
         {
@@ -181,12 +181,12 @@ export default async function PricingSection() {
 
 
   return (
-    <div>
-      <div className="py-12">
-        <h3 className="text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
+    <div id="planes">
+      <div className="py-12 xl:py-24">
+        <h3 className="font-semibold text-[#121415] text-center text-xl md:text-2xl lg:text-5xl xl:text-6xl">
           Niveles de membresía
         </h3>
-        <p className="lg:block hidden lg:mb-5 xl:mb-10 text-center text-xl lg:text-2xl xl:text-3xl">
+        <p className="text-center text-sm lg:text-2xl xl:text-3xl">
           Elige un plan que sea adecuado para ti.
         </p>
       </div>

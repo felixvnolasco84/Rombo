@@ -40,6 +40,7 @@ export type HeroItem = {
   title: string;
   description: string;
   backgroundColor: string;
+  backgroundColorHover: string;
   image: any;
   link: string;
   buttonText?: string;

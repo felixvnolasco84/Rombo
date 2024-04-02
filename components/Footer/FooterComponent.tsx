@@ -27,7 +27,7 @@ export default function FooterComponent() {
           diseños, para siempre.
         </p>
       </div>
-      <div className="flex justify-between items-center mx-auto pt-24 w-11/12">
+      <div className="flex md:flex-row flex-col justify-between items-center gap-4 md:gap-0 mx-auto pt-24 w-11/12">
         <div className="relative w-[88px] xl:w-[196px] h-[20.22px] xl:h-[40.44px]">
           <Image
             src={Logo}
@@ -37,7 +37,7 @@ export default function FooterComponent() {
             className="object-center object-fill"
           />
         </div>
-        <div className="flex items-center gap-2 lg:gap-7 xl:gap-14 text-xs lg:text-base">
+        <div className="items-center gap-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 text-xs lg:text-base">
           <Link href={"/"}>Planes</Link>
           <Link href={"/"}>Preguntas frecuentes</Link>
           <Link href={"/"}>Nuestro trabajo</Link>

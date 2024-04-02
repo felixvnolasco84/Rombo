@@ -48,8 +48,8 @@ import {
 
 export default function FAQComponent() {
   return (
-    
-    <div className="bg-[#F2F2F2] rounded-xl text-[#121415]">
+
+    <div id="faqs" className="bg-[#F2F2F2] rounded-xl text-[#121415]">
       <h3 className="border-white py-4 lg:py-8 xl:py-16 border-b-2 text-3xl text-center md:text-4xl lg:text-4xl xl:text-5xl">
         FAQs
       </h3>
@@ -87,7 +87,7 @@ export default function FAQComponent() {
               </ol>
             </AccordionContent>
           </AccordionItem>
-        </div>.
+        </div>
       </Accordion>
     </div>
   );

@@ -15,6 +15,7 @@ export const heroItems: HeroItem[] = [
     title: "Nuestro trabajo",
     description: "Logos, redes, páginas y más.",
     backgroundColor: "bg-[#F2F2F2]",
+    backgroundColorHover: "bg-[#F5F5F5]",
     image: Alien,
     link: "#",
   },
@@ -22,12 +23,14 @@ export const heroItems: HeroItem[] = [
     title: "Beneficios",
     backgroundColor: "bg-[#C7A7FF]",
     description: "Simples, creativos, tuyos.",
+    backgroundColorHover: "bg-[#D9C4FF]",
     image: Smile,
     link: "#",
   },
   {
     title: "Planes",
     backgroundColor: "bg-[#C8FA6F]",
+    backgroundColorHover: "bg-[#D1FFA1]",
     description: "A tu medida.",
     image: Check,
     link: "#",
@@ -36,6 +39,7 @@ export const heroItems: HeroItem[] = [
     title: "Agenda una llamada",
     description: "Descubre cómo funciona y cómo podemos ayudarte.",
     backgroundColor: "bg-[#F2F2F2]",
+    backgroundColorHover: "bg-[#F5F5F5]",
     image: Phone,
     link: "#",
     buttonText: "Agendar",
@@ -45,6 +49,7 @@ export const heroItems: HeroItem[] = [
     description:
       "Gana comisiones mensuales recurrentes del 5% por cada referencia.",
     backgroundColor: "bg-[#F2F2F2]",
+    backgroundColorHover: "bg-[#F5F5F5]",
     image: Money,
     link: "#",
     buttonText: "Únete",
@@ -56,8 +61,8 @@ const firstItem = heroItems[0];
 export default function HeroSection() {
   return (
     <div className="lg:gap-3 xl:gap-6 grid grid-cols-1 lg:grid-cols-4 grid-rows-2">
-      <div className="flex items-end col-span-2 row-span-2 bg-[#1214151A] rounded-lg overflow-hidden">
-        <div className="flex flex-col items-center lg:items-start shadow-lg px-4 lg:px-4 xl:px-9 py-12 lg:py-6 xl:pb-9 h-fit">
+      <div className="flex items-end col-span-2 row-span-2 bg-[#1214151A] shadow-lg rounded-lg overflow-hidden">
+        <div className="flex flex-col items-center lg:items-start mx-auto px-4 lg:px-4 xl:px-9 lg:py-6 pt-24 pb-12 xl:pb-9 w-10/12 lg:w-full">
           <div className="relative lg:hidden mb-12 w-[68px] h-[54px]">
             <Image
               src={Smile}

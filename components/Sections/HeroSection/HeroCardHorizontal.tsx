@@ -16,15 +16,15 @@ export default function HeroCardHorizontal({
       key={item.title}
       className={`col-span-2 rounded-lg h-full ${item.backgroundColor}`}
     >
-      <div className="relative flex h-full items-center justify-between gap-3 px-6 py-6 shadow-md lg:gap-4 lg:px-4 lg:py-6 xl:gap-[75px] xl:px-9 xl:py-9">
-        <div className="flex flex-col items-center lg:gap-4 xl:gap-8">
-          <div className="relative flex h-[54px] w-[68px] flex-col xl:h-[100px] xl:w-[62px]">
+      <div className="relative flex justify-between items-center gap-4 xl:gap-[75px] shadow-md px-6 lg:px-4 xl:px-9 py-6 lg:py-6 xl:py-9 h-full">
+        <div className="flex flex-col items-center gap-4 xl:gap-8">
+          <div className="relative flex flex-col w-[68px] xl:w-[62px] h-[54px] xl:h-[100px]">
             <Image
               fill
               sizes="(100vw - 2rem) 100vh"
               src={item.image}
               alt={item.title}
-              className="object-fit object-fill"
+              className="object-fill object-fit"
             />
           </div>
           <Button className="" variant={"primary"} size={"xl"}>
