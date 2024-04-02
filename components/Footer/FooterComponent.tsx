@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function FooterComponent() {
   return (
     <div className="bg-[#C8FA6F] py-12 text-[#121415]">
-      <div className="mx-auto w-10/12 md:w-1/2 2xl:w-1/3">
+      <div className="mx-auto px-4 w-full md:w-1/2 2xl:w-1/3">
         <h3 className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl">
           Descubre si rombo es para ti.
         </h3>
