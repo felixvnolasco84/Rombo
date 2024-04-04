@@ -22,11 +22,11 @@ export default async function Cuenta() {
         </p>
       </div>
       <Separator />
-      <AccountForm
+      {/* <AccountForm
         name={session?.user?.name}
         email={session?.user?.email}
         profilePicture={session?.user?.image}
-      />
+      /> */}
     </div>
   )
 }
