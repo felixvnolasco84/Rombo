@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { MenuIcon } from "lucide-react";
+import AuthSection from "./AuthSection";
 
 
 type NavbarItem = {
@@ -109,10 +110,7 @@ export default function Navbar() {
             {item.title}
           </Link>
         ))}
-        <Button className="font-semibold" variant={"headerLogin"} size={"headerLogin"} >
-          <Link href="/login">Login</Link>
-
-        </Button>
+        <AuthSection />
       </div>
     </div>
   );
