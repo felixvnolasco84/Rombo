@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 import { Separator } from "@/components/ui/separator"
-// import { SidebarNav } from "@/components/sidebar-nav"
+import { SideNavbar } from "@/components/Navbar/Side/SideNavbar"
 
 export const metadata: Metadata = {
   title: "Tu Espacio Personal en G-TIMIN: Gestiona Tu Cuenta con Facilidad",
@@ -39,7 +39,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <Separator className="my-6" />
           <div className="flex lg:flex-row flex-col lg:space-x-12 space-y-8 lg:space-y-0">
             <aside className="-mx-4 lg:w-1/5">
-              {/* <SidebarNav items={sidebarNavItems} /> */}
+              <SideNavbar items={sidebarNavItems} />
             </aside>
             <div className="flex-1 lg:max-w-2xl">{children}</div>
           </div>
