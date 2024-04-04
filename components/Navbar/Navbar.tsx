@@ -110,7 +110,8 @@ export default function Navbar() {
           </Link>
         ))}
         <Button className="font-semibold" variant={"headerLogin"} size={"headerLogin"} >
-          Login
+          <Link href="/login">Login</Link>
+
         </Button>
       </div>
     </div>
