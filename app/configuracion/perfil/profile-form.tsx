@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -89,7 +91,7 @@ export function ProfileForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
         <Avatar className="w-9 h-9">
           <AvatarImage src={profilePicture} alt="@shadcn" />
           <AvatarFallback>EX</AvatarFallback>

@@ -1,3 +1,5 @@
+"use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react"
@@ -156,7 +158,7 @@ export function AccountForm({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="language"
           render={({ field } : any) => (
@@ -216,7 +218,7 @@ export function AccountForm({
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button type="submit">Actualizar Cuenta</Button>
       </form>
     </Form>

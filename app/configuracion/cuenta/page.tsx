@@ -11,6 +11,7 @@ export default async function Cuenta() {
   if (!session) {
     redirect("/login?callbackUrl=/configuracion/cuenta")
   }
+  
 
   return (
     <div className="space-y-6">
@@ -22,11 +23,11 @@ export default async function Cuenta() {
         </p>
       </div>
       <Separator />
-      {/* <AccountForm
+      <AccountForm
         name={session?.user?.name}
         email={session?.user?.email}
         profilePicture={session?.user?.image}
-      /> */}
+      />
     </div>
   )
 }
