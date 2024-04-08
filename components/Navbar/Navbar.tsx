@@ -28,15 +28,15 @@ const navbarItems: NavbarItem[] = [
   },
   {
     title: "Nuestro Trabajo",
-    link: "#nuestro-trabajo",
+    link: "/#nuestro-trabajo",
   },
   {
     title: "FAQS",
-    link: "#faqs",
+    link: "/#faqs",
   },
   {
     title: "Planes",
-    link: "#planes",
+    link: "/#planes",
   },
 ];
 

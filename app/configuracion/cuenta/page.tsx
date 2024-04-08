@@ -14,7 +14,7 @@ export default async function Cuenta() {
   
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
         <h3 className="font-medium text-lg">Cuenta</h3>
         <p className="text-muted-foreground text-sm">

@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Account {
   id                 String  @id @default(cuid()) @map("_id")
   userId             String
@@ -45,12 +46,11 @@ model User {
   updatedAt DateTime?  @updatedAt
   email         String    @unique
   emailVerified DateTime?
+  projects      Project[]
   image         String?
   password      String?
   accounts      Account[]
-  sessions      Session[]
-  Post          Post[]
-  Comment       Comment[]
+  sessions      Session[]  
 }
 
 
@@ -62,117 +62,46 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Category {
-  id    String  @id @default(cuid()) @map("_id")
-  slug  String  @unique
-  title String
-  img   String?
-  Posts Post[]
-}
 
-model Post {
-  id        String    @id @default(cuid()) @map("_id")
-  createdAt DateTime  @default(now())
-  slug      String    @unique
-  title     String
-  previewDesc String
-  desc      String
-  img       String?
-  views     Int       @default(0)
-  catSlug   String
-  cat       Category  @relation(fields: [catSlug], references: [slug])
-  userEmail String
-  user      User      @relation(fields: [userEmail], references: [email])
-  comments  Comment[]
-  references String[]
-}
 
-model Comment {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  desc      String
-  userEmail String
-  user      User     @relation(fields: [userEmail], references: [email])
-  postSlug  String
-  post      Post     @relation(fields: [postSlug], references: [slug])
-}
+// model Comment {
+//   id        String   @id @default(cuid()) @map("_id")
+//   createdAt DateTime @default(now())
+//   desc      String
+//   userEmail String
+//   user      User     @relation(fields: [userEmail], references: [email])
+//   requestSlug  String
+//   request   Request     @relation(fields: [requestSlug], references: [slug])
+//   }
 
-model LineResearch {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  title     String  
-  slug      String?  @unique   
-  desc      String   @default("")
-  img       String?
-  activities Activity[]  
-  projects   Project[]  
-}
 
-model Activity {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  title     String
-  desc      String  
-  lineId    String
-  line      LineResearch @relation(fields: [lineId], references: [id])  
-}
+  model Request {
+    id        String   @id @default(cuid()) @map("_id")
+    title     String
+    description String
+    category String
+    attachments String
+    projectId String
+    project   Project    @relation(fields: [projectId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
 
-model Project {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  title     String
-  desc      String
-  img       String?
-  lineId    String
-  line      LineResearch @relation(fields: [lineId], references: [id])  
-}
+  model Category {
+    id    String  @id @default(cuid()) @map("_id")
+    slug  String  @unique
+    title String
+    img   String?
+  }
 
-model Member {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  name      String
-  slug      String   @unique @default("")
-  email     String   @unique  
-  role      Rol[]
-  socialMedia SocialMedia[]
-  specialty   String
-  school      String
-  degree      String
-  yearGrad    String
-  bio         String
-  img         String  
-}
-
-model SocialMedia {
-  id        String   @id @default(cuid()) @map("_id")
-  name      String
-  url       String
-  memberId  String
-  member    Member   @relation(fields: [memberId], references: [id])
-}
-
-model Gallery {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  title     String
-  desc      String    
-  images    Image[]
-}
-
-model Image {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  title     String
-  desc      String
-  img       String
-  galleryId String
-  gallery   Gallery @relation(fields: [galleryId], references: [id])  
-}
-
-model Rol {
-  id        String   @id @default(cuid()) @map("_id")
-  name     String
-  memberId  String
-  member    Member   @relation(fields: [memberId], references: [id])
-  createdAt DateTime @default(now())
-}
+  model Project {
+    id        String   @id @default(cuid()) @map("_id")    
+    Request Request[]
+    title     String
+    desc      String
+    img       String?
+    userId  String
+    user    User    @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
