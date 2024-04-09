@@ -6,7 +6,7 @@ import prisma from "@/utils/ConnectionPool";
 
 //GET SINGLE REQUEST
 
-export const GETSINGLE = async (id: string) => {
+export const GET = async (id: string) => {
     const session = await getAuthSession();
     if (!session) {
         return new NextResponse(JSON.stringify({ message: "Not Authenticated!" }))
