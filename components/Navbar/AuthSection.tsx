@@ -17,7 +17,7 @@ export default function AuthSection() {
                     <SVGSkeleton className="rounded-full w-full h-full" />
                 </span>
             </div>
-        </>; // return the Skeleton component when the status is loading
+        </>;
     }
     return (
         <>

@@ -70,98 +70,7 @@ export default function page() {
     return (
         <TooltipProvider>
             <div className="flex flex-col bg-muted/40 w-full min-h-screen">
-                <aside className="left-0 z-10 fixed inset-y-0 sm:flex flex-col hidden bg-background border-r w-14">
-                    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-                        <Link
-                            href="#"
-                            className="flex justify-center items-center gap-2 bg-primary rounded-full w-9 md:w-8 h-9 md:h-8 font-semibold text-lg text-primary-foreground md:text-base group shrink-0"
-                        >
-                            <Package2 className="group-hover:scale-110 w-4 h-4 transition-all" />
-                            <span className="sr-only">Acme Inc</span>
-                        </Link>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex justify-center items-center rounded-lg w-9 md:w-8 h-9 md:h-8 text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    <Home className="w-5 h-5" />
-                                    <span className="sr-only">Dashboard</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Dashboard</TooltipContent>
-                        </Tooltip>
-
-
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href="#"
-                                        className="flex justify-center items-center bg-accent rounded-lg w-9 md:w-8 h-9 md:h-8 text-accent-foreground hover:text-foreground transition-colors"
-                                    >
-                                        <ShoppingCart className="w-5 h-5" />
-                                        <span className="sr-only">Orders</span>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right">Orders</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex justify-center items-center rounded-lg w-9 md:w-8 h-9 md:h-8 text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    <Package className="w-5 h-5" />
-                                    <span className="sr-only">Products</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Products</TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex justify-center items-center rounded-lg w-9 md:w-8 h-9 md:h-8 text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    <Users2 className="w-5 h-5" />
-                                    <span className="sr-only">Customers</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Customers</TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex justify-center items-center rounded-lg w-9 md:w-8 h-9 md:h-8 text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    <LineChart className="w-5 h-5" />
-                                    <span className="sr-only">Analytics</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Analytics</TooltipContent>
-                        </Tooltip>
-                    </nav>
-                    <nav className="flex flex-col items-center gap-4 mt-auto px-2 sm:py-5">
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex justify-center items-center rounded-lg w-9 md:w-8 h-9 md:h-8 text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    <Settings className="w-5 h-5" />
-                                    <span className="sr-only">Settings</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Settings</TooltipContent>
-                        </Tooltip>
-                    </nav>
-                </aside>
-                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+                <div className="flex flex-col sm:gap-4 bg-muted/40">
                     <header className="top-0 z-30 sm:static sticky flex items-center gap-4 sm:border-0 bg-background sm:bg-transparent px-4 sm:px-6 border-b h-14 sm:h-auto">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -244,31 +153,6 @@ export default function page() {
                                 className="bg-background pl-8 rounded-lg w-full md:w-[200px] lg:w-[336px]"
                             />
                         </div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="rounded-full overflow-hidden"
-                                >
-                                    <Image
-                                        src="/placeholder-user.jpg"
-                                        width={36}
-                                        height={36}
-                                        alt="Avatar"
-                                        className="rounded-full overflow-hidden"
-                                    />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Settings</DropdownMenuItem>
-                                <DropdownMenuItem>Support</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Logout</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
                     </header>
                     <main className="flex-1 items-start gap-4 md:gap-8 grid sm:px-6 sm:py-0 p-4">
                         <Tabs defaultValue="all">
@@ -282,7 +166,7 @@ export default function page() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <div className="flex items-center gap-2 ml-auto">
-                                    <DropdownMenu>
+                                    {/* <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant="outline" size="sm" className="gap-1 h-8">
                                                 <ListFilter className="w-3.5 h-3.5" />
@@ -302,18 +186,20 @@ export default function page() {
                                                 Archived
                                             </DropdownMenuCheckboxItem>
                                         </DropdownMenuContent>
-                                    </DropdownMenu>
-                                    <Button size="sm" variant="outline" className="gap-1 h-8">
+                                    </DropdownMenu> */}
+                                    {/* <Button size="sm" variant="outline" className="gap-1 h-8">
                                         <File className="w-3.5 h-3.5" />
                                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                             Export
                                         </span>
-                                    </Button>
-                                    <Button size="sm" className="gap-1 h-8">
-                                        <PlusCircle className="w-3.5 h-3.5" />
-                                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                            Add Product
-                                        </span>
+                                    </Button> */}
+                                    <Button size="sm">
+                                        <Link className="flex items-center gap-1" href="/portal/proyuec">
+                                            <PlusCircle className="w-4 aspect-square" />
+                                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                                Agregar Proyecto
+                                            </span>
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>
