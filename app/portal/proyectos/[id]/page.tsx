@@ -1,5 +1,7 @@
 
-import { BookOpenIcon, CalendarIcon, HomeIcon, LayoutPanelLeftIcon, RefreshCwIcon, UserIcon } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { BookOpenIcon, CalendarIcon, HomeIcon, RefreshCwIcon, UserIcon } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -11,6 +13,7 @@ import {
 import Image from 'next/image'
 import { GET as getSingleProject } from '@/app/api/projects/[id]/route'
 import { Project } from '../components/ProjectCard'
+import Link from "next/link";
 
 export default async function page({ params }: { params: { id: string } }) {
 
@@ -19,7 +22,17 @@ export default async function page({ params }: { params: { id: string } }) {
   const project: Project = await data.json()
 
   return (
-    <main className="flex flex-col flex-1 gap-4 md:gap-8 bg-gray-100/40 dark:bg-gray-800/40 p-4 min-h-[calc(100vh_-_theme(spacing.16))]">
+    <div className="flex flex-col flex-1 gap-4 md:gap-8 bg-gray-100/40 dark:bg-gray-800/40 p-4 min-h-[calc(100vh_-_theme(spacing.16))]">
+            <div className="flex justify-end items-center gap-2 ml-auto">
+        <Button size="sm">
+          <Link className="flex items-center gap-1" href={`/portal/proyectos/${project.id}/new`}>
+            <PlusCircle className="w-4 aspect-square" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Agregar Solicitud
+            </span>
+          </Link>
+        </Button>
+      </div>
       <div className="flex items-center gap-4 mx-auto w-full max-w-6xl">
         <Image
           alt="Project Image"
@@ -94,6 +107,6 @@ export default async function page({ params }: { params: { id: string } }) {
             )
         }
       </div>
-    </main>
+    </div>
   )
 }

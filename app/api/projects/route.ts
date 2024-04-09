@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
-import { Project } from "@/app/portal/proyectos/components/ProjectCard";
-
 
 //GET ALL PROJECTS
 export const GET = async () => {
