@@ -9,7 +9,8 @@ export const GET = async (id: any) => {
         const post = await prisma.request.findUnique({
             where: { id: id },
             include: {
-                project: true
+                project: true,
+                comments: true
             }
         })
 
