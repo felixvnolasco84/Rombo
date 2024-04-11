@@ -60,7 +60,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                     </Sheet>
                     {/* <BreadcrumbComponent /> */}
                 </header>
-                <main className="flex flex-col flex-1 gap-4 lg:gap-6 bg-muted/40 p-4 lg:p-6">
+                <main className="flex flex-col flex-1 gap-4 lg:gap-6 bg-muted/40 p-4">
                     {children}
                 </main>
             </div>

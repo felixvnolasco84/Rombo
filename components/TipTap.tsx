@@ -61,6 +61,7 @@ type Props = {
   isEditable?: boolean
   hasContent?: boolean
   postContent?: string
+  showToolbar?: boolean
 }
 
 const TipTapEditor = ({
@@ -68,6 +69,7 @@ const TipTapEditor = ({
   isEditable,
   hasContent,
   postContent,
+  showToolbar = true,
 }: Props) => {
 
   const TipTap = () => {
@@ -561,7 +563,7 @@ const TipTapEditor = ({
     <>
       <div className="flex flex-col gap-2">
         <EditorProvider
-          slotBefore={<TipTap />}
+          slotBefore={ showToolbar ? <TipTap /> : <></>}
           extensions={extensions}
           content={hasContent ? postContent : ""}
           editable={isEditable}

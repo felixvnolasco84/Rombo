@@ -11,6 +11,8 @@ export type Request = {
     description: string;
     status: string;
     createdAt: string;
+    category: string;
+    project: Project;
     attachments: string;
     updatedAt: string;
     projectId: string;

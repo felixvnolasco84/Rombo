@@ -1,29 +1,21 @@
 
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { BookOpenIcon, CalendarIcon, HomeIcon, RefreshCwIcon, UserIcon } from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { BookOpenIcon, CalendarIcon, RefreshCwIcon, UserIcon } from 'lucide-react'
 import Image from 'next/image'
 import { GET as getSingleProject } from '@/app/api/projects/[id]/route'
 import { Project } from '../components/ProjectCard'
 import Link from "next/link";
+import RequestCardProject from "../components/RequestCardProject";
 
 export default async function page({ params }: { params: { id: string } }) {
 
   const data = await getSingleProject(params.id)
-
   const project: Project = await data.json()
 
   return (
     <div className="flex flex-col flex-1 gap-4 md:gap-8 bg-gray-100/40 dark:bg-gray-800/40 p-4 min-h-[calc(100vh_-_theme(spacing.16))]">
-            <div className="flex justify-end items-center gap-2 ml-auto">
+      <div className="flex justify-end items-center gap-2 ml-auto">
         <Button size="sm">
           <Link className="flex items-center gap-1" href={`/portal/proyectos/${project.id}/new`}>
             <PlusCircle className="w-4 aspect-square" />
@@ -75,7 +67,7 @@ export default async function page({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="mx-auto w-full max-w-6xl">
-        <h2 className="font-bold text-2xl">Project Requests</h2>
+        <h2 className="mb-4 font-bold text-2xl">Solicitudes</h2>
 
         {
           project.Request.length === 0 ? (
@@ -85,21 +77,10 @@ export default async function page({ params }: { params: { id: string } }) {
             </div>
           ) :
             (
-              <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-3">
+              <div className="gap-6 grid md:grid-cols-2">
                 {
                   project.Request.map((request, index) => (
-                    <Card key={index}>
-                      <CardHeader className="flex flex-row items-center gap-4">
-                        <HomeIcon className="w-8 h-8" />
-                        <div className="gap-1 grid">
-                          <CardTitle>{request.title}</CardTitle>
-                          <CardDescription>{request.description}</CardDescription>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="gap-2 grid">
-                        <div className="font-semibold text-sm">{request.userId}</div>
-                      </CardContent>
-                    </Card>
+                    <RequestCardProject key={index} request={request} />
                   ))
                 }
               </div>

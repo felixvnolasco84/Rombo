@@ -16,7 +16,11 @@ export const GET = async () => {
             {
                 where: {
                     userEmail: session.user.email
+                },
+                include: {
+                    project: true,                    
                 }
+
             }
         );
         return new NextResponse(JSON.stringify(requests))

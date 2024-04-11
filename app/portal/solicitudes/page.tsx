@@ -9,6 +9,8 @@ export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
 
+  console.log(requests)
+
   return (
     <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
       {requests.map((request: any, index: any) => (

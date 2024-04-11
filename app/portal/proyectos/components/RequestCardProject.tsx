@@ -18,29 +18,22 @@ export type Request = {
     updatedAt: string
 }
 
-export default function RequestCard({ request }: { request: Request }) {
+export default function RequestCardProject({ request }: { request: Request }) {
 
     console.log(request)
     return (
         <Card className="w-full max-w-md">
-            <CardHeader className="flex flex-row items-start gap-4">
+            <CardHeader className="flex flex-col items-baseline gap-4">
                 <div className="gap-1 grid">
                     <CardTitle>
                         <Link className="hover:underline" href={`/portal/solicitudes/${request.id}`}>
                             {request.title}
                         </Link>
                     </CardTitle>
-                    {/* <CardDescription>{request.description}</CardDescription> */}
                 </div>
-                <div className="ml-auto text-gray-500 text-xs dark:text-gray-400">Categoria: {request.category}</div>
+                <div className="text-gray-500 text-xs dark:text-gray-400">Categoria: {request.category}</div>
             </CardHeader>
             <CardContent className="gap-2 grid">
-                <div className="flex items-center gap-1 font-semibold text-sm">
-                    <span>Proyecto:</span>
-                    <Link href={`/portal/proyectos/${request.project.id}`}>
-                        <span className="hover:underline">{request.project.title}</span>
-                    </Link>
-                </div>
 
                 <div className="flex items-center gap-4 text-xs">
                     <div className="flex items-center gap-1">
