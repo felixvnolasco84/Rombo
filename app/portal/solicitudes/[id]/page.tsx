@@ -119,7 +119,6 @@ export default async function page({ params }: { params: { id: string } }) {
                 </div>
                 <div className="space-y-4">
                     <CommentForm requestId={request.id} />
-                    <Button>Agregar Comentario</Button>
                 </div>
             </div>
         </section>
