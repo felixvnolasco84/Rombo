@@ -20,6 +20,7 @@ import { Textarea } from "../ui/textarea"
 import { LucidePersonStanding } from "lucide-react"
 import { FormLabel } from "../react-hook-form"
 import { uploadFile } from "@/app/utils/uploadImage"
+import TipTapEditor from "../TipTap"
 
 export default function ProjectForm() {
     const FormSchema = z.object({
@@ -36,12 +37,12 @@ export default function ProjectForm() {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
-          const image = await uploadFile(file)
-          setCover(image)
+            const image = await uploadFile(file)
+            setCover(image)
         } else {
-          setCover("")
+            setCover("")
         }
-      }
+    }
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -118,24 +119,24 @@ export default function ProjectForm() {
                             />
                         </div>
                         <div className="items-center gap-1.5 grid w-full">
-                            
                             <FormField
                                 control={form.control}
                                 name="description"
                                 render={({ field }) => (
-                                    <FormItem className="space-y-1">
+                                    <FormItem>
                                         <FormLabel>Descripción del Proyectos</FormLabel>
                                         <FormDescription>Define los puntos más importantes para entender la tarea que estás solicitando. Las descripciones claras y detalladas ayudarán a nuestro equipo de diseño a crear mejores diseños y a entregarlos a tiempo.</FormDescription>
                                         <FormControl>
                                             <Textarea
                                                 placeholder="Enter project description"
-                                                className="bg-transparent py-0 resize-none"
+                                                className="bg-transparent resize-none"
                                                 autoCapitalize="none"
                                                 autoComplete="off"
                                                 autoCorrect="off"
                                                 disabled={isLoading}
                                                 {...field}
                                             ></Textarea>
+                                            {/* <TipTapEditor onStateChange={field.onChange} /> */}
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

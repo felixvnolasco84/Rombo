@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { Textarea } from "../ui/textarea"
 import { FormLabel } from "../react-hook-form"
+import TipTapEditor from "../TipTap"
 
 type RequestFormProps = {
     projectId: string
@@ -39,6 +40,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
             .min(1, { message: "Por favor ingresa una categoría" }),
         description: z.string().min(1, { message: "Por favor ingresa una descripción" }),
         attachments: z.string().optional(),
+        projectId: z.string(),
     })
 
     const { toast } = useToast()
@@ -51,6 +53,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
             category: "",
             description: "",
             attachments: "",
+            projectId: projectId,
         },
     })
 
@@ -79,7 +82,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 toast({
                     variant: "default",
                     title: "¡Listo!",
-                    description: "Tu proyecto se ha creado correctamente",
+                    description: "Tu solicitud ha sido enviada con éxito 🎉",
                 })
                 form.reset()
             }
@@ -92,6 +95,34 @@ export default function RequestForm({projectId}: RequestFormProps) {
             })
         }
     }
+
+
+    const services = [
+        {
+            id: 1,
+            name: "Gráficos de Redes Sociales",
+        },
+        {
+            id: 2,
+            name: "Papelería, Infografías, Folletos",
+        },
+        {
+            id: 3,
+            name: "Fotos de Stock Ilimitadas",
+        },
+        {
+            id: 4,
+            name: "Presentaciones",
+        },
+        {
+            id: 5,
+            name: "Reels y Motion Graphics",
+        },
+        {
+            id: 6,
+            name: "Branding & Logotipos",
+        },
+    ]
 
     return (
         <Form {...form}>
@@ -138,40 +169,14 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                                     <SelectValue placeholder="Escoge un tipo de entregable" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem
-                                                        
-                                                        value="Gráficos de Redes Sociales"
-                                                    >
-                                                        Gráficos de Redes Sociales
-                                                    </SelectItem>
-                                                    <SelectItem
-                                                        
-                                                        value="Papelería, Infografías, Folletos"
-                                                    >
-                                                        Papelería, Infografías, Folletos
-                                                    </SelectItem>
-                                                    <SelectItem
-                                                        
-                                                        value="Fotos de Stock Ilimitadas"
-                                                    >
-                                                        Fotos de Stock Ilimitadas
-                                                    </SelectItem>
-                                                    <SelectItem  value="Papelería, Infografías, Folletos">
-
-                                                        Papelería, Infografías, Folletos
-                                                    </SelectItem>
-                                                    <SelectItem  value="Presentaciones">
-
-                                                        Presentaciones
-                                                    </SelectItem>
-                                                    <SelectItem  value="Reels y Motion Graphics">
-
-                                                        Reels y Motion Graphics
-                                                    </SelectItem>
-                                                    <SelectItem  value="Branding & Logotipos">
-
-                                                        Branding & Logotipos
-                                                    </SelectItem>
+                                                    {services.map((service) => (
+                                                        <SelectItem
+                                                            key={service.id}
+                                                            value={service.name}
+                                                        >
+                                                            {service.name}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -182,7 +187,6 @@ export default function RequestForm({projectId}: RequestFormProps) {
                         </div>
 
                         <div className="items-center gap-1.5 grid w-full">
-
                             <FormField
                                 control={form.control}
                                 name="description"
@@ -194,15 +198,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                             detalladas ayudarán a nuestro equipo de diseño a crear mejores diseños y a entregarlos a tiempo.
                                         </FormDescription>
                                         <FormControl>
-                                            <Textarea
-                                                placeholder="*********"
-                                                className="bg-transparent resize-none"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={isLoading}
-                                                {...field}
-                                            ></Textarea>
+                                            <TipTapEditor onStateChange={field.onChange} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -210,7 +206,9 @@ export default function RequestForm({projectId}: RequestFormProps) {
                             />
                         </div>
 
-                        <div className="items-center gap-1.5 grid w-full">
+
+                                {/* TODO */}
+                        {/* <div className="items-center gap-1.5 grid w-full">
 
                             <FormField
                                 control={form.control}
@@ -240,7 +238,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                     </FormItem>
                                 )}
                             />
-                        </div>
+                        </div> */}
 
                     </div>
                     <Button disabled={isLoading}>
