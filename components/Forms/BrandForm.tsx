@@ -30,7 +30,7 @@ export default function BrandForm() {
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción del proyecto" }),
-    img: z.string().optional(),
+    img: z.string().min(1, { message: "Por favor ingresa una imágen para tu marca" }),
   });
 
   const { toast } = useToast();
@@ -58,38 +58,39 @@ export default function BrandForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      const jsonData = JSON.stringify(data);
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      });
+    // try {
+    //   const jsonData = JSON.stringify(data);
+    //   const response = await fetch("/api/brands", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: jsonData,
+    //   });
 
-      console.log(response);
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
-        });
-      } else {
-        toast({
-          variant: "default",
-          title: "¡Listo!",
-          description: "Tu proyecto se ha creado correctamente",
-        });
-        form.reset();
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Oops!",
-        description: "Al parecer hubo un error, intentelo más tarde",
-      });
-    }
+    //   console.log(response);
+    //   if (!response.ok) {
+    //     toast({
+    //       variant: "destructive",
+    //       title: "¡Oh!",
+    //       description: "Al parecer hubo un error, intentelo más tarde",
+    //     });
+    //   } else {
+    //     toast({
+    //       variant: "default",
+    //       title: "¡Listo!",
+    //       description: "Tu proyecto se ha creado correctamente",
+    //     });
+    //     form.reset();
+    //   }
+    // } catch (error: any) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Oops!",
+    //     description: "Al parecer hubo un error, intentelo más tarde",
+    //   });
+    // }}
+    console.log(data);
   }
 
   return (
@@ -116,7 +117,6 @@ export default function BrandForm() {
                           field.onChange(e);
                         }}
                         disabled={isLoading}
-                        {...field}
                       ></Input>
                     </FormControl>
                     <FormMessage />
@@ -134,7 +134,7 @@ export default function BrandForm() {
                     </FormDescription>
                     <FormControl>
                       <Input
-                        placeholder="Enter project name"
+                        placeholder="Nombre de la Marca"
                         className="resize-none bg-transparent py-0"
                         autoCapitalize="none"
                         autoComplete="off"
@@ -159,16 +159,16 @@ export default function BrandForm() {
                       Agregar una descripción de tu marca o organización
                     </FormDescription>
                     <FormControl>
-                      <Textarea
-                        placeholder="Enter project description"
+                      {/* <Textarea
+                        placeholder="Descripción de la marca"
                         className="resize-none bg-transparent"
                         autoCapitalize="none"
                         autoComplete="off"
                         autoCorrect="off"
                         disabled={isLoading}
                         {...field}
-                      ></Textarea>
-                      {/* <TipTapEditor onStateChange={field.onChange} /> */}
+                      ></Textarea> */}
+                      <TipTapEditor onStateChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
