@@ -49,6 +49,7 @@ model User {
   projects      Project[]
   image         String?
   password      String?
+   brand         Brand[]
   requests      Request[]
   accounts      Account[]
   sessions      Session[]  
@@ -84,6 +85,8 @@ model Comment {
     category String
     attachments String
     projectId String
+    status    String
+    priority  String
     project   Project    @relation(fields: [projectId], references: [id])
     userEmail    String
     user      User    @relation(fields: [userEmail], references: [id])
@@ -92,7 +95,7 @@ model Comment {
     comments Comment[]
   }
 
-  model Category {
+    model Category {
     id    String  @id @default(cuid()) @map("_id")
     slug  String  @unique
     title String
@@ -106,7 +109,22 @@ model Comment {
     description      String
     img       String?
     userEmail  String
+    brandId    String
+    brand      Brand    @relation(fields: [brandId], references: [id])
     user    User    @relation(fields: [userEmail], references: [email])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
+
+  model Brand {
+    id    String  @id @default(cuid()) @map("_id")
+    slug  String  @unique
+    title String
+    description String
+    project Project[]
+    img   String?
+    userEmail String
+    user      User    @relation(fields: [userEmail], references: [email])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
   }
