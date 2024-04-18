@@ -1,12 +1,9 @@
-import ProjectFormWithoutReference from "@/components/Forms/ProjectFormWithoutReference";
-import { GET as getAllBrands } from "@/app/api/brands/route";
+import { GET as getAllProjects } from "@/app/api/projects/route";
+import RequestFormWithoutReference from "@/components/Forms/RequestFormWithoutReference";
 
 export default async function page() {
-
-  const data = await getAllBrands();
-  const brands = await data.json();
-
-  console.log(brands);
+  const data = await getAllProjects();
+  const projects = await data.json();
 
   return (
     <div className="mx-auto max-w-6xl py-6">
@@ -15,7 +12,7 @@ export default async function page() {
       </h1>
       <p className="mb-8 text-center text-xs lg:mb-3 lg:text-left lg:text-base xl:mb-6 xl:text-lg"></p>
       Por favor llena el siguiente formulario para crear un nuevo proyecto.
-      <ProjectFormWithoutReference brands={brands} />
+      <RequestFormWithoutReference projects={projects} />
     </div>
   );
 }

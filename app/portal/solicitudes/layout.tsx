@@ -8,7 +8,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col">
 
             <div className="flex items-center px-4">
-                <Breadcrumb className="md:flex hidden">
+                <Breadcrumb className="hidden md:flex">
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
@@ -23,10 +23,10 @@ export default function layout({ children }: { children: React.ReactNode }) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div className="flex items-center gap-2 ml-auto">
+                <div className="ml-auto flex items-center gap-2">
                     <Button size="sm">
-                        <Link className="flex items-center gap-1" href="/portal/proyectos/request/new">
-                            <PlusCircle className="w-4 aspect-square" />
+                        <Link className="flex items-center gap-1" href="/portal/solicitudes/new">
+                            <PlusCircle className="aspect-square w-4" />
                             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                 Agregar Solicitud
                             </span>
