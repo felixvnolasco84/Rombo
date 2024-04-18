@@ -12,6 +12,9 @@ export const GET = async () => {
         where: {
             userEmail: session.user.email,
         },
+        include: {
+            brand: true
+        }
     });
     return NextResponse.json(projects);
 }

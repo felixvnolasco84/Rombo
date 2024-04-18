@@ -41,6 +41,8 @@ export default function RequestForm({projectId}: RequestFormProps) {
         description: z.string().min(1, { message: "Por favor ingresa una descripción" }),
         attachments: z.string().optional(),
         projectId: z.string(),
+        status: z.string(),
+        priority: z.string()
     })
 
     const { toast } = useToast()
@@ -54,6 +56,8 @@ export default function RequestForm({projectId}: RequestFormProps) {
             description: "",
             attachments: "",
             projectId: projectId,
+            status: "backlog",
+            priority: ""
         },
     })
 
@@ -68,8 +72,6 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 },
                 body: jsonData,
             })
-
-            console.log(response)
 
             if (!response.ok) {
                 toast({
@@ -125,90 +127,124 @@ export default function RequestForm({projectId}: RequestFormProps) {
     ]
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="gap-2 grid">
-                    <div className="gap-4 grid">
-                        <div className="items-center gap-1.5 grid w-full">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-2">
+            <div className="grid gap-4">
+              <div className="grid w-full items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>Titulo de la tarea</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="jhon@doe.com"
+                          className="resize-none bg-transparent py-0"
+                          autoCapitalize="none"
+                          autoComplete="email"
+                          autoCorrect="off"
+                          disabled={isLoading}
+                          {...field}
+                        ></Input>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>Categoria</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Escoge un tipo de entregable" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {services.map((service) => (
+                              <SelectItem key={service.id} value={service.name}>
+                                {service.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-                            <FormField
-                                control={form.control}
-                                name="title"
-                                render={({ field }) => (
-                                    <FormItem className="space-y-1">
-                                        <FormLabel>Titulo de la tarea</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="jhon@doe.com"
-                                                className="bg-transparent py-0 resize-none"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={isLoading}
-                                                {...field}
-                                            ></Input>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="items-center gap-1.5 grid w-full">
-                            <FormField
-                                control={form.control}
-                                name="category"
-                                render={({ field }) => (
-                                    <FormItem className="space-y-1">
-                                        <FormLabel>Categoria</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Escoge un tipo de entregable" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {services.map((service) => (
-                                                        <SelectItem
-                                                            key={service.id}
-                                                            value={service.name}
-                                                        >
-                                                            {service.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+              <div className="grid w-full items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>Prioridad</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Prioridad del Entregable" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem key={"low"} value={"low"}>
+                              Bajo
+                            </SelectItem>
+                            <SelectItem key={"medium"} value={"medium"}>
+                              Medio
+                            </SelectItem>
+                            <SelectItem key={"high"} value={"high"}>
+                              Alto
+                            </SelectItem>
+                            <SelectItem key={"critical"} value={"critical"}>
+                              Urgente
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-                        <div className="items-center gap-1.5 grid w-full">
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem className="space-y-1">
-                                        <FormLabel>Descripción</FormLabel>
-                                        <FormDescription>
-                                            Define los puntos más importantes para entender la tarea que estás solicitando. Las descripciones claras y
-                                            detalladas ayudarán a nuestro equipo de diseño a crear mejores diseños y a entregarlos a tiempo.
-                                        </FormDescription>
-                                        <FormControl>
-                                            <TipTapEditor onStateChange={field.onChange} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+              <div className="grid w-full items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>Descripción</FormLabel>
+                      <FormDescription>
+                        Define los puntos más importantes para entender la tarea
+                        que estás solicitando. Las descripciones claras y
+                        detalladas ayudarán a nuestro equipo de diseño a crear
+                        mejores diseños y a entregarlos a tiempo.
+                      </FormDescription>
+                      <FormControl>
+                        <TipTapEditor onStateChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-
-                                {/* TODO */}
-                        {/* <div className="items-center gap-1.5 grid w-full">
+              {/* TODO */}
+              {/* <div className="grid w-full items-center gap-1.5">
 
                             <FormField
                                 control={form.control}
@@ -226,7 +262,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                         <FormControl>
                                             <Textarea
                                                 placeholder="*********"
-                                                className="bg-transparent resize-none"
+                                                className="resize-none bg-transparent"
                                                 autoCapitalize="none"
                                                 autoComplete="email"
                                                 autoCorrect="off"
@@ -239,16 +275,15 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                 )}
                             />
                         </div> */}
-
-                    </div>
-                    <Button disabled={isLoading}>
-                        {isLoading && (
-                            <LucidePersonStanding className="mr-2 w-4 h-4 animate-spin" />
-                        )}
-                        Enviar Solicitud
-                    </Button>
-                </div>
-            </form>
-        </Form>
-    )
+            </div>
+            <Button disabled={isLoading}>
+              {isLoading && (
+                <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Enviar Solicitud
+            </Button>
+          </div>
+        </form>
+      </Form>
+    );
 }

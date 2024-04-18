@@ -1,4 +1,5 @@
 
+import { Badge } from "@/components/ui/badge";
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { CalendarDaysIcon, CalendarIcon, RefreshCwIcon } from "lucide-react";
 import Image from "next/image";
@@ -19,6 +20,11 @@ export type Request = {
     userId: string;
 }
 
+export type Brand = {
+    id: string
+    title: string
+}
+
 export type Project = {
     id: string
     title: string;
@@ -27,25 +33,29 @@ export type Project = {
     updatedAt: string;
     description: string;
     image: string;
+    brand: Brand
     Request: Request[]
 }
 
 
 export default function ProjectCard({ project }: { project: Project }) {
     return (
-        <Card>
-            <CardHeader className="pb-0">
-                <CardTitle>
-                    <Link className="hover:underline" href={`/portal/proyectos/${project.id}`}>
-                        {project.title}
-                    </Link>
-                </CardTitle>
-                <CardDescription>Created by {project.userEmail}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {/* <Image
+      <Card>
+        <CardHeader className="pb-0">
+          <CardTitle>
+            <Link
+              className="hover:underline"
+              href={`/portal/proyectos/${project.id}`}
+            >
+              {project.title}
+            </Link>
+          </CardTitle>
+          <CardDescription>Created by {project.userEmail}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* <Image
                     alt="Project 1"
-                    className="w-full h-60 object-cover"
+                    className="h-60 w-full object-cover"
                     height={400}
                     src="/placeholder.svg"
                     style={{
@@ -54,28 +64,38 @@ export default function ProjectCard({ project }: { project: Project }) {
                     }}
                     width={600}
                 /> */}
-                <p className="mt-4">
-                    {project.description}
-                </p>
-                <div className="flex items-center gap-4 text-xs">
-                    <div className="flex items-center gap-1">
-                        <CalendarIcon className="w-4 h-4" />
-                        <span className="text-gray-500 dark:text-gray-400">Creado: {new Date(project.createdAt).toLocaleDateString('es-MX', {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric"
-                        })}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <RefreshCwIcon className="w-4 h-4" />
-                        <span className="text-gray-500 dark:text-gray-400">Actualizado: {new Date(project.updatedAt).toLocaleDateString('es-MX', {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric"
-                        })}</span>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    )
+          <p className="mt-4">{project.description}</p>
+          {/* <Link href={`/portal/marcas/${project.id}`}>
+            <Badge className="my-4" variant={"outline"}>
+              {project.brand.title}
+            </Badge>
+          </Link> */}
+
+          <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1">
+              <CalendarIcon className="h-4 w-4" />
+              <span className="text-gray-500 dark:text-gray-400">
+                Creado:{" "}
+                {new Date(project.createdAt).toLocaleDateString("es-MX", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <RefreshCwIcon className="h-4 w-4" />
+              <span className="text-gray-500 dark:text-gray-400">
+                Actualizado:{" "}
+                {new Date(project.updatedAt).toLocaleDateString("es-MX", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
 }

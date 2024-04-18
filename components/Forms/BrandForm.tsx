@@ -30,7 +30,7 @@ export default function BrandForm() {
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción del proyecto" }),
-    img: z.string().min(1, { message: "Por favor ingresa una imágen para tu marca" }),
+    img: z.string().optional(),
   });
 
   const { toast } = useToast();
@@ -58,40 +58,40 @@ export default function BrandForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // try {
-    //   const jsonData = JSON.stringify(data);
-    //   const response = await fetch("/api/brands", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: jsonData,
-    //   });
+    try {
+      const jsonData = JSON.stringify(data);
+      const response = await fetch("/api/brands ", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonData,
+      });
 
-    //   console.log(response);
-    //   if (!response.ok) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "¡Oh!",
-    //       description: "Al parecer hubo un error, intentelo más tarde",
-    //     });
-    //   } else {
-    //     toast({
-    //       variant: "default",
-    //       title: "¡Listo!",
-    //       description: "Tu proyecto se ha creado correctamente",
-    //     });
-    //     form.reset();
-    //   }
-    // } catch (error: any) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Oops!",
-    //     description: "Al parecer hubo un error, intentelo más tarde",
-    //   });
-    // }}
-    console.log(data);
-  }
+      console.log(response);
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          title: "¡Oh!",
+          description: "Al parecer hubo un error, intentelo más tarde",
+        });
+      } else {
+        toast({
+          variant: "default",
+          title: "¡Listo!",
+          description: "Tu proyecto se ha creado correctamente",
+        });
+        form.reset();
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Oops!",
+        description: "Al parecer hubo un error, intentelo más tarde",
+      });
+    }}
+    // console.log(data);
+  
 
   return (
     <Form {...form}>
@@ -111,12 +111,12 @@ export default function BrandForm() {
                     <FormControl>
                       <Input
                         type="file"
-                        accept="image/*"
                         onChange={(e) => {
                           handleFileChange(e);
                           field.onChange(e);
                         }}
                         disabled={isLoading}
+                        // {...field}
                       ></Input>
                     </FormControl>
                     <FormMessage />

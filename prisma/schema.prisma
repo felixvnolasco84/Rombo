@@ -118,7 +118,6 @@ model Comment {
 
   model Brand {
     id    String  @id @default(cuid()) @map("_id")
-    slug  String  @unique
     title String
     description String
     project Project[]

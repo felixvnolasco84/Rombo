@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import Link from "next/link";
-import ProjectCard from "../proyectos/components/ProjectCard";
+import Link from "next/link";1
 import { GET as getAllBrands } from "@/app/api/brands/route";
+import BrandCard from "../proyectos/components/BrandCard";
 
 export default async function page() {
   const data = await getAllBrands();
@@ -25,7 +25,7 @@ export default async function page() {
       </div>
       <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
         {brands.map((project: any, index: any) => (
-          <ProjectCard key={index} project={project} />
+          <BrandCard key={index} project={project} />
         ))}
         {brands.length === 0 && (
           <div className="flex h-96 items-center justify-center">

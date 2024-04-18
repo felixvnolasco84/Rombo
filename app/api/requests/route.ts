@@ -41,15 +41,16 @@ export const POST = async (req: any) => {
     }
     try {
         const body = await req.json();
-        console.log(body)
         const request = await prisma.request.create({
             data: {
                 ...body,
                 userEmail: session.user.email
             }
         });
+        console.log(request);
         return new NextResponse(JSON.stringify(request))
     } catch (error) {
+        console.log(error);
         return new NextResponse(
             JSON.stringify({ message: "Something went wrong!" })
         )
