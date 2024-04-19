@@ -21,6 +21,7 @@ import { LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
 import { uploadFile } from "@/app/utils/uploadImage";
 import TipTapEditor from "../TipTap";
+import UploadDocumentsFormField from "./UploadDocumentsFormField";
 
 export default function BrandForm() {
   const FormSchema = z.object({
@@ -175,6 +176,33 @@ export default function BrandForm() {
                 )}
               />
             </div>
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <FormField  
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subir Documentos</FormLabel>
+                  <FormDescription>
+                    Drag and drop files here or click to select files from yourdevice.
+                  </FormDescription>
+                  <FormControl>
+                    {/* <Textarea
+                      placeholder="Descripción de la marca"
+                      className="resize-none bg-transparent"
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    ></Textarea> */}
+                    <UploadDocumentsFormField />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <Button disabled={isLoading}>
             {isLoading && (
