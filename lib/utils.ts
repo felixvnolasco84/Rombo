@@ -31,6 +31,7 @@ import Bold02 from "@/public/images/Bold02.jpg";
 import Titan from "@/public/images/Titan_Post_Septiembre-01.png";
 import Titan02 from "@/public/images/Titan_Post_Septiembre-07.png";
 import { StaticImageData } from "next/image";
+import { toast } from "@/components/ui/use-toast";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -104,3 +105,27 @@ export const carrouselItems: CarrouselCardProps[] = [
     link: "",
   },
 ];
+
+export const handleDeleteSinglePost = async (id: string, router: any) => {
+  try {
+    const repsonse = await fetch(`/api/posts/${id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    });
+    if (repsonse.status == 200) {
+      toast({
+        variant: "default",
+        title: "¡Entendido!",
+        description: "Se ha eliminado correctamente tu publicación 🎉",
+      });
+      router.push("/");
+    } else
+      toast({
+        variant: "destructive",
+        title: "¡Oh!",
+        description: "Al parecer hubo un error, intentelo más tarde 🎉",
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};

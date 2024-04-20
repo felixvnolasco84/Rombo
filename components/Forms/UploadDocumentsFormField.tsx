@@ -5,8 +5,12 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useState } from "react";
 
+import pdfIcon from "@/public/svg/pdf-icon.svg";
+import xlsIcon from "@/public/svg/xls-icon.svg";
+import docxIcon from "@/public/svg/docx-icon.svg";
+
 export default function UploadDocumentsFormField() {
-  //Array of files
+  
   const [files, setFiles] = useState<File[]>([]);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,18 +21,20 @@ export default function UploadDocumentsFormField() {
     }
   };
 
-
   function getFileIcon(file: File) {
     const extension = file.name.split(".").pop()?.toLowerCase();
     switch (extension) {
       case "pdf":
-        return "/public/svg/pdf-icon.svg";
+        return pdfIcon;
       case "doc":
       case "docx":
-        return "/public/word-icon.svg";
+        return docxIcon;
       case "ppt":
       case "pptx":
         return "/public/ppt-icon.svg";
+      case "xls":
+      case "xlsx":
+        return xlsIcon;
       default:
         return "/placeholder.svg";
     }
@@ -68,8 +74,7 @@ export default function UploadDocumentsFormField() {
                     src={getFileIcon(file)}
                     width="50"
                   />
-                  {/* Remove the extension in the name file */}
-                    <p>{file.name.split(".")[0]}</p>
+                  <p>{file.name.split(".")[0]}</p>
                 </div>
               ))}
             </div>
