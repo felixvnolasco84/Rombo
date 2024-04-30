@@ -7,14 +7,12 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-import RequestCard, { Request } from "../proyectos/components/RequestCard";
+import RequestCard from "../proyectos/components/RequestCard";
 import { GET as getAllRequests } from "@/app/api/requests/route";
 
 export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
-
-  console.log(requests);
 
   if (requests.message === "Not Authenticated!") {
     return (
@@ -25,6 +23,7 @@ export default async function page() {
           </CardHeader>
           <CardContent>
             <CardDescription>
+              {/* add callback */}
               <Link href="/login">
                 <p className="text-blue-500">Login</p>
               </Link>
@@ -44,7 +43,7 @@ export default async function page() {
           </CardHeader>
           <CardContent>
             <CardDescription>
-              <Link href="/portal/solicitudes/create">
+              <Link href="/portal/solicitudes/new">
                 <p className="text-blue-500">Create a Request</p>
               </Link>
             </CardDescription>

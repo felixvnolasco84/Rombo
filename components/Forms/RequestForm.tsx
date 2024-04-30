@@ -27,6 +27,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Textarea } from "../ui/textarea"
 import { FormLabel } from "../react-hook-form"
 import TipTapEditor from "../TipTap"
+import { useRouter } from "next/navigation"
 
 type RequestFormProps = {
     projectId: string
@@ -47,6 +48,8 @@ export default function RequestForm({projectId}: RequestFormProps) {
 
     const { toast } = useToast()
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const router = useRouter()
+
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -73,6 +76,17 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 body: jsonData,
             })
 
+
+
+            const responseJson = await response.json()
+
+            console.log(responseJson)
+
+            router.push(`/portal/solicitudes/${responseJson.request.id}`)
+            console.log(response)
+            console.log(response.headers)
+            console.log(response.body)
+
             if (!response.ok) {
                 toast({
                     variant: "destructive",
@@ -81,12 +95,12 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 })
             }
             else {
-                toast({
-                    variant: "default",
-                    title: "¡Listo!",
-                    description: "Tu solicitud ha sido enviada con éxito 🎉",
-                })
-                form.reset()
+                // toast({
+                //     variant: "default",
+                //     title: "¡Listo!",
+                //     description: "Tu solicitud ha sido enviada con éxito 🎉",
+                // })
+                // form.reset()
             }
 
         } catch (error: any) {
@@ -129,9 +143,9 @@ export default function RequestForm({projectId}: RequestFormProps) {
     return (
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
-            <div className="grid gap-4">
-              <div className="grid w-full items-center gap-1.5">
+          <div className="gap-2 grid">
+            <div className="gap-4 grid">
+              <div className="items-center gap-1.5 grid w-full">
                 <FormField
                   control={form.control}
                   name="title"
@@ -141,7 +155,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                       <FormControl>
                         <Input
                           placeholder="jhon@doe.com"
-                          className="resize-none bg-transparent py-0"
+                          className="bg-transparent py-0 resize-none"
                           autoCapitalize="none"
                           autoComplete="email"
                           autoCorrect="off"
@@ -154,7 +168,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                   )}
                 />
               </div>
-              <div className="grid w-full items-center gap-1.5">
+              <div className="items-center gap-1.5 grid w-full">
                 <FormField
                   control={form.control}
                   name="category"
@@ -184,7 +198,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 />
               </div>
 
-              <div className="grid w-full items-center gap-1.5">
+              <div className="items-center gap-1.5 grid w-full">
                 <FormField
                   control={form.control}
                   name="priority"
@@ -221,7 +235,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                 />
               </div>
 
-              <div className="grid w-full items-center gap-1.5">
+              <div className="items-center gap-1.5 grid w-full">
                 <FormField
                   control={form.control}
                   name="description"
@@ -244,7 +258,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
               </div>
 
               {/* TODO */}
-              {/* <div className="grid w-full items-center gap-1.5">
+              {/* <div className="items-center gap-1.5 grid w-full">
 
                             <FormField
                                 control={form.control}
@@ -262,7 +276,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
                                         <FormControl>
                                             <Textarea
                                                 placeholder="*********"
-                                                className="resize-none bg-transparent"
+                                                className="bg-transparent resize-none"
                                                 autoCapitalize="none"
                                                 autoComplete="email"
                                                 autoCorrect="off"
@@ -278,7 +292,7 @@ export default function RequestForm({projectId}: RequestFormProps) {
             </div>
             <Button disabled={isLoading}>
               {isLoading && (
-                <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+                <LucidePersonStanding className="mr-2 w-4 h-4 animate-spin" />
               )}
               Enviar Solicitud
             </Button>

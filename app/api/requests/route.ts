@@ -47,8 +47,7 @@ export const POST = async (req: any) => {
                 userEmail: session.user.email
             }
         });
-        console.log(request);
-        return new NextResponse(JSON.stringify(request))
+        return NextResponse.json({request})
     } catch (error) {
         console.log(error);
         return new NextResponse(
