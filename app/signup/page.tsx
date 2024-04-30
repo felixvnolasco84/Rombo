@@ -1,29 +1,28 @@
-import { Metadata } from "next"
-import Image from "next/image"
-import Link from "next/link"
-import { redirect } from "next/navigation"
-// import BackgroundImage from "@/public/images/Imagen CICATA Unidad Morelos 4.jpeg"
-import { authOptions } from "@/utils/AuthOptions"
-import { getServerSession } from "next-auth/next"
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/utils/AuthOptions";
+import { getServerSession } from "next-auth/next";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import { SignupFormSection } from "@/components/Forms/SignupFormSection";
+import Video from "next-video";
+import Rombo from "@/videos/Rombo.mp4";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { LoginFormSection } from "@/components/Forms/LoginFormSection"
-import { SignupFormSection } from "@/components/Forms/SignupFormSection"
-
-
+Video;
 export const metadata: Metadata = {
   title:
     "lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
   description:
     "lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
-}
+};
 
 export default async function page() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect("/")
+    redirect("/");
   }
 
   return (
@@ -43,21 +42,31 @@ export default async function page() {
             </Link>
           </div>
 
-          <div className="relative lg:flex flex-col hidden bg-muted p-10 dark:border-r h-full text-white">
-            {/* <Image
-              className="absolute inset-0 bg-cover w-full h-full object-cover"
-              src={BackgroundImage}
-              alt=""
-            /> */}
-            <div className="relative z-20 flex items-center bg-black/30 p-1 rounded-md w-fit font-medium text-lg">
-              Rombo
-            </div>
-            <div className="relative z-20 mt-auto">
-              <blockquote className="space-y-2 bg-black/30 p-1 rounded-md w-fit">
-                <p className="text-lg">
-                  lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
-                </p>
-              </blockquote>
+          <div className="relative lg:flex flex-col hidden bg-muted dark:border-r rounded-md h-full max-h-[800px] text-white">
+            <Video
+              controls={false}
+              autoPlay={true}
+              minResolution="1080p"
+              loop={true}
+              className="top-0 left-0 absolute w-full h-full object-center object-cover"
+              src={Rombo}
+            />
+
+            <div className="bottom-0 left-0 absolute flex flex-col gap-4 p-10">
+              <div className="relative z-20 flex items-center bg-black/30 p-1 rounded-md w-fit font-medium text-lg">
+                Rombo
+              </div>
+              <div className="relative z-20 mt-auto">
+                <blockquote className="space-y-2 bg-black/30 p-1 rounded-md w-fit">
+                  <p className="text-lg">
+                    lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Integer nec odio. Praesent libero. Sed cursus ante dapibus
+                    diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed
+                    augue semper porta.
+                  </p>
+                </blockquote>
+              </div>
             </div>
           </div>
           <div className="lg:p-8">
@@ -93,5 +102,5 @@ export default async function page() {
         </div>
       </div>
     </section>
-  )
+  );
 }

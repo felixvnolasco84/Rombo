@@ -14,9 +14,9 @@ export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
 
-  return (
-    <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
-      {requests.length === 0 ? (
+  if (requests === null || requests.length === 0) {
+    return (
+      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
         <Card>
           <CardHeader>
             <CardTitle>No Requests</CardTitle>
@@ -29,14 +29,15 @@ export default async function page() {
             </CardDescription>
           </CardContent>
         </Card>
-      ) : (
-        <>
-          {requests &&
-            requests.map((request: any, index: any) => (
-              <RequestCard key={index} request={request} />
-            ))}
-        </>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
+      {requests.map((request: any, index: any) => (
+        <RequestCard key={index} request={request} />
+      ))}
     </div>
   );
 }

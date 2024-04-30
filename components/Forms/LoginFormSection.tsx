@@ -1,28 +1,29 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useSearchParams } from "next/navigation"
-import { signIn } from "next-auth/react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { PersonStandingIcon } from "lucide-react"
-import LoginFormComponent from "./LoginFormComponent"
+import SignupFormComponent from "./SignupFormComponent";
+import GoogleIcon from "@/public/images/logos/google.png";
+import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import LoginFormComponent from "./LoginFormComponent";
+import { useState } from "react";
+import Image from "next/image";
 
-
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginFormSection({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const searchParams = useSearchParams()
-  const callbackUrl: any = searchParams.get("callbackUrl")
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const callbackUrl: any = searchParams.get("callbackUrl");
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
+    event.preventDefault();
+    setIsLoading(true);
 
     setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+      setIsLoading(false);
+    }, 3000);
   }
 
   return (
@@ -46,12 +47,11 @@ export function LoginFormSection({ className, ...props }: UserAuthFormProps) {
         disabled={isLoading}
       >
         {isLoading ? (
-          <PersonStandingIcon className="mr-1 w-4 h-4 animate-spin" />
+          <Image src={GoogleIcon} alt="Google" className="mr-1 w-4 h-4" />
         ) : (
-          <PersonStandingIcon className="mr-1 w-4 h-4 animate-spin" />
-        )}{" "}
-        Google
+          <Image src={GoogleIcon} alt="Google" className="mr-1 w-4 h-4" />
+        )}
       </Button>
     </div>
-  )
+  );
 }

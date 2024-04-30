@@ -90,12 +90,30 @@
 }
 
 @keyframes atom-anim {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(300px, 200px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(300px, 200px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 @keyframes molecule-anim {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+mux-player {
+  --media-object-fit: cover;
+  --media-object-position: center;
 }
