@@ -31,9 +31,10 @@ export default async function page() {
         </Card>
       ) : (
         <>
-          {requests.map((request: any, index: any) => (
-            <RequestCard key={index} request={request} />
-          ))}
+          {requests &&
+            requests.map((request: any, index: any) => (
+              <RequestCard key={index} request={request} />
+            ))}
         </>
       )}
     </div>
