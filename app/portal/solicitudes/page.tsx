@@ -14,6 +14,27 @@ export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
 
+  console.log(requests);
+
+  if (requests.message === "Not Authenticated!") {
+    return (
+      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Not Authenticated!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>
+              <Link href="/login">
+                <p className="text-blue-500">Login</p>
+              </Link>
+            </CardDescription>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (requests === null || requests.length === 0) {
     return (
       <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
