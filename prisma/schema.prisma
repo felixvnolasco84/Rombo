@@ -48,6 +48,7 @@ model User {
   emailVerified DateTime?
   projects      Project[]
   image         String?
+  stripe_customer_id String?
   password      String?
    brand         Brand[]
   requests      Request[]

@@ -1,3 +1,4 @@
+import { createCustomerIfNull } from "@/lib/stripeUtils";
 import { NextResponse } from "next/server";
 import { Stripe } from "stripe";
 
@@ -14,9 +15,12 @@ export async function POST(request: Request) {
       },
     ],
     mode: "subscription",
+    customer: data.customer_id,
     success_url: process.env.SUCCESS_URL || "https://www.rombo.design/success",
     cancel_url: process.env.CANCEL_URL || "https://www.rombo.design/",
   });
 
-  return NextResponse.json({ url: session.url });
+  await createCustomerIfNull();
+
+  return NextResponse.json({ url: session.url, session: session });
 }

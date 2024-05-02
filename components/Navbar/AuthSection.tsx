@@ -12,9 +12,9 @@ export default function AuthSection() {
     const { data: session, status } = useSession()
     if (status === "loading") {
         return <>
-            <div className="inline-flex relative justify-center items-center px-4 py-2 w-8 h-8 transition-colors">
-                <span className="relative flex w-9 h-9 shrink-0">
-                    <SVGSkeleton className="rounded-full w-full h-full" />
+            <div className="relative inline-flex h-8 w-8 items-center justify-center px-4 py-2 transition-colors">
+                <span className="relative flex h-9 w-9 shrink-0">
+                    <SVGSkeleton className="h-full w-full rounded-full" />
                 </span>
             </div>
         </>;
