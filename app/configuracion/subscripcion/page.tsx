@@ -1,7 +1,6 @@
 import { GET as getAllSubscriptions } from "@/app/api/subscriptions/[email]/route";
 import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
-import { GET as getAllStripeCustomer } from "@/app/api/stripe_customer/route";
 
 import { getAuthSession } from "@/utils/AuthOptions";
 import { Input } from "@/components/ui/input";
@@ -80,24 +79,11 @@ export default async function page() {
     };
   });
 
-  const customersData = await getAllStripeCustomer({
-    params: { email: session.user.email },
-  });
-
-  const customersJson = await customersData.json();
-
-  const customers = customersJson.data.map((customer: any) => {
-    return {
-      id: customer.id,
-      email: customer.email,
-    };
-  });
-
   //TODO: VALIDATE IF THE CUSTOMER HAS A SUBSCRIPTION
 
   const hasSub: any = await hasSubscription();
 
-  console.log(hasSub);
+  console.log(subscriptions);
 
   return (
     <div className="min-w-4xl">
