@@ -1,8 +1,8 @@
-import { GET as getAllProjects } from "@/app/api/projects/route";
+import { GET as getAllRequests } from "@/app/api/requests/route";
 import RequestFormWithoutReference from "@/components/Forms/RequestFormWithoutReference";
 
 export default async function page() {
-  const data = await getAllProjects();
+  const data = await getAllRequests();
   const projects = await data.json();
 
   return (
