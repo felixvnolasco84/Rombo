@@ -46,11 +46,10 @@ model User {
   updatedAt DateTime?  @updatedAt
   email         String    @unique
   emailVerified DateTime?
-  projects      Project[]
+  brands      Brand[]
   image         String?
   stripe_customer_id String?
   password      String?
-   brand         Brand[]
   requests      Request[]
   accounts      Account[]
   sessions      Session[]  
@@ -85,10 +84,10 @@ model Comment {
     description String
     category String
     attachments String
-    projectId String
+    brandId String
     status    String
     priority  String
-    project   Project    @relation(fields: [projectId], references: [id])
+    brand   Brand    @relation(fields: [brandId], references: [id])
     userEmail    String
     user      User    @relation(fields: [userEmail], references: [id])
     createdAt DateTime @default(now())
@@ -103,28 +102,18 @@ model Comment {
     img   String?
   }
 
-  model Project {
-    id        String   @id @default(cuid()) @map("_id")    
-    Request Request[] 
-    title     String
-    description      String
-    img       String?
-    userEmail  String
-    brandId    String
-    brand      Brand    @relation(fields: [brandId], references: [id])
-    user    User    @relation(fields: [userEmail], references: [email])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-  }
 
   model Brand {
     id    String  @id @default(cuid()) @map("_id")
+    img   String?
     title String
     description String
-    project Project[]
-    img   String?
+    industry String
+    website String?
+    documents  String[]
     userEmail String
     user      User    @relation(fields: [userEmail], references: [email])
+    requests Request[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
   }

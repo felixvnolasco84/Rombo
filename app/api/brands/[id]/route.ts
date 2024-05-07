@@ -8,7 +8,7 @@ export const GET = async (id: any) => {
       where: { id: id },
       include: {
         user: true,
-        project: true,
+        requests: true,
       },
     });
     return new NextResponse(JSON.stringify(post));

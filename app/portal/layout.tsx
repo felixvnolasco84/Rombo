@@ -20,11 +20,6 @@ export default function layout({ children }: { children: React.ReactNode }) {
             icon: <LucidePanelsTopLeft className="h-4 w-4" />,
         },
         {
-            title: "Proyectos",
-            href: "/portal/proyectos",
-            icon: <MailCheckIcon className="h-4 w-4" />,
-        },
-        {
             title: "Solicitudes",
             href: "/portal/solicitudes",
             icon: <Users className="h-4 w-4" />,
@@ -65,7 +60,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                     </Sheet>
                     {/* <BreadcrumbComponent /> */}
                 </header>
-                <main className="flex flex-1 flex-col gap-4 bg-muted/40 p-4 lg:gap-6">
+                <main className="flex flex-1 flex-col gap-4 bg-muted/20 p-4 lg:gap-6">
                     {children}
                 </main>
             </div>

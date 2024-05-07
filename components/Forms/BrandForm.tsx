@@ -1,5 +1,13 @@
 "use client";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,38 +24,67 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Textarea } from "../ui/textarea";
 import { LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
 import { uploadFile } from "@/app/utils/uploadImage";
 import TipTapEditor from "../TipTap";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
+import { useRouter } from "next/navigation";
+
+const industries = [
+  "Agricultura",
+  "Arquitectura",
+  "Arte y Entretenimiento",
+  "Automotriz",
+  "Bienes Raíces",
+  "Comercio",
+  "Comunicación",
+  "Construcción",
+  "Consultoría",
+  "Diseño",
+  "Educación",
+  "Energía",
+  "Finanzas",
+  "Gastronomía",
+  "Gobierno",
+  "Industria",
+  "Ingeniería",
+  "Inmobiliaria",
+  "Legal",
+  "Manufactura",
+  "Medicina",
+  "Publicidad",
+  "Recursos Humanos",
+  "Salud",
+  "Seguros",
+  "Servicios",
+  "Tecnología",
+  "Telecomunicaciones",
+  "Transporte",
+  "Turismo",
+  "Ventas",
+];
 
 export default function BrandForm() {
+  const router = useRouter();
+
   const FormSchema = z.object({
     title: z
       .string()
       .min(1, { message: "Por favor ingresa el nombre del proyecto" }),
+    industry: z.string().min(1, { message: "Por favor ingresa la industria" }),
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción del proyecto" }),
     img: z.string().optional(),
+    website: z.string().optional(),
+    documents: z.array(z.string()).optional(),
   });
 
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [cover, setCover] = useState<string>("");
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const image = await uploadFile(file);
-      setCover(image);
-    } else {
-      setCover("");
-    }
-  };
+  // const [cover, setCover] = useState<string>("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -55,13 +92,18 @@ export default function BrandForm() {
       title: "",
       description: "",
       img: "",
+      industry: "",
+      website: "",
+      documents: [],
     },
   });
 
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    // console.log(data);
     try {
       const jsonData = JSON.stringify(data);
-      const response = await fetch("/api/brands ", {
+      const draftResponse = await fetch("/api/brands ", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,20 +111,22 @@ export default function BrandForm() {
         body: jsonData,
       });
 
-      console.log(response);
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
-        });
-      } else {
+      const response = await draftResponse.json();
+
+      if (response.id) {
         toast({
           variant: "default",
           title: "¡Listo!",
           description: "Tu proyecto se ha creado correctamente",
         });
         form.reset();
+        router.push(`/portal/marcas/${response.id}`);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "¡Oh!",
+          description: "Al parecer hubo un error, intentelo más tarde",
+        });
       }
     } catch (error: any) {
       toast({
@@ -90,16 +134,15 @@ export default function BrandForm() {
         title: "Oops!",
         description: "Al parecer hubo un error, intentelo más tarde",
       });
-    }}
-    // console.log(data);
+    }
+  }
   
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
-          <div className="grid gap-4">
-            <div className="grid w-full items-center gap-1.5">
+        <div className="grid gap-4">
+          {/* <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
                 name="img"
@@ -124,43 +167,79 @@ export default function BrandForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="space-y-1">
-                    <FormLabel>Nombre de la Marca</FormLabel>
-                    <FormDescription>
-                      Agregar el nombre de tu marca o organización
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        placeholder="Nombre de la Marca"
-                        className="resize-none bg-transparent py-0"
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      ></Input>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Descripción de la Marca</FormLabel>
-                    <FormDescription>
-                      Agregar una descripción de tu marca o organización
-                    </FormDescription>
-                    <FormControl>
-                      {/* <Textarea
+
+              </div> */}
+
+          <div className="grid w-full items-center gap-1.5">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre de la Marca</FormLabel>
+                  <FormDescription>
+                    Agregar el nombre de tu marca o organización
+                  </FormDescription>
+                  <FormControl>
+                    <Input
+                      placeholder="Nombre de la Marca"
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    ></Input>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid w-full items-center gap-1.5">
+            <FormField
+              control={form.control}
+              name="industry"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Industria</FormLabel>
+                  <FormDescription>
+                    Selecciona la industria a la que pertenece tu marca
+                  </FormDescription>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una Industria" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {industries.map((industry) => (
+                          <SelectItem key={industry} value={industry}>
+                            {industry}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción de la Marca</FormLabel>
+                  <FormDescription>
+                    Agregar una descripción de tu marca o organización
+                  </FormDescription>
+                  <FormControl>
+                    {/* <Textarea
                         placeholder="Descripción de la marca"
                         className="resize-none bg-transparent"
                         autoCapitalize="none"
@@ -169,23 +248,48 @@ export default function BrandForm() {
                         disabled={isLoading}
                         {...field}
                       ></Textarea> */}
-                      <TipTapEditor onStateChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    <TipTapEditor onStateChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
+
           <div className="grid w-full items-center gap-1.5">
-            <FormField  
+            <FormField
               control={form.control}
-              name="description"
+              name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subir Documentos</FormLabel>
+                  <FormLabel> Sitio web</FormLabel>
                   <FormDescription>
-                    Drag and drop files here or click to select files from yourdevice.
+                    Agregar la URL de tu sitio web o red social
+                  </FormDescription>
+                  <FormControl>
+                    <Input
+                      placeholder="https://www.example.com"
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    ></Input>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <FormField
+              control={form.control}
+              name="documents"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Archivos Adjuntos</FormLabel>
+                  <FormDescription>
+                    Agregar documentos relacionados a tu marca o organización
                   </FormDescription>
                   <FormControl>
                     {/* <Textarea
@@ -197,7 +301,7 @@ export default function BrandForm() {
                       disabled={isLoading}
                       {...field}
                     ></Textarea> */}
-                    <UploadDocumentsFormField />
+                    <UploadDocumentsFormField {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

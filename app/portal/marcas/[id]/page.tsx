@@ -4,9 +4,10 @@ import { BookOpenIcon, PlusCircle } from "lucide-react";
 import { CalendarIcon, RefreshCwIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ProjectCard from "../../proyectos/components/ProjectCard";
+import ProjectCard from "../../../../components/Cards/ProjectCard";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
+import getFileIcon from "@/lib/utils";
 
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleBrand(params.id);
@@ -22,7 +23,7 @@ export default async function page({ params }: { params: { id: string } }) {
           >
             <PlusCircle className="aspect-square w-4" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Agregar Proyecto
+              Agregar Solicitud
             </span>
           </Link>
         </Button>
@@ -42,7 +43,10 @@ export default async function page({ params }: { params: { id: string } }) {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <h1 className="text-3xl font-bold">{brand.title}</h1>
-            <DropdownMenuComponent editPath={`/portal/marcas/${brand.id}/editar`} deleteId={brand.id}/>
+            <DropdownMenuComponent
+              editPath={`/portal/marcas/${brand.id}/editar`}
+              deleteId={brand.id}
+            />
           </div>
           <TipTapOnlyContent content={brand.description} />
           <div className="flex items-center gap-4 text-sm">
@@ -78,12 +82,11 @@ export default async function page({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="mx-auto w-full max-w-6xl">
-        <h2 className="mb-4 text-2xl font-bold">Proyectos</h2>
-
-        {brand.project.length === 0 ? (
+        <h2 className="mb-4 text-2xl font-bold">Solicitudes</h2>
+        {brand.requests.length === 0 ? (
           <div className="flex flex-col items-center gap-4">
             <BookOpenIcon className="h-12 w-12" />
-            <h3 className="text-xl font-bold">Sin Proyectos</h3>
+            <h3 className="text-xl font-bold">Sin solicitudes</h3>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2">
@@ -92,6 +95,34 @@ export default async function page({ params }: { params: { id: string } }) {
             ))}
           </div>
         )}
+        <h2 className="mb-4 text-2xl font-bold">Documentos Adjuntos</h2>
+        {brand.documents &&
+          brand.documents.map((file: any, index: any) => (
+            <div key={index} className="flex items-center space-x-4">
+              {/* <Image
+                alt="File Thumbnail"
+                className={`aspect-[1/1] rounded-md object-cover`}
+                height="50"
+                src={""}
+                width="50"
+              /> */}
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={(file && file) || ""}
+              >
+                {file}
+              </Link>
+              {/* <Button
+                type="button"
+                className={removing ? "animate-pulse" : ""}
+                variant={"ghost"}
+                onClick={() => handleRemove(index)}
+              >
+                <X size={21} />
+              </Button> */}
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Logo from "@/public/svg/Logo.svg";
 import Link from "next/link";
-import { Button } from "../ui/button";
 
 import {
   Sheet,
@@ -11,10 +10,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
 import AuthSection from "./AuthSection";
-
+import { getAuthSession } from "@/utils/AuthOptions";
 
 type NavbarItem = {
   title: string;
@@ -40,20 +39,24 @@ const navbarItems: NavbarItem[] = [
   },
 ];
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session: any = await getAuthSession();
+
+  console.log(session && true);
+
   return (
-    <div className="top-0 z-50 sticky flex justify-between bg-white py-6">
+    <div className="sticky top-0 z-50 flex justify-between bg-white py-6">
       <div className="flex items-center">
         <Sheet>
           <SheetTrigger>
-            <MenuIcon className="block lg:hidden w-6 h-6" />
+            <MenuIcon className="block h-6 w-6 lg:hidden" />
           </SheetTrigger>
           <SheetContent side={"left"}>
             <SheetHeader>
               <SheetTitle>
                 <Link
                   href={"/"}
-                  className="relative w-[102.66px] xl:w-[196px] h-[16.11px] xl:h-[40.44px]"
+                  className="relative h-[16.11px] w-[102.66px] xl:h-[40.44px] xl:w-[196px]"
                 >
                   <SheetClose className="text-white">
                     <Image
@@ -61,55 +64,50 @@ export default function Navbar() {
                       alt="Logo"
                       fill
                       sizes="(100vw - 2rem) 100vh"
-                      className="object-center object-fill"
+                      className="object-fill object-center"
                     />
                   </SheetClose>
                 </Link>
               </SheetTitle>
               <SheetDescription className="flex flex-col gap-4 text-black">
-                {
-                  navbarItems.map((item, index) => (
-
-                    <Link
-                      key={index}
-                      href={item.link}
-                      className="font-medium text-lg tracking-tighter"
-                    >
-                      <SheetClose > {item.title}</SheetClose>
-
-                    </Link>
-
-
-                  ))
-                }
+                {navbarItems.map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.link}
+                    className="text-lg font-medium tracking-tighter"
+                  >
+                    <SheetClose> {item.title}</SheetClose>
+                  </Link>
+                ))}
               </SheetDescription>
             </SheetHeader>
           </SheetContent>
         </Sheet>
         <Link
           href={"/"}
-          className="relative w-[102.66px] xl:w-[196px] h-[16.11px] xl:h-[40.44px]"
+          className="relative h-[16.11px] w-[102.66px] xl:h-[40.44px] xl:w-[196px]"
         >
           <Image
             src={Logo}
             alt="Logo"
             fill
             sizes="(100vw - 2rem) 100vh"
-            className="object-center object-fill"
+            className="object-fill object-center"
           />
         </Link>
       </div>
 
-      <div className="lg:flex items-center gap-9 hidden">
-        {navbarItems.map((item, index) => (
-          <Link
-            key={index}
-            href={item.link}
-            className="font-medium text-lg tracking-tighter"
-          >
-            {item.title}
-          </Link>
-        ))}
+      <div className="hidden items-center gap-9 lg:flex">
+        {!session &&
+          navbarItems.map((item, index) => (
+            <Link
+              key={index}
+              href={item.link}
+              className="text-lg font-medium tracking-tighter"
+            >
+              {item.title}
+            </Link>
+          ))}
         <AuthSection />
       </div>
     </div>

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-import RequestCard from "../proyectos/components/RequestCard";
+import RequestCard from "../../../components/Cards/RequestCard";
 import { GET as getAllRequests } from "@/app/api/requests/route";
 
 export default async function page() {
@@ -16,7 +16,7 @@ export default async function page() {
 
   if (requests.message === "Not Authenticated!") {
     return (
-      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
+      <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Not Authenticated!</CardTitle>
@@ -36,7 +36,7 @@ export default async function page() {
 
   if (requests === null || requests.length === 0) {
     return (
-      <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
+      <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>No Requests</CardTitle>
@@ -54,7 +54,7 @@ export default async function page() {
   }
 
   return (
-    <div className="gap-6 grid grid-cols-1 md:grid-cols-2 p-4">
+    <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
       {requests.map((request: any, index: any) => (
         <RequestCard key={index} request={request} />
       ))}

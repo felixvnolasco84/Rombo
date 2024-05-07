@@ -1,4 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
+import pdfIcon from "@/public/svg/pdf-icon.svg";
+import xlsIcon from "@/public/svg/xls-icon.svg";
+import docxIcon from "@/public/svg/docx-icon.svg";
+
 import { twMerge } from "tailwind-merge";
 
 import Altata from "@/public/images/Altata.jpg";
@@ -129,3 +133,23 @@ export const handleDeleteSinglePost = async (id: string, router: any) => {
     console.log(error);
   }
 };
+
+export default function getFileIcon(file: File) {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  switch (extension) {
+    case "pdf":
+      return pdfIcon;
+    case "doc":
+    case "docx":
+      return docxIcon;
+    case "ppt":
+    case "pptx":
+      return pdfIcon;
+    case "xls":
+    case "csv":
+    case "xlsx":
+      return xlsIcon;
+    default:
+      return "/placeholder.svg";
+  }
+}

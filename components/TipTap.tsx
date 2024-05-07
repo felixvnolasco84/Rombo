@@ -117,8 +117,8 @@ const TipTapEditor = ({
     if (!editor) {
       return (
         <>
-          <div className="flex justify-center items-center h-96">
-            <div className="border-gray-900 border-y-2 rounded-full w-32 h-32 animate-spin"></div>
+          <div className="flex h-96 items-center justify-center">
+            <div className="h-32 w-32 animate-spin rounded-full border-y-2 border-gray-900"></div>
           </div>
         </>
       )
@@ -148,10 +148,10 @@ const TipTapEditor = ({
     ]
 
     return (
-      <div className="border-gray-200 border rounded-md">
+      <div className="rounded-md border border-gray-200">
         {editor && (
           <BubbleMenu
-            className="border-gray-400 border rounded-md"
+            className="rounded-md border border-gray-400"
             tippyOptions={{ duration: 100 }}
             editor={editor}
           >
@@ -186,7 +186,7 @@ const TipTapEditor = ({
 
         {editor && (
           <FloatingMenu
-            className="flex gap-x-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-1 rounded-md dark:text-white"
+            className="flex gap-x-2 rounded-md border-2 border-gray-200 bg-white p-1 dark:border-gray-800 dark:bg-black dark:text-white"
             tippyOptions={{ duration: 100 }}
             editor={editor}
           >
@@ -224,7 +224,7 @@ const TipTapEditor = ({
             disabled={!editor.can().chain().focus().toggleBold().run()}
             className={editor.isActive("bold") ? "is-active" : ""}
           >
-            <BoldIcon className="w-4 h-4" />
+            <BoldIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -234,7 +234,7 @@ const TipTapEditor = ({
             disabled={!editor.can().chain().focus().toggleItalic().run()}
             className={editor.isActive("italic") ? "is-active" : ""}
           >
-            <ItalicIcon className="w-4 h-4" />
+            <ItalicIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -244,7 +244,7 @@ const TipTapEditor = ({
             disabled={!editor.can().chain().focus().toggleStrike().run()}
             className={editor.isActive("strike") ? "is-active" : ""}
           >
-            <StrikethroughIcon className="w-4 h-4" />
+            <StrikethroughIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -253,7 +253,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={editor.isActive("bulletList") ? "is-active" : ""}
           >
-            <ListBulletIcon className="w-4 h-4" />
+            <ListBulletIcon className="h-4 w-4" />
           </Button>
           <Button
             type="button"
@@ -261,7 +261,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             className={editor.isActive("orderedList") ? "is-active" : ""}
           >
-            <ListOrderedIcon className="w-4 h-4" />
+            <ListOrderedIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -270,7 +270,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={editor.isActive("blockquote") ? "is-active" : ""}
           >
-            <QuoteIcon className="w-4 h-4" />
+            <QuoteIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -279,7 +279,7 @@ const TipTapEditor = ({
             onClick={setLink}
             className={editor.isActive("link") ? "is-active" : ""}
           >
-            <Link2Icon className="w-4 h-4" />
+            <Link2Icon className="h-4 w-4" />
           </Button>
           <Button
             type="button"
@@ -287,7 +287,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().unsetLink().run()}
             disabled={!editor.isActive("link")}
           >
-            <Link2OffIcon className="w-4 h-4" />
+            <Link2OffIcon className="h-4 w-4" />
           </Button>
 
           <input
@@ -299,9 +299,9 @@ const TipTapEditor = ({
 
           <label
             htmlFor="image"
-            className="inline-flex justify-center items-center hover:bg-accent disabled:opacity-50 px-4 py-2 rounded-md h-10 font-medium text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-accent-foreground disabled:pointer-events-none ring-offset-background"
+            className="inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
           >
-            <ImageIcon className="w-4 h-4" />
+            <ImageIcon className="h-4 w-4" />
           </label>
 
 
@@ -313,7 +313,7 @@ const TipTapEditor = ({
             disabled={!editor.can().chain().focus().toggleCode().run()}
             className={editor.isActive("code") ? "is-active" : ""}
           >
-            <CodeIcon className="w-4 h-4" />
+            <CodeIcon className="h-4 w-4" />
           </Button>
 
           <Button
@@ -322,7 +322,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             className={editor.isActive("codeBlock") ? "is-active" : ""}
           >
-            <Code2Icon className="w-4 h-4" />
+            <Code2Icon className="h-4 w-4" />
           </Button>
           {/* <Button
             type="button"
@@ -345,7 +345,7 @@ const TipTapEditor = ({
             variant="ghost"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
           >
-            <SeparatorHorizontalIcon className="w-4 h-4" />
+            <SeparatorHorizontalIcon className="h-4 w-4" />
             {/* horizontal rule */}
           </Button>
           <Button
@@ -367,10 +367,10 @@ const TipTapEditor = ({
                   ? frameworks.find((framework) => framework.value === value)
                     ?.label
                   : "Titulos"}
-                <CaretSortIcon className="opacity-50 ml-2 w-4 h-4 shrink-0" />
+                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0 w-[200px]">
+            <PopoverContent className="w-[200px] p-0">
               <Command>
                 <CommandGroup>
                   {frameworks.map((framework) => (
@@ -520,7 +520,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().chain().focus().undo().run()}
           >
-            <Undo2 className="w-4 h-4" />
+            <Undo2 className="h-4 w-4" />
           </Button>
           <Button
             type="button"
@@ -528,7 +528,7 @@ const TipTapEditor = ({
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().chain().focus().redo().run()}
           >
-            <Redo2 className="w-4 h-4" />
+            <Redo2 className="h-4 w-4" />
           </Button>
 
         </div>

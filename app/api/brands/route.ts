@@ -8,12 +8,12 @@ export const GET = async () => {
   if (!session) {
     return NextResponse.redirect("/login");
   }
-  const projects = await prisma.brand.findMany({
+  const brands = await prisma.brand.findMany({
     where: {
       userEmail: session.user.email,
     },
   });
-  return NextResponse.json(projects);
+  return NextResponse.json(brands);
 };
 
 //CREATE A NEW PROJECT
@@ -26,11 +26,11 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const body = await req.json();
-    const post = await prisma.brand.create({
+    const brand = await prisma.brand.create({
       data: { ...body, userEmail: session.user.email },
     });
 
-    return new NextResponse(JSON.stringify(post));
+    return new NextResponse(JSON.stringify(brand));
   } catch (err) {
     console.log(err);
     return new NextResponse(

@@ -10,9 +10,12 @@ import {
 
 import { toast } from "@/components/ui/use-toast"
 
-export const uploadFile = async (file: any) => {
+export const uploadFile = async (file: any, userId?: string) => {
     const storage = getStorage(app)
-    const name = new Date().getTime() + file.name
+
+    //TODO: Add userId to the file name AND FIX 404 IN DELETE FILE FUNCTION
+
+    const name =  (userId || "") + file.name
     const storageRef = ref(storage, name)
 
     const uploadTask = uploadBytesResumable(storageRef, file)

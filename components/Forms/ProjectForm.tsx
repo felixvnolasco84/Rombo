@@ -3,14 +3,6 @@
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 

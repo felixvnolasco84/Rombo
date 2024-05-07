@@ -10,13 +10,6 @@ import { SignupFormSection } from "@/components/Forms/SignupFormSection";
 import Video from "next-video";
 import Rombo from "@/videos/Rombo.mp4";
 
-Video;
-export const metadata: Metadata = {
-  title:
-    "lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
-  description:
-    "lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
-};
 
 export default async function page() {
   const session = await getServerSession(authOptions);
@@ -26,10 +19,10 @@ export default async function page() {
   }
 
   return (
-    <section className="items-center gap-6 grid md:py-10 pt-6 pb-8 container">
+    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex flex-col items-start gap-2">
-        <div className="relative flex-col justify-center items-center grid lg:grid-cols-2 lg:px-0 lg:max-w-none h-[800px]">
-          <div className="top-4 md:top-8 right-4 md:right-8 absolute flex items-center text-sm">
+        <div className="relative grid h-[800px] flex-col items-center justify-center overflow-hidden rounded-xl border lg:max-w-none lg:grid-cols-2 lg:px-0">
+          <div className="absolute right-4 top-4 flex items-center text-sm md:right-8 md:top-8">
             <span>Ya tienes una cuenta?</span>
             <Link
               href="/login"
@@ -42,37 +35,33 @@ export default async function page() {
             </Link>
           </div>
 
-          <div className="relative lg:flex flex-col hidden bg-muted dark:border-r rounded-md h-full max-h-[800px] text-white">
+          <div className="relative hidden h-full max-h-[800px] flex-col rounded-md bg-muted text-white dark:border-r lg:flex">
             <Video
               controls={false}
               autoPlay={true}
               minResolution="1080p"
               loop={true}
-              className="top-0 left-0 absolute w-full h-full object-center object-cover"
+              className="absolute left-0 top-0 h-full w-full object-cover object-center"
               src={Rombo}
             />
 
-            <div className="bottom-0 left-0 absolute flex flex-col gap-4 p-10">
-              <div className="relative z-20 flex items-center bg-black/30 p-1 rounded-md w-fit font-medium text-lg">
+            {/* <div className="absolute bottom-0 left-0 flex flex-col gap-4 p-10">
+              <div className="relative z-20 flex w-fit items-center rounded-md bg-black/30 p-1 text-lg font-medium">
                 Rombo
               </div>
               <div className="relative z-20 mt-auto">
-                <blockquote className="space-y-2 bg-black/30 p-1 rounded-md w-fit">
+                <blockquote className="w-fit space-y-2 rounded-md bg-black/30 p-1">
                   <p className="text-lg">
-                    lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                    diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
-                    Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed
-                    augue semper porta.
                   </p>
                 </blockquote>
               </div>
-            </div>
+            </div> */}
+            
           </div>
           <div className="lg:p-8">
-            <div className="flex flex-col justify-center space-y-6 mx-auto w-full sm:w-[350px]">
+            <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
               <div className="flex flex-col space-y-2 text-center">
-                <h1 className="font-semibold text-2nvxl tracking-tight">
+                <h1 className="text-2nvxl font-semibold tracking-tight">
                   Iniciar Sesión
                 </h1>
                 <p className="text-muted-foreground">
@@ -80,18 +69,18 @@ export default async function page() {
                 </p>
               </div>
               <SignupFormSection className="text-lg" />
-              <p className="px-8 text-center text-muted-foreground text-sm">
+              <p className="px-8 text-center text-sm text-muted-foreground">
                 Dando click en iniciar sesión, aceptas nuestro{" "}
                 <Link
                   href="/terminos"
-                  className="hover:text-primary underline underline-offset-4"
+                  className="underline underline-offset-4 hover:text-primary"
                 >
                   Términos de Uso
                 </Link>{" "}
                 y{" "}
                 <Link
                   href="/privacidad"
-                  className="hover:text-primary underline underline-offset-4"
+                  className="underline underline-offset-4 hover:text-primary"
                 >
                   Politicas de Privacidad
                 </Link>
