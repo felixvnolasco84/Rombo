@@ -575,7 +575,7 @@ const TipTapEditor = ({
           editorProps={{
             attributes: {
               class:
-                "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl  focus:outline-none  rounded-md px-3 py-2  overflow-y-auto drop-shadow-2xl  dark:text-white border border-gray-200",
+                "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl  focus:outline-none  rounded-md px-3 py-2  overflow-y-auto  dark:text-white border border-gray-200",
             },
           }}
         >

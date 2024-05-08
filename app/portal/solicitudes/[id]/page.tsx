@@ -19,6 +19,8 @@ export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleRequest(params.id);
   const request = await data.json();
 
+  console.log(request)
+
   return (
     <section className="mx-auto w-full max-w-2xl px-4 py-8 md:px-0">
       <div className="mb-4 flex items-center justify-between">
@@ -60,9 +62,9 @@ export default async function page({ params }: { params: { id: string } }) {
           </p>
         </div>
         <div className="col-span-2">
-          <h3 className="font-semibold text-gray-600">Proyecto</h3>
-          <Link href={`/portal/proyectos/${request.project.id}`}>
-            <Badge variant={"outline"}>{request.project.title}</Badge>
+          <h3 className="font-semibold text-gray-600">Marca</h3>
+          <Link href={`/portal/marcas/${request.brand.id}`}>
+            <Badge variant={"outline"}>{request.brand.title}</Badge>
           </Link>
         </div>
         <div className="">

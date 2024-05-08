@@ -7,12 +7,15 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-import RequestCard from "../../../components/Cards/RequestCard";
 import { GET as getAllRequests } from "@/app/api/requests/route";
+import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
+import { requestColumns } from "@/components/Tables/Requests/requestColumns";
 
 export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
+
+  console.log(requests);
 
   if (requests.message === "Not Authenticated!") {
     return (
@@ -34,30 +37,32 @@ export default async function page() {
     );
   }
 
-  if (requests === null || requests.length === 0) {
-    return (
-      <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>No Requests</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              <Link href="/portal/solicitudes/new">
-                <p className="text-blue-500">Create a Request</p>
-              </Link>
-            </CardDescription>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // if (requests === null || requests.length === 0) {
+  //   return (
+  //     <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
+  //       <Card>
+  //         <CardHeader>
+  //           <CardTitle>No Requests</CardTitle>
+  //         </CardHeader>
+  //         <CardContent>
+  //           <CardDescription>
+  //             <Link href="/portal/solicitudes/new">
+  //               <p className="text-blue-500">Create a Request</p>
+  //             </Link>
+  //           </CardDescription>
+  //         </CardContent>
+  //       </Card>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
-      {requests.map((request: any, index: any) => (
-        <RequestCard key={index} request={request} />
-      ))}
-    </div>
+    <RequestsDataTable columns={requestColumns} data={requests} />
+
+    // <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
+    //   {requests.map((request: any, index: any) => (
+    //     <RequestCard key={index} request={request} />
+    //   ))}
+    // </div>
   );
 }

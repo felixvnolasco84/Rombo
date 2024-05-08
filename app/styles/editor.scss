@@ -1,7 +1,9 @@
 /* Basic editor styles */
 .tiptap {
+    background-color: white;
     p {
-        font-size: 21px;
+        font-size: .875rem;
+        line-height: 1.25rem;
     }
 
     >*+* {

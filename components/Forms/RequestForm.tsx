@@ -34,6 +34,8 @@ type RequestFormProps = {
 }
 
 export default function RequestForm({brandId}: RequestFormProps) {
+
+  console.log(brandId)
     const FormSchema = z.object({
         title: z.string().min(1, { message: "Por favor ingresa un título" }),
         category: z

@@ -84,9 +84,9 @@ model Comment {
     description String
     category String
     attachments String
-    brandId String
     status    String
     priority  String
+    brandId String
     brand   Brand    @relation(fields: [brandId], references: [id])
     userEmail    String
     user      User    @relation(fields: [userEmail], references: [id])
