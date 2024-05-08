@@ -4,19 +4,14 @@ import { BookOpenIcon, PlusCircle } from "lucide-react";
 import { CalendarIcon, RefreshCwIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ProjectCard from "../../../../components/Cards/ProjectCard";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
-import getFileIcon from "@/lib/utils";
-import RequestCard from "@/components/Cards/RequestCard";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
 
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleBrand(params.id);
   const brand = await data.json();
-
-  console.log(brand);
 
   return (
     <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-gray-100/40 p-4 dark:bg-gray-800/40 md:gap-8">

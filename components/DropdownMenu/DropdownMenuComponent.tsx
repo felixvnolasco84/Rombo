@@ -1,40 +1,80 @@
 "use client";
 
+import { useState } from "react";
+import * as React from "react";
+import { Pencil2Icon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { handleDeleteSinglePost } from "@/lib/utils";
-import { Menu } from "lucide-react";
-import Link from "next/link";
+import { MenuIcon, Trash2Icon } from "lucide-react";
+import EditRequestForm from "../Forms/EditRequestForm";
 
-type Props = {
-  editPath: string;
-  deleteId: string;
-};
+export default function DropdownMenuComponent({ request }: { request: any }) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-export default function DropdownMenuComponent({ editPath, deleteId }: Props) {
-  const router = useRouter();
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Menu className="h-6 w-6" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <Link className="w-full" href={editPath}>
-          <DropdownMenuItem>Editar</DropdownMenuItem>
-        </Link>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <p onClick={() => handleDeleteSinglePost(deleteId, router)}>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MenuIcon />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            className="flex items-center gap-1"
+            onClick={() => setIsEditDialogOpen(true)}
+          >
+            <Pencil2Icon className="h-4 w-4" />
+            Editar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setIsDeleteDialogOpen(true)}
+            className="flex items-center gap-1"
+          >
+            <Trash2Icon className="h-4 w-4" />
             Eliminar
-          </p>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog
+        open={isEditDialogOpen || isDeleteDialogOpen}
+        onOpenChange={
+          isEditDialogOpen ? setIsEditDialogOpen : setIsDeleteDialogOpen
+        }
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {isEditDialogOpen ? "Editar" : "Eliminar"}
+            </DialogTitle>
+            <DialogDescription>
+              {isEditDialogOpen ? "Editar solicitud" : "¿Estás seguro?"}
+            </DialogDescription>
+          </DialogHeader>
+          {isEditDialogOpen ? (
+            <EditRequestForm request={request} />
+          ) : (
+            <DialogFooter>
+              <Button variant="destructive">Eliminar</Button>
+              <Button variant="secondary">Cancelar</Button>
+            </DialogFooter>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

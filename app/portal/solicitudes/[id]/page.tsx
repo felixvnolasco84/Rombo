@@ -1,16 +1,8 @@
 import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Menu, PersonStanding } from "lucide-react";
+import { PersonStanding } from "lucide-react";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
@@ -19,13 +11,12 @@ export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleRequest(params.id);
   const request = await data.json();
 
-  console.log(request)
-
   return (
     <section className="mx-auto w-full max-w-2xl px-4 py-8 md:px-0">
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-3xl font-bold">{request.title}</h1>
-        <DropdownMenuComponent  editPath={`/portal/solicitudes/${request.id}/editar`} deleteId={request.id} />
+        {/* <DropdownMenuComponent  editPath={`/portal/solicitudes/${request.id}/editar`} deleteId={request.id} /> */}
+        <DropdownMenuComponent request={request}/>
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-4">
