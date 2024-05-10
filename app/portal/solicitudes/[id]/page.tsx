@@ -2,12 +2,17 @@ import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { getAuthSession } from "@/utils/AuthOptions";
 import { PersonStanding } from "lucide-react";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
+import RenderDocuments from "@/components/Forms/components/renderDocuments";
+import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
 
 export default async function page({ params }: { params: { id: string } }) {
+  const session: any = await getAuthSession();
+
   const data = await getSingleRequest(params.id);
   const request = await data.json();
 
@@ -16,7 +21,7 @@ export default async function page({ params }: { params: { id: string } }) {
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-3xl font-bold">{request.title}</h1>
         {/* <DropdownMenuComponent  editPath={`/portal/solicitudes/${request.id}/editar`} deleteId={request.id} /> */}
-        <DropdownMenuComponent request={request}/>
+        <DropdownMenuComponent request={request} />
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-4">
@@ -47,6 +52,7 @@ export default async function page({ params }: { params: { id: string } }) {
             {new Date(request.updatedAt).toLocaleDateString("es-Mx", {
               weekday: "long",
               year: "numeric",
+
               month: "long",
               day: "numeric",
             })}
@@ -65,14 +71,17 @@ export default async function page({ params }: { params: { id: string } }) {
           {/* </Link> */}
         </div>
       </div>
-
-      <div className="mb-4">
+      <div className="mb-8">
+        <h2 className="mb-2 text-base font-bold">Documentos Adjuntos</h2>
+        <RenderDocuments documents={request.documents} />
+      </div>
+      <div className="my-4">
         <TipTapOnlyContent content={request.description} />
       </div>
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Comentarios</h2>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {request.comments.length === 0 ? (
             <div className="flex flex-col items-center gap-4">
               <PersonStanding className="h-12 w-12" />
@@ -80,7 +89,10 @@ export default async function page({ params }: { params: { id: string } }) {
             </div>
           ) : (
             request.comments.map((comment: any, index: any) => (
-              <div key={index} className="flex items-start space-x-4">
+              <div
+                key={index}
+                className="flex items-start space-x-4 rounded-md border p-4"
+              >
                 <Avatar className="h-10 w-10">
                   <AvatarImage
                     alt="User avatar"
@@ -90,14 +102,24 @@ export default async function page({ params }: { params: { id: string } }) {
                     {comment.userEmail.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="font-semibold">{comment.userEmail}</p>
-                  <p className="text-sm text-gray-600">{comment.desc}</p>
+                <div className="w-full">
+                  <div className="mb-4 flex items-center justify-between">
+                    <p className="font-semibold">{comment.userEmail}</p>
+
+                    {session.user.email === comment.userEmail && (
+                      <DropdownMenuComponentComment comment={comment} />
+                    )}
+                  </div>
+
+                  <TipTapOnlyContent content={comment.desc} />
+                  {/* <p className="text-sm text-gray-600">{comment.desc}</p> */}
+                  <RenderDocuments documents={comment.documents} />
                 </div>
               </div>
             ))
           )}
         </div>
+
         <div className="space-y-4">
           <CommentForm requestId={request.id} />
         </div>

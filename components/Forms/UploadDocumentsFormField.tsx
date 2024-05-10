@@ -1,13 +1,5 @@
 "use client";
 
-interface UploadDocumentsFormFieldProps {
-  onChange: (...event: any[]) => void;
-  onBlur: () => void;
-  value: string[] | undefined;
-  disabled?: boolean;
-  name: string;
-  ref: React.Ref<any>;
-}
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +10,16 @@ import { uploadFile } from "@/app/utils/uploadImage";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
-import getFileIcon from "@/lib/utils";
+import getFileIcon, { DocumentUpload } from "@/lib/utils";
+
+interface UploadDocumentsFormFieldProps {
+  onChange: (...event: any[]) => void;
+  onBlur: () => void;
+  value: DocumentUpload[] | undefined;
+  disabled?: boolean;
+  name: string;
+  ref: React.Ref<any>;
+}
 
 function UploadIcon(props: any) {
   return (
@@ -44,23 +45,27 @@ function UploadIcon(props: any) {
 const UploadDocumentsFormField = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
     const [files, setFiles] = useState<File[]>([]);
-    const [filesURL, setFilesUrl] = useState<string[]>([]);
+    const [filesArray, setFilesArray] = useState<DocumentUpload[]>([]);
     const [uploading, setUploading] = useState(false);
     const [removing, setRemoving] = useState<boolean>(false);
-
-    //TODO: ADD THE NAME OF THE FILE IN ANOTHER PROPERTY
+    
     useEffect(() => {
       // Cada vez que filesURL cambia, llamamos a props.onChange para actualizar el valor del formulario
-      props.onChange({ target: { name: props.name, value: filesURL } });
-    }, [filesURL]);
+      props.onChange({ target: { name: props.name, value: filesArray } });
+    }, [filesArray]);    
 
     const handleUpload = async (files: File[]) => {
       setUploading(true);
-      const urls = await Promise.all(files.map((file) => uploadFile(file)));
-      setFilesUrl([...filesURL, ...urls]);
-      // onChange(filesURL);
+      const fileObjects = await Promise.all(
+        files.map(async (file) => {
+          const url = await uploadFile(file);
+          return { name: file.name, url };
+        })
+      );
+      setFilesArray([...filesArray, ...fileObjects]);
       setUploading(false);
     };
+
 
     const handleFiles = (fileList: FileList) => {
       const filesArray = Array.from(fileList);
@@ -136,14 +141,23 @@ const UploadDocumentsFormField = forwardRef(
                         className={`aspect-[1/1] rounded-md object-cover ${
                           uploading ? "animate-pulse" : ""
                         }`}
-                        height="50"
+                        height="40"
                         src={getFileIcon(file)}
+                        style={{
+                          aspectRatio: "40/40",
+                          objectFit: "cover",
+                        }}
                         width="50"
                       />
                       <Link
                         target="_blank"
                         className="hover:underline"
-                        href={(filesURL && filesURL[index]) || ""}
+                        href={
+                          (filesArray.length > index &&
+                            filesArray[index] &&
+                            filesArray[index].url) ||
+                          ""
+                        }
                       >
                         {file.name.split(".")[0]}
                       </Link>

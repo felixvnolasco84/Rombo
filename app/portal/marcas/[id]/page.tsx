@@ -5,27 +5,30 @@ import { CalendarIcon, RefreshCwIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
+// import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
+import RenderDocuments from "@/components/Forms/components/renderDocuments";
 
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleBrand(params.id);
   const brand = await data.json();
 
+  console.log(brand);
+
   return (
     <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-gray-100/40 p-4 dark:bg-gray-800/40 md:gap-8">
       <div className="ml-auto flex items-center justify-end gap-2">
         <Button size="sm">
-          {/* <Link
+          <Link
             className="flex items-center gap-1"
             href={`/portal/marcas/${brand.id}/new`}
-          > */}
-          <PlusCircle className="aspect-square w-4" />
-          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Agregar Solicitud
-          </span>
-          {/* </Link> */}
+          >
+            <PlusCircle className="aspect-square w-4" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Agregar Solicitud
+            </span>
+          </Link>
         </Button>
       </div>
       <div className="mx-auto flex w-full max-w-6xl items-center gap-4">
@@ -43,10 +46,10 @@ export default async function page({ params }: { params: { id: string } }) {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <h1 className="text-3xl font-bold">{brand.title}</h1>
-            <DropdownMenuComponent
+            {/* <DropdownMenuComponent
               editPath={`/portal/marcas/${brand.id}/editar`}
               deleteId={brand.id}
-            />
+            /> */}
           </div>
           <TipTapOnlyContent content={brand.description} />
           <div className="flex items-center gap-4 text-sm">
@@ -100,33 +103,7 @@ export default async function page({ params }: { params: { id: string } }) {
           // </div>
         )}
         <h2 className="mb-4 text-2xl font-bold">Documentos Adjuntos</h2>
-        {brand.documents &&
-          brand.documents.map((file: any, index: any) => (
-            <div key={index} className="flex items-center space-x-4">
-              {/* <Image
-                alt="File Thumbnail"
-                className={`aspect-[1/1] rounded-md object-cover`}
-                height="50"
-                src={""}
-                width="50"
-              /> */}
-              <Link
-                target="_blank"
-                className="hover:underline"
-                href={(file && file) || ""}
-              >
-                {file}
-              </Link>
-              {/* <Button
-                type="button"
-                className={removing ? "animate-pulse" : ""}
-                variant={"ghost"}
-                onClick={() => handleRemove(index)}
-              >
-                <X size={21} />
-              </Button> */}
-            </div>
-          ))}
+        <RenderDocuments documents={brand.documents} />
       </div>
     </div>
   );

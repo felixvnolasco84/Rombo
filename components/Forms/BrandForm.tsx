@@ -78,7 +78,14 @@ export default function BrandForm() {
       .min(1, { message: "Por favor ingresa una descripción del proyecto" }),
     img: z.string().optional(),
     website: z.string().optional(),
-    documents: z.array(z.string()).optional(),
+    documents: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.string(),
+        })
+      )
+      .optional(),
   });
 
   const { toast } = useToast();

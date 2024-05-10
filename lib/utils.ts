@@ -153,3 +153,9 @@ export default function getFileIcon(file: File) {
       return "/placeholder.svg";
   }
 }
+
+
+export type DocumentUpload = {
+  name: string;
+  url: string;
+};
