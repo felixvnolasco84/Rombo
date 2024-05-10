@@ -12,14 +12,14 @@ export const POST = async (req: any) => {
 
   try {
     const body = await req.json();
-    const comment = await prisma.comment.create({
+    await prisma.comment.create({
       data: {
         ...body,
         userEmail: session.user.email,
       },
     });
 
-    return new NextResponse(JSON.stringify(comment));
+    return new NextResponse(JSON.stringify({ message: "Comment created!" }));
   } catch (err) {
     console.log(err);
     return new NextResponse(

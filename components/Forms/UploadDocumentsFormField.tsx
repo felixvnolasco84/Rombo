@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -11,12 +10,14 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import getFileIcon, { DocumentUpload } from "@/lib/utils";
+import { set } from "date-fns";
 
 interface UploadDocumentsFormFieldProps {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
   value: DocumentUpload[] | undefined;
   disabled?: boolean;
+  files?: any[];
   name: string;
   ref: React.Ref<any>;
 }
@@ -44,15 +45,17 @@ function UploadIcon(props: any) {
 
 const UploadDocumentsFormField = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
-    const [files, setFiles] = useState<File[]>([]);
-    const [filesArray, setFilesArray] = useState<DocumentUpload[]>([]);
+    const [files, setFiles] = useState<File[]>(props?.files || []);
+    const [filesArray, setFilesArray] = useState<DocumentUpload[]>(
+     props?.files || []
+    );
     const [uploading, setUploading] = useState(false);
     const [removing, setRemoving] = useState<boolean>(false);
-    
+
     useEffect(() => {
       // Cada vez que filesURL cambia, llamamos a props.onChange para actualizar el valor del formulario
       props.onChange({ target: { name: props.name, value: filesArray } });
-    }, [filesArray]);    
+    }, [filesArray]);
 
     const handleUpload = async (files: File[]) => {
       setUploading(true);
@@ -62,26 +65,32 @@ const UploadDocumentsFormField = forwardRef(
           return { name: file.name, url };
         })
       );
+      if (props.files != undefined) {
+        setFilesArray([...props.files, ...fileObjects]);
+      }
       setFilesArray([...filesArray, ...fileObjects]);
       setUploading(false);
     };
 
-
     const handleFiles = (fileList: FileList) => {
       const filesArray = Array.from(fileList);
-      handleUpload(filesArray);
+      // handleUpload(filesArray);
       setFiles([...files, ...filesArray]);
     };
 
-    const handleRemove = async (index: number) => {
-      setRemoving(true);
-      await Promise.all(
-        files.filter((_, i) => i === index).map((file) => removeFile(file.name))
-      );
-      setFiles(files.filter((_, i) => i !== index));
-      setRemoving(false);
-    };
-
+const handleRemove = async (index: number) => {
+  setRemoving(true);
+  try {
+    const fileToRemove = files[index];
+    await removeFile(fileToRemove.name);
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setFilesArray(prevFiles => prevFiles.filter((_, i) => i !== index));
+  } catch (error) {
+    console.error(`Failed to remove file: ${error}`);
+  } finally {
+    setRemoving(false);
+  }
+};
     return (
       <div className="w-full max-w-sm">
         <div className="space-y-8">
@@ -156,6 +165,9 @@ const UploadDocumentsFormField = forwardRef(
                           (filesArray.length > index &&
                             filesArray[index] &&
                             filesArray[index].url) ||
+                          (props.files != undefined &&
+                            props.files.length > index &&
+                            props.files[index]?.url) ||
                           ""
                         }
                       >

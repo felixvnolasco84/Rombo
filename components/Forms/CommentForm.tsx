@@ -14,8 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import UploadDocumentsFormFieldButton from "./UploadDocumentsFormFieldButton";
 import TipTapComment from "../TipTapComment";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 export default function CommentForm({ requestId }: { requestId: string }) {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const FormSchema = z.object({
     comment: z.string().min(1, { message: "Por favor ingresa un comentario" }),
     documents: z
@@ -37,13 +41,23 @@ export default function CommentForm({ requestId }: { requestId: string }) {
   });
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
+      setLoading(true);
       const desc = data.comment;
       const documents = data.documents;
-      const response = await fetch("/api/comments", {
+      const draftResponse = await fetch("/api/comments", {
         method: "POST",
         body: JSON.stringify({ requestId, desc, documents }),
       });
-      if (response.ok) {
+
+      const response = await draftResponse.json();
+
+      if (response.message == "Comment created!") {
+        toast({
+          title: "¡Listo!",
+          description: "Tu comentario se ha enviado!",
+          variant: "default",
+          duration: 3000,
+        });
         form.reset();
       }
     } catch (error: any) {
@@ -52,6 +66,8 @@ export default function CommentForm({ requestId }: { requestId: string }) {
         title: "¡Oh!",
         description: "Al parecer hubo un error, intentelo más tarde 🎉",
       });
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -87,7 +103,11 @@ export default function CommentForm({ requestId }: { requestId: string }) {
         />
 
         <Button type="submit" className="w-full">
-          Enviar Comentario
+          {loading ? (
+            <Loader className="h-4 w-4 animate-spin" />
+          ) : (
+            "Enviar Comentario"
+          )}
         </Button>
       </form>
     </Form>
