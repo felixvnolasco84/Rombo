@@ -6,7 +6,7 @@ import { getAuthSession } from "@/utils/AuthOptions";
 import { PersonStanding } from "lucide-react";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
+import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponent";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
 
@@ -20,8 +20,7 @@ export default async function page({ params }: { params: { id: string } }) {
     <section className="mx-auto w-full max-w-2xl px-4 py-8 md:px-0">
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-3xl font-bold">{request.title}</h1>
-        {/* <DropdownMenuComponent  editPath={`/portal/solicitudes/${request.id}/editar`} deleteId={request.id} /> */}
-        <DropdownMenuComponent request={request} />
+        <DropdownMenuComponentRequest request={request} />
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-4">

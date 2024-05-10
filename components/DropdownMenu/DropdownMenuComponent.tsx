@@ -22,10 +22,42 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MenuIcon, Trash2Icon } from "lucide-react";
 import EditRequestForm from "../Forms/EditRequestForm";
+import { toast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
-export default function DropdownMenuComponent({ request }: { request: any }) {
+export default function DropdownMenuComponentRequest({
+  request,
+}: {
+  request: any;
+}) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      const draftResponse = await fetch(`/api/requests/${request.id}`, {
+        method: "DELETE",
+      });
+      const response = await draftResponse.json();
+      if (response.message === "Request deleted successfully") {
+        toast({
+          title: "¡Listo!",
+          description: " Tu solicitud se ha eliminado!",
+          variant: "default",
+          duration: 3000,
+        });
+        router.push("/portal/solicitudes");
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -69,7 +101,13 @@ export default function DropdownMenuComponent({ request }: { request: any }) {
             <EditRequestForm request={request} />
           ) : (
             <DialogFooter>
-              <Button variant="destructive">Eliminar</Button>
+              <Button
+                onClick={handleDelete}
+                disabled={loading}
+                variant="destructive"
+              >
+                {loading ? "Eliminando..." : "Eliminar"}
+              </Button>
               <Button variant="secondary">Cancelar</Button>
             </DialogFooter>
           )}

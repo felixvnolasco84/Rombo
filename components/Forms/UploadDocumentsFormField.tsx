@@ -74,7 +74,7 @@ const UploadDocumentsFormField = forwardRef(
 
     const handleFiles = (fileList: FileList) => {
       const filesArray = Array.from(fileList);
-      // handleUpload(filesArray);
+      handleUpload(filesArray);
       setFiles([...files, ...filesArray]);
     };
 
@@ -92,7 +92,7 @@ const handleRemove = async (index: number) => {
   }
 };
     return (
-      <div className="w-full max-w-sm">
+      <div className="w-full">
         <div className="space-y-8">
           <div
             className="flex flex-col items-center justify-center space-y-4 rounded-lg border-2 border-dashed border-gray-300 p-8"

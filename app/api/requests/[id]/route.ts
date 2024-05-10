@@ -21,15 +21,20 @@ export const GET = async (id: any) => {
   }
 };
 
-//DELETE REQUEST
-
-export const DELETE = async (id: any) => {
+//UPDATE REQUEST
+export const PUT = async (req: any, { params }: any) => {
   try {
-    const post = await prisma.request.delete({
+    const body = await req.json();
+    const id = params.id;
+
+    await prisma.request.update({
       where: { id: id },
+      data: {
+        ...body,
+      },
     });
 
-    return new NextResponse(JSON.stringify(post));
+    return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {
     console.log(err);
     return new NextResponse(
@@ -38,20 +43,17 @@ export const DELETE = async (id: any) => {
   }
 };
 
-//UPDATE REQUEST
-export const PUT = async (req: any, { params }: any) => {
-  try {
-    const body = await req.json();
-    const id = params.id;
+//DELETE REQUEST
 
-    const post = await prisma.request.update({
+export const DELETE = async (req: any, { params }: any) => {
+  const id = params.id;
+
+  try {
+    await prisma.request.delete({
       where: { id: id },
-      data: {
-        ...body,
-      },
     });
 
-    return new NextResponse(JSON.stringify(post));
+    return NextResponse.json({ message: "Request deleted successfully" });
   } catch (err) {
     console.log(err);
     return new NextResponse(

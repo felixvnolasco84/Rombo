@@ -29,6 +29,7 @@ import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
 import { PUT as UpdateRequest } from "@/app/api/requests/[id]/route";
+import UploadDocumentsFormField from "./UploadDocumentsFormField";
 
 type RequestFormProps = {
   request: any;
@@ -43,7 +44,10 @@ export default function EditRequestForm({ request }: RequestFormProps) {
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción" }),
-    attachments: z.string().optional(),
+    documents: z.array(z.object({
+      name: z.string(),
+      url: z.string(),
+    })).optional(),
     brandId: z.string(),
     status: z.string(),
     priority: z.string(),
@@ -59,7 +63,7 @@ export default function EditRequestForm({ request }: RequestFormProps) {
       title: request.title,
       category: request.category,
       description: request.description,
-      attachments: "",
+      documents: request.documents,
       brandId: request.brandId,
       status: request.status,
       priority: request.priority,
@@ -246,38 +250,27 @@ export default function EditRequestForm({ request }: RequestFormProps) {
               />
             </div>
 
-            {/* TODO */}
-            {/* <div className="grid w-full items-center gap-1.5">
-
-                            <FormField
-                                control={form.control}
-                                name="attachments"
-                                render={({ field }) => (
-                                    <FormItem className="space-y-1">
-
-                                        <FormLabel>Adjuntos</FormLabel>
-
-                                        <FormDescription>
-                                            Arrastra o da click para subir los archivos que consideres que el diseñador necesita revisar o conocer para crear
-                                            tu diseño. Documentos como lista de precios, presentación corporativa, moodboards, o pantallazos con
-                                            referencias de estilo que viste y te gustaron.
-                                        </FormDescription>
-                                        <FormControl>
-                                            <Textarea
-                                                placeholder="*********"
-                                                className="resize-none bg-transparent"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={isLoading}
-                                                {...field}
-                                            ></Textarea>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div> */}
+            <div className="grid w-full items-center gap-1.5">
+              <FormField
+                control={form.control}
+                name="documents"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Archivos Adjuntos</FormLabel>
+                    <FormDescription>
+                      Agregar documentos relacionados a tu marca o organización
+                    </FormDescription>
+                    <FormControl>
+                      <UploadDocumentsFormField
+                        files={request?.documents}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
