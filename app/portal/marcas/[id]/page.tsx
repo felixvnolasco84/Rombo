@@ -9,6 +9,8 @@ import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
+import DropdownMenuComponentBrand from "@/components/DropdownMenu/DropdownMenuComponentBrand";
+import EditBrandImageDialog from "@/components/Dialogs/EditBrandImageDialog";
 
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getSingleBrand(params.id);
@@ -32,24 +34,11 @@ export default async function page({ params }: { params: { id: string } }) {
         </Button>
       </div>
       <div className="mx-auto flex w-full max-w-6xl items-center gap-4">
-        <Image
-          alt="Project Image"
-          className="rounded-lg object-cover"
-          height="300"
-          src="/placeholder.svg"
-          style={{
-            aspectRatio: "300/300",
-            objectFit: "cover",
-          }}
-          width="300"
-        />
+        <EditBrandImageDialog brand={brand} />
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <h1 className="text-3xl font-bold">{brand.title}</h1>
-            {/* <DropdownMenuComponent
-              editPath={`/portal/marcas/${brand.id}/editar`}
-              deleteId={brand.id}
-            /> */}
+            <DropdownMenuComponentBrand brand={brand} />
           </div>
           <TipTapOnlyContent content={brand.description} />
           <div className="flex items-center gap-4 text-sm">

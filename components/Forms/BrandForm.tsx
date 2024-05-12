@@ -30,40 +30,7 @@ import { uploadFile } from "@/app/utils/uploadImage";
 import TipTapEditor from "../TipTap";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { useRouter } from "next/navigation";
-
-const industries = [
-  "Agricultura",
-  "Arquitectura",
-  "Arte y Entretenimiento",
-  "Automotriz",
-  "Bienes Raíces",
-  "Comercio",
-  "Comunicación",
-  "Construcción",
-  "Consultoría",
-  "Diseño",
-  "Educación",
-  "Energía",
-  "Finanzas",
-  "Gastronomía",
-  "Gobierno",
-  "Industria",
-  "Ingeniería",
-  "Inmobiliaria",
-  "Legal",
-  "Manufactura",
-  "Medicina",
-  "Publicidad",
-  "Recursos Humanos",
-  "Salud",
-  "Seguros",
-  "Servicios",
-  "Tecnología",
-  "Telecomunicaciones",
-  "Transporte",
-  "Turismo",
-  "Ventas",
-];
+import { industries } from "@/lib/utils";
 
 export default function BrandForm() {
   const router = useRouter();
@@ -105,7 +72,6 @@ export default function BrandForm() {
     },
   });
 
-
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // console.log(data);
     try {
@@ -143,7 +109,6 @@ export default function BrandForm() {
       });
     }
   }
-  
 
   return (
     <Form {...form}>

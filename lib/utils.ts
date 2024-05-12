@@ -159,3 +159,38 @@ export type DocumentUpload = {
   name: string;
   url: string;
 };
+
+
+export const industries = [
+  "Agricultura",
+  "Arquitectura",
+  "Arte y Entretenimiento",
+  "Automotriz",
+  "Bienes Raíces",
+  "Comercio",
+  "Comunicación",
+  "Construcción",
+  "Consultoría",
+  "Diseño",
+  "Educación",
+  "Energía",
+  "Finanzas",
+  "Gastronomía",
+  "Gobierno",
+  "Industria",
+  "Ingeniería",
+  "Inmobiliaria",
+  "Legal",
+  "Manufactura",
+  "Medicina",
+  "Publicidad",
+  "Recursos Humanos",
+  "Salud",
+  "Seguros",
+  "Servicios",
+  "Tecnología",
+  "Telecomunicaciones",
+  "Transporte",
+  "Turismo",
+  "Ventas",
+];

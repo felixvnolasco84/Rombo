@@ -6,7 +6,7 @@ import { getAuthSession } from "@/utils/AuthOptions";
 import { PersonStanding } from "lucide-react";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponent";
+import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponentRequest";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
 

@@ -34,17 +34,18 @@ export const DELETE = async (id: any) => {
 };
 
 // UPDATE SINGLE BRAND
-export const PUT = async (req: any, id: any) => {
+export const PUT = async (req: any, { params }: any) => {
+  const id = params.id;
   const body: any = await req.json();
-  const { title } = body;
+  // const { title, img } = body;
 
   try {
-    const brand = await prisma.brand.update({
+    await prisma.brand.update({
       where: { id: id },
-      data: { title: title },
+      data: { ...body },
     });
 
-    return new NextResponse(JSON.stringify(brand));
+    return NextResponse.json({ message: "Brand updated successfully" });
   } catch (err) {
     console.log(err);
     return new NextResponse(
