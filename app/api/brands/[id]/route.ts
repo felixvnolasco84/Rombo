@@ -37,8 +37,7 @@ export const DELETE = async (id: any) => {
 export const PUT = async (req: any, { params }: any) => {
   const id = params.id;
   const body: any = await req.json();
-  // const { title, img } = body;
-
+  
   try {
     await prisma.brand.update({
       where: { id: id },

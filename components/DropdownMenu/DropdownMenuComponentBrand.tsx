@@ -97,7 +97,7 @@ export default function DropdownMenuComponentBrand({ brand }: { brand: any }) {
             </DialogDescription>
           </DialogHeader>
           {isEditDialogOpen ? (
-            <EditBrandForm brand={brand} />
+            <EditBrandForm setIsEditDialogOpen={setIsEditDialogOpen} brand={brand} />
           ) : (
             <DialogFooter>
               <Button
