@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import EditImageBrandForm from "../Forms/EditImageBrandForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function EditBrandImageDialog({ brand }: { brand: any }) {
   return (
@@ -25,6 +26,7 @@ export default function EditBrandImageDialog({ brand }: { brand: any }) {
           width="300"
         />
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle></DialogTitle>
