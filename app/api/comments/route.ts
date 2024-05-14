@@ -12,10 +12,25 @@ export const POST = async (req: any) => {
 
   try {
     const body = await req.json();
-    await prisma.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         ...body,
         userEmail: session.user.email,
+      },
+      include: {
+        request: true,
+        user: true,
+      },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "comment",
+        message: `Nuevo comentario en la solicitud ${comment.request.title}`,
+        brandId: comment.request.brandId,
+        requestId: comment.requestId,
+        commentId: comment.id,
+        userId: comment.user.id,
       },
     });
 

@@ -20,7 +20,7 @@ export default async function page() {
           </Link>
         </Button>
       </div>
-      <div className="flex flex-col items-center p-4">
+      <div className="flex flex-wrap gap-4 p-4">
         {brands.length > 0 ? (
           brands.map((project: any, index: any) => (
             <BrandCard key={index} project={project} />

@@ -69,8 +69,23 @@ export default function EditBrandForm({
     },
   });
 
+  //TODO: IMPROVE THIS
 
-  
+//   form.watch("documents", (files) => {
+//     console.log(files);
+//   }
+// );
+  // const update = await prisma.brand.update({
+  //   where: {
+  //     id: "1",
+  //   },
+  //   data: {
+  //     documents: {
+  //       set: filesArray,
+  //     },
+  //   },
+  // });
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // console.log(data)
     setIsLoading(true);
@@ -214,6 +229,7 @@ export default function EditBrandForm({
                     <FormControl>
                       <UploadDocumentsFormField
                         files={brand?.documents}
+                        objectId={{ id: brand.id, type: "brand" }}
                         {...field}
                       />
                     </FormControl>

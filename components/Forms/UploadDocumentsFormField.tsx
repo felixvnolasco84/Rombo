@@ -1,16 +1,23 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { removeFile } from "@/app/utils/removeFile";
+import { forwardRef, useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { uploadFile } from "@/app/utils/uploadImage";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import getFileIcon, { DocumentUpload } from "@/lib/utils";
-import { set } from "date-fns";
+import { removeFile } from "@/app/utils/removeFile";
+import { revalidatePath } from "next/cache";
 
 interface UploadDocumentsFormFieldProps {
   onChange: (...event: any[]) => void;
@@ -20,6 +27,7 @@ interface UploadDocumentsFormFieldProps {
   files?: any[];
   name: string;
   ref: React.Ref<any>;
+  objectId?: { id: string; type: string } | undefined;
 }
 
 function UploadIcon(props: any) {
@@ -46,8 +54,9 @@ function UploadIcon(props: any) {
 const UploadDocumentsFormField = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
     const [files, setFiles] = useState<File[]>(props?.files || []);
+    const { toast } = useToast();
     const [filesArray, setFilesArray] = useState<DocumentUpload[]>(
-     props?.files || []
+      props?.files || []
     );
     const [uploading, setUploading] = useState(false);
     const [removing, setRemoving] = useState<boolean>(false);
@@ -78,19 +87,119 @@ const UploadDocumentsFormField = forwardRef(
       setFiles([...files, ...filesArray]);
     };
 
-const handleRemove = async (index: number) => {
-  setRemoving(true);
-  try {
-    const fileToRemove = files[index];
-    await removeFile(fileToRemove.name);
-    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
-    setFilesArray(prevFiles => prevFiles.filter((_, i) => i !== index));
-  } catch (error) {
-    console.error(`Failed to remove file: ${error}`);
-  } finally {
-    setRemoving(false);
-  }
-};
+    const handleRemove = async (index: number) => {
+      setRemoving(true);
+      try {
+        const fileToRemove = files[index];
+        const newFiles = filesArray.filter((_, i) => i !== index);
+        if (
+          props.objectId !== undefined &&
+          props.objectId.type === "comment"
+        ) {
+          const draftResponse = await fetch(
+            `/api/comments/update/${props.objectId.id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newDocuments: newFiles }),
+            }
+          );
+          
+
+          const response = await draftResponse.json();
+
+          console.log(response)
+
+          if (response.message === "Document removed!") {
+            await removeFile(fileToRemove.name);
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+            setFilesArray((prevFiles) =>
+              prevFiles.filter((_, i) => i !== index)
+            );
+          } else {
+            toast({
+              variant: "destructive",
+              title: "¡Oh!",
+              description: "Al parecer hubo un error, intentelo más tarde🎉",
+            });
+          }
+        } else if (
+          props.objectId !== undefined &&
+          props.objectId.type == "brand"
+        ) {
+          const draftResponse = await fetch(
+            `/api/brands/update/${props.objectId.id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newDocuments: newFiles }),
+            }
+          );
+
+          const response = await draftResponse.json();
+
+          console.log(response);
+          if (response.message === "Document removed!") {
+            await removeFile(fileToRemove.name);
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+            setFilesArray((prevFiles) =>
+              prevFiles.filter((_, i) => i !== index)
+            );
+            // revalidatePath(`/portal/marcas/${props.objectId.id}`);
+          } else {
+            toast({
+              variant: "destructive",
+              title: "¡Oh!",
+              description: "Al parecer hubo un error, intentelo más tarde🎉",
+            });
+          }
+        } else if (
+          props.objectId !== undefined &&
+          props.objectId.type == "request"
+        ) {
+          const draftResponse = await fetch(
+            `/api/requests/update/${props.objectId.id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newDocuments: newFiles }),
+            }
+          );
+
+          const response = await draftResponse.json();
+
+          if (response.message === "Document removed!") {
+            await removeFile(fileToRemove.name);
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+            setFilesArray((prevFiles) =>
+              prevFiles.filter((_, i) => i !== index)
+            );
+            // revalidatePath(`/portal/marcas/${props.objectId.id}`);
+          } else {
+            toast({
+              variant: "destructive",
+              title: "¡Oh!",
+              description: "Al parecer hubo un error, intentelo más tarde🎉",
+            });
+          }
+        } else {
+          await removeFile(fileToRemove.name);
+          setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+          setFilesArray((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        }
+      } catch (error) {
+        console.error(`Failed to remove file: ${error}`);
+      } finally {
+        setRemoving(false);
+      }
+    };
+
     return (
       <div className="w-full">
         <div className="space-y-8">
@@ -173,14 +282,36 @@ const handleRemove = async (index: number) => {
                       >
                         {file.name.split(".")[0]}
                       </Link>
-                      <Button
-                        type="button"
-                        className={removing ? "animate-pulse" : ""}
-                        variant={"ghost"}
-                        onClick={() => handleRemove(index)}
-                      >
-                        <X size={21} />
-                      </Button>
+
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button type="button" variant={"ghost"}>
+                            <X size={21} />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <div className="grid gap-4">
+                            <div className="space-y-2">
+                              <h4 className="font-medium leading-none">
+                                ¿Deseas eliminar el adjunto?
+                              </h4>
+                              <p className="text-sm text-muted-foreground">
+                                La operación de eliminar un adjunto es
+                                permanente. No es posible deshacer la operación.
+                              </p>
+                            </div>
+                            <Button
+                              type="button"
+                              className={removing ? "animate-pulse" : ""}
+                              disabled={removing}
+                              variant={"destructive"}
+                              onClick={() => handleRemove(index)}
+                            >
+                              Eliminar
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   ))}
               </div>
@@ -191,5 +322,6 @@ const handleRemove = async (index: number) => {
     );
   }
 );
+
 UploadDocumentsFormField.displayName = "UploadDocumentsFormField";
 export default UploadDocumentsFormField;

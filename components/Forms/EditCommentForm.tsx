@@ -131,6 +131,7 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
                     <FormControl>
                       <UploadDocumentsFormField
                         files={comment?.documents}
+                        objectId={{ id: comment.id, type: "comment"}}
                         {...field}
                       />
                     </FormControl>

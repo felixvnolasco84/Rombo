@@ -59,6 +59,7 @@ export default function CommentForm({ requestId }: { requestId: string }) {
           duration: 3000,
         });
         form.reset();
+        
       }
     } catch (error: any) {
       toast({

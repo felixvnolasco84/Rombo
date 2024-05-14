@@ -41,7 +41,31 @@ export const POST = async (req: any) => {
         ...body,
         userEmail: session.user.email,
       },
+      include: {
+        brand: true,
+      },
     });
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session.user.email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    //TODO: IMPROVE THIS CODE
+    const notification = await prisma.notification.create({
+      data: {
+        type: "request",
+        message: `Nueva solicitud: ${request.title}`,
+        brandId: request.brandId,
+        requestId: request.id,
+        userId: user!.id,
+      },
+    });
+
     return NextResponse.json({ request });
   } catch (error) {
     console.log(error);

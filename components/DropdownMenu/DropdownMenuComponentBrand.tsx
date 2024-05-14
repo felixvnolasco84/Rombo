@@ -40,14 +40,14 @@ export default function DropdownMenuComponentBrand({ brand }: { brand: any }) {
         method: "DELETE",
       });
       const response = await draftResponse.json();
-      if (response.message === "Request deleted successfully") {
+      if (response.message === "Brand deleted successfully") {
         toast({
           title: "¡Listo!",
-          description: " Tu solicitud se ha eliminado!",
+          description: " Tu marca ha sido eliminada",
           variant: "default",
           duration: 3000,
         });
-        router.push("/portal/solicitudes");
+        router.push("/portal/marcas");
       }
     } catch (err) {
       console.log(err);

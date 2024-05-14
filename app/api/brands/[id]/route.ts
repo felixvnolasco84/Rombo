@@ -21,10 +21,11 @@ export const GET = async (id: any) => {
 };
 
 // DELETE SINGLE BRAND
-export const DELETE = async (id: any) => {
+export const DELETE = async (req: any, {params}: any) => {
+  const id = params.id;
   try {
     const brand = await prisma.brand.delete({ where: { id } });
-    return new NextResponse(JSON.stringify(brand));
+    return NextResponse.json({ message: "Brand deleted successfully" });
   } catch (err) {
     console.log(err);
     return new NextResponse(

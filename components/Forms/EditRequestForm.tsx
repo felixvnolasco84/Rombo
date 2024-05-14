@@ -28,7 +28,6 @@ import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import { PUT as UpdateRequest } from "@/app/api/requests/[id]/route";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
 
 type RequestFormProps = {
@@ -36,7 +35,6 @@ type RequestFormProps = {
 };
 
 export default function EditRequestForm({ request }: RequestFormProps) {
-  // console.log(request);
 
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
@@ -262,6 +260,7 @@ export default function EditRequestForm({ request }: RequestFormProps) {
                     </FormDescription>
                     <FormControl>
                       <UploadDocumentsFormField
+                        objectId={{ id: request.id, type: "request" }}
                         files={request?.documents}
                         {...field}
                       />

@@ -16,7 +16,7 @@ export const GET = async () => {
   return NextResponse.json(brands);
 };
 
-//CREATE A NEW PROJECT
+//CREATE A NEW BRAND
 export const POST = async (req: NextRequest) => {
   const session: any = await getAuthSession();
 
@@ -28,6 +28,19 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const brand = await prisma.brand.create({
       data: { ...body, userEmail: session.user.email },
+      include: {
+        user: true,
+      },
+
+    });
+
+    const notification = await prisma.notification.create({
+      data: {
+        type: "brand",
+        message: `Nueva marca creada: ${brand.title}`,
+        brandId: brand.id,
+        userId: brand.user.id,
+      },
     });
 
     return new NextResponse(JSON.stringify(brand));
