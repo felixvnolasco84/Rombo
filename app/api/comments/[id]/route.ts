@@ -4,14 +4,12 @@ import prisma from "@/utils/ConnectionPool";
 
 //EDIT A COMMENT
 
-export const PUT = async (req: any, {params} : any) => {
-
+export const PUT = async (req: any, { params }: any) => {
   const id = params.id;
   const session: any = await getAuthSession();
   if (!session) {
     return new NextResponse(JSON.stringify({ message: "Not Authenticated!" }));
   }
-
   try {
     const body = await req.json();
     await prisma.comment.update({
@@ -21,6 +19,15 @@ export const PUT = async (req: any, {params} : any) => {
       data: {
         desc: body.desc,
         documents: body.documents,
+      },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "comment",
+        message: `Comentario actualizado`,
+        commentId: id,
+        userId: session.user.id,
       },
     });
 
@@ -44,9 +51,18 @@ export const DELETE = async (req: any, { params }: any) => {
   }
 
   try {
-    const comment = await prisma.comment.delete({
+    await prisma.comment.delete({
       where: {
         id: id,
+      },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "comment",
+        message: `Comentario eliminado`,
+        commentId: id,
+        userId: session.user.id,
       },
     });
 

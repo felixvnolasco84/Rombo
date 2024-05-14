@@ -7,7 +7,7 @@ export const POST = async (req: any, { params }: any) => {
   try {
     const id = params.id;
     const body = await req.json();
-    const response = await prisma.request.update({
+    const request = await prisma.request.update({
       where: {
         id: id,
       },
@@ -16,9 +16,22 @@ export const POST = async (req: any, { params }: any) => {
           set: body.newDocuments,
         },
       },
+      include: {
+        brand: true,
+        user: true,
+      },
     });
 
-    console.log(response);
+    await prisma.notification.create({
+      data: {
+        type: "request",
+        message: `Documentos actualizados en la solicitud ${request.title}`,
+        brandId: request.brandId,
+        requestId: id,
+        userId: request.user.id,
+      },
+    });
+
     return NextResponse.json({ message: "Document removed!" });
   } catch (error) {
     console.error(error);

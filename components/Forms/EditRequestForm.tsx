@@ -32,20 +32,24 @@ import UploadDocumentsFormField from "./UploadDocumentsFormField";
 
 type RequestFormProps = {
   request: any;
+  setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function EditRequestForm({ request }: RequestFormProps) {
-
+export default function EditRequestForm({ request, setIsEditDialogOpen }: RequestFormProps) {
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción" }),
-    documents: z.array(z.object({
-      name: z.string(),
-      url: z.string(),
-    })).optional(),
+    documents: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.string(),
+        })
+      )
+      .optional(),
     brandId: z.string(),
     status: z.string(),
     priority: z.string(),
@@ -85,20 +89,19 @@ export default function EditRequestForm({ request }: RequestFormProps) {
       // const response = await UpdateRequest(data, request.id);
       const responseJson = await response.json();
 
-      router.push(`/portal/solicitudes/${responseJson.id}`);
-
-      if (!response) {
+      if (responseJson.message === "Request updated successfully") {
         toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
+          variant: "default",
+          title: "¡Listo!",
+          description: "La solicitud ha sido actualizada 🎉",
         });
+        setIsEditDialogOpen && setIsEditDialogOpen(false);
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
+        description: "Al parecer hubo un error, intentelo más tarde",
       });
     } finally {
       setIsLoading(false);

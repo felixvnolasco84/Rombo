@@ -27,10 +27,28 @@ export const PUT = async (req: any, { params }: any) => {
     const body = await req.json();
     const id = params.id;
 
-    await prisma.request.update({
+    const request = await prisma.request.update({
       where: { id: id },
       data: {
         ...body,
+      },
+      include: {
+        brand: true,
+      },
+    });
+
+    const user = await prisma.user.findUnique({
+      where: { email: request.userEmail },
+      select: { id: true },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "request",
+        message: `Solicitud actualizada: ${request.title}	`,
+        brandId: request.brandId,
+        requestId: id,
+        userId: user!.id,
       },
     });
 
@@ -49,9 +67,29 @@ export const DELETE = async (req: any, { params }: any) => {
   const id = params.id;
 
   try {
-    await prisma.request.delete({
-      where: { id: id },
-    });
+    await prisma.$transaction([
+      prisma.notification.deleteMany({
+        where: { requestId: id },
+      }),
+      prisma.request.delete({
+        where: { id: id },
+      }),
+    ]);
+
+    // const user = await prisma.user.findUnique({
+    //   where: { email: request.userEmail },
+    //   select: { id: true },
+    // });
+
+    // await prisma.notification.create({
+    //   data: {
+    //     type: "request",
+    //     message: `Solicitud eliminada: ${request.title}`,
+    //     brandId: request.brandId,
+    //     requestId: id,
+    //     userId: user!.id,
+    //   },
+    // });
 
     return NextResponse.json({ message: "Request deleted successfully" });
   } catch (err) {

@@ -98,7 +98,10 @@ export default function DropdownMenuComponentRequest({
             </DialogDescription>
           </DialogHeader>
           {isEditDialogOpen ? (
-            <EditRequestForm request={request} />
+            <EditRequestForm
+              setIsEditDialogOpen={setIsEditDialogOpen}
+              request={request}
+            />
           ) : (
             <DialogFooter>
               <Button

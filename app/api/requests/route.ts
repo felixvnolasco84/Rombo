@@ -56,7 +56,7 @@ export const POST = async (req: any) => {
     });
 
     //TODO: IMPROVE THIS CODE
-    const notification = await prisma.notification.create({
+    await prisma.notification.create({
       data: {
         type: "request",
         message: `Nueva solicitud: ${request.title}`,

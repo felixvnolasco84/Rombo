@@ -18,7 +18,14 @@ export const POST = async (req: any, { params }: any) => {
       },
     });
 
-    console.log(response);
+    await prisma.notification.create({
+      data: {
+        type: "brand",
+        message: `Documentos actualizados en la marca ${response.title}`,
+        brandId: response.id,
+        userId: response.userEmail,
+      },
+    });
     return NextResponse.json({ message: "Document removed!" });
   } catch (error) {
     console.error(error);

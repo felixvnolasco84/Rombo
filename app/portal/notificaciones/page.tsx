@@ -25,9 +25,6 @@ export default async function page() {
     },
   });
 
-
-  console.log(notifications)
-
   if (!session) {
     return {
       redirect: {

@@ -21,10 +21,23 @@ export const GET = async (id: any) => {
 };
 
 // DELETE SINGLE BRAND
-export const DELETE = async (req: any, {params}: any) => {
+export const DELETE = async (req: any, { params }: any) => {
   const id = params.id;
   try {
-    const brand = await prisma.brand.delete({ where: { id } });
+    const brand = await prisma.brand.delete({
+      where: { id },
+      include: { user: true },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "brand",
+        message: `Marca eliminada: ${brand.title}`,
+        brandId: id,
+        userId: brand.user.id,
+      },
+    });
+
     return NextResponse.json({ message: "Brand deleted successfully" });
   } catch (err) {
     console.log(err);
@@ -38,11 +51,20 @@ export const DELETE = async (req: any, {params}: any) => {
 export const PUT = async (req: any, { params }: any) => {
   const id = params.id;
   const body: any = await req.json();
-  
+
   try {
     await prisma.brand.update({
       where: { id: id },
       data: { ...body },
+    });
+
+    await prisma.notification.create({
+      data: {
+        type: "brand",
+        message: `Marca actualizada: ${body.title}`,
+        brandId: id,
+        userId: body.userId,
+      },
     });
 
     return NextResponse.json({ message: "Brand updated successfully" });

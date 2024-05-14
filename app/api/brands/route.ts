@@ -31,10 +31,9 @@ export const POST = async (req: NextRequest) => {
       include: {
         user: true,
       },
-
     });
 
-    const notification = await prisma.notification.create({
+    await prisma.notification.create({
       data: {
         type: "brand",
         message: `Nueva marca creada: ${brand.title}`,

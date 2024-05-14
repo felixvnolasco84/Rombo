@@ -155,6 +155,24 @@ export const notificationsColumns: ColumnDef<any>[] = [
     id: "actions",
     cell: ({ row }) => {
       const request = row.original;
+
+      const id =
+        request.type === "request"
+          ? request.requestId
+          : request.type === "comment"
+          ? request.requestId
+          : request.brandId;
+
+      let url = "";
+
+      if (request.type === "request") {
+        url = `/portal/solicitudes/${id}`;
+      } else if (request.type === "comment") {
+        url = `/portal/solicitudes/${id}`;
+      } else {
+        url = `/portal/marcas/${id}`;
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -172,8 +190,13 @@ export const notificationsColumns: ColumnDef<any>[] = [
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/portal/solicitudes/${request.id}`}>
-                Ver detalles
+              <Link href={url}>
+                Ver{" "}
+                {request.type === "request"
+                  ? "solicitud"
+                  : request.type === "comment"
+                  ? "comentario"
+                  : "marca"}
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
