@@ -165,12 +165,14 @@ export const notificationsColumns: ColumnDef<any>[] = [
 
       let url = "";
 
-      if (request.type === "request") {
+      if (request.type === "request" && request.requestId) {
         url = `/portal/solicitudes/${id}`;
-      } else if (request.type === "comment") {
+      } else if (request.type === "comment" && request.requestId) {
         url = `/portal/solicitudes/${id}`;
-      } else {
+      } else if (request.type === "brand" && request.brandId) {
         url = `/portal/marcas/${id}`;
+      } else {
+        url = "";
       }
 
       return (
@@ -189,16 +191,23 @@ export const notificationsColumns: ColumnDef<any>[] = [
               Copiar nombre de la solicitud
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={url}>
-                Ver{" "}
-                {request.type === "request"
-                  ? "solicitud"
-                  : request.type === "comment"
-                  ? "comentario"
-                  : "marca"}
-              </Link>
-            </DropdownMenuItem>
+            {url !== "" ? (
+              <DropdownMenuItem>
+                <Link href={url}>
+                  {request.type === "request" && request.requestId
+                    ? "Ver solicitud"
+                    : request.type === "comment" && request.requestId
+                    ? "Ver comentario"
+                    : request.type === "brand" && request.brandId
+                    ? "Ver marca"
+                    : ""}
+                </Link>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem>
+                No existen acciones disponibles
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       );

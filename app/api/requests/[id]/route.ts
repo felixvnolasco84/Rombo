@@ -62,7 +62,6 @@ export const PUT = async (req: any, { params }: any) => {
 };
 
 //DELETE REQUEST
-
 export const DELETE = async (req: any, { params }: any) => {
   const id = params.id;
 
@@ -75,21 +74,6 @@ export const DELETE = async (req: any, { params }: any) => {
         where: { id: id },
       }),
     ]);
-
-    // const user = await prisma.user.findUnique({
-    //   where: { email: request.userEmail },
-    //   select: { id: true },
-    // });
-
-    // await prisma.notification.create({
-    //   data: {
-    //     type: "request",
-    //     message: `Solicitud eliminada: ${request.title}`,
-    //     brandId: request.brandId,
-    //     requestId: id,
-    //     userId: user!.id,
-    //   },
-    // });
 
     return NextResponse.json({ message: "Request deleted successfully" });
   } catch (err) {

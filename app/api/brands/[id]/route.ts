@@ -24,19 +24,30 @@ export const GET = async (id: any) => {
 export const DELETE = async (req: any, { params }: any) => {
   const id = params.id;
   try {
-    const brand = await prisma.brand.delete({
-      where: { id },
-      include: { user: true },
+    const brand = await prisma.brand.findUnique({
+      where: { id: id },
     });
 
-    await prisma.notification.create({
-      data: {
-        type: "brand",
-        message: `Marca eliminada: ${brand.title}`,
-        brandId: id,
-        userId: brand.user.id,
-      },
+    if (!brand) {
+      throw new Error("Brand not found");
+    }
+
+    const title = brand.title;
+    const user = await prisma.user.findUnique({
+      where: { email: brand.userEmail },
     });
+
+    await prisma.$transaction([
+      prisma.notification.deleteMany({ where: { brandId: id } }),
+      prisma.brand.delete({ where: { id: id } }),
+      prisma.notification.create({
+        data: {
+          type: "brand",
+          message: `Marca eliminada: ${title}`,
+          userId: user!.id,
+        },
+      }),
+    ]);
 
     return NextResponse.json({ message: "Brand deleted successfully" });
   } catch (err) {
@@ -53,17 +64,31 @@ export const PUT = async (req: any, { params }: any) => {
   const body: any = await req.json();
 
   try {
-    await prisma.brand.update({
+    const brand = await prisma.brand.findUnique({
       where: { id: id },
-      data: { ...body },
     });
+
+    if (!brand) {
+      throw new Error("Brand not found");
+    }
+
+    const [updatedBrand, user] = await prisma.$transaction([
+      prisma.brand.update({
+        where: { id: id },
+        data: { ...body },
+      }),
+      prisma.user.findUnique({
+        where: { email: brand.userEmail },
+        select: { id: true },
+      }),
+    ]);
 
     await prisma.notification.create({
       data: {
         type: "brand",
-        message: `Marca actualizada: ${body.title}`,
+        message: `Marca actualizada: ${updatedBrand.title}`,
         brandId: id,
-        userId: body.userId,
+        userId: user!.id,
       },
     });
 

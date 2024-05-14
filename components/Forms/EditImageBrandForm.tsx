@@ -15,14 +15,9 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { FormLabel } from "../react-hook-form";
-import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
-import { industries } from "@/lib/utils";
 import UpdateImageFormField from "./UpdateImageFormField";
 
 type RequestFormProps = {

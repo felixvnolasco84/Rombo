@@ -39,6 +39,8 @@ export default function DropdownMenuComponentBrand({ brand }: { brand: any }) {
         method: "DELETE",
       });
       const response = await draftResponse.json();
+
+      console.log(response)
       if (response.message === "Brand deleted successfully") {
         toast({
           title: "¡Listo!",
