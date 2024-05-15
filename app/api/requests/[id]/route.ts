@@ -65,6 +65,24 @@ export const PUT = async (req: any, { params }: any) => {
 export const DELETE = async (req: any, { params }: any) => {
   const id = params.id;
 
+  const request = await prisma.request.findUnique({
+    where: { id: id },
+    select: { title: true, userEmail: true, brandId: true },
+  });
+
+  if (!request) {
+    throw new Error("Request not found");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: request.userEmail },
+    select: { id: true },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
   try {
     await prisma.$transaction([
       prisma.notification.deleteMany({
@@ -72,6 +90,14 @@ export const DELETE = async (req: any, { params }: any) => {
       }),
       prisma.request.delete({
         where: { id: id },
+      }),
+      prisma.notification.create({
+        data: {
+          type: "request",
+          message: `Solicitud eliminada: ${request.title}`,
+          brandId: request.brandId,
+          userId: user.id,
+        },
       }),
     ]);
 

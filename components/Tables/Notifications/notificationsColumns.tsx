@@ -90,6 +90,12 @@ export const notificationsColumns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "brand.title",
+    accessorFn: (value) => (
+      // <Link href={`/portal/marcas/${value.brand.title}`}>
+      // console.log(value.brand.title)
+      <Badge>{value.brand.title}</Badge>
+      // </Link>
+    ),
     header: ({ column }) => {
       return (
         <Button
@@ -99,6 +105,22 @@ export const notificationsColumns: ColumnDef<any>[] = [
           Marca
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const brand = row.original.brand;
+
+      console.log(brand);
+      return (
+        <>
+          {brand !== null ? (
+            <Link href={`/portal/marcas/${brand.id}`}>
+              <Badge variant={"outline"}>{brand.title}</Badge>
+            </Link>
+          ) : (
+            <Badge variant={"outline"}>Sin marca</Badge>
+          )}
+        </>
       );
     },
   },
@@ -113,6 +135,20 @@ export const notificationsColumns: ColumnDef<any>[] = [
           Solicitud
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const request = row.original.request;
+      return (
+        <>
+          {request !== null ? (
+            <Link href={`/portal/solicitudes/${request.id}`}>
+              <Badge variant={"outline"}>{request.title}</Badge>
+            </Link>
+          ) : (
+            <Badge variant={"outline"}>Sin solicitud</Badge>
+          )}
+        </>
       );
     },
   },
