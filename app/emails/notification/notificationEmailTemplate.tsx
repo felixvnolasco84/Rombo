@@ -35,7 +35,9 @@ export const NotificationEmailTemplate = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={"https://www.rombo.design/_next/static/media/Logo.7967ebb3.svg"}
+          src={
+            "https://www.rombo.design/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FRomboLogo.c20f936f.png&w=128&q=75"
+          }
           width="103"
           height="32"
           alt="Rombo Logo"
