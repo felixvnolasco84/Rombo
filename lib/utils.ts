@@ -154,12 +154,10 @@ export default function getFileIcon(file: File) {
   }
 }
 
-
 export type DocumentUpload = {
   name: string;
   url: string;
 };
-
 
 export const industries = [
   "Agricultura",
@@ -194,3 +192,14 @@ export const industries = [
   "Turismo",
   "Ventas",
 ];
+
+export type Notification = {
+  id: String;
+  message: String;
+  type: String;
+  brandId?: String;
+  requestId?: String;
+  commentId?: String;
+  read: Boolean;
+  userId: String;
+};

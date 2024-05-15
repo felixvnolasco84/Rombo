@@ -4,9 +4,9 @@ import { Separator } from "@/components/ui/separator"
 import { SideNavbar } from "@/components/Navbar/Side/SideNavbar"
 
 export const metadata: Metadata = {
-  title: "Tu Espacio Personal en G-TIMIN: Gestiona Tu Cuenta con Facilidad",
+  title: "",
   description:
-    "Accede a tu cuenta personal en G-TIMIN y descubre un espacio diseñado para ti. Gestiona tu perfil, guarda tus favoritos y personaliza tu experiencia científica. Tu cuenta en G-TIMIN es la puerta a una comunidad apasionada que comparte tu interés por la exploración y el descubrimiento científico.",
+    "",
 }
 
 const sidebarNavItems = [

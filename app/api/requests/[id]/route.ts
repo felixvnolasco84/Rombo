@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/utils/ConnectionPool";
+import { sendEmailNotification } from "@/app/_actions";
 
 //GET SINGLE REQUEST
 export const GET = async (id: any) => {
@@ -42,7 +43,7 @@ export const PUT = async (req: any, { params }: any) => {
       select: { id: true },
     });
 
-    await prisma.notification.create({
+    const notification = await prisma.notification.create({
       data: {
         type: "request",
         message: `Solicitud actualizada: ${request.title}	`,
@@ -50,7 +51,12 @@ export const PUT = async (req: any, { params }: any) => {
         requestId: id,
         userId: user!.id,
       },
+      include: {
+        request: true,
+      },
     });
+
+    const response = await sendEmailNotification(notification, "hola@rombo.design");
 
     return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {

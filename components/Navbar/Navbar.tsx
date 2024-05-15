@@ -42,8 +42,6 @@ const navbarItems: NavbarItem[] = [
 export default async function Navbar() {
   const session: any = await getAuthSession();
 
-  console.log(session && true);
-
   return (
     <div className="sticky top-0 z-50 flex justify-between bg-white py-6">
       <div className="flex items-center">
