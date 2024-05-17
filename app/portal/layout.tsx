@@ -32,43 +32,43 @@ export default function layout({ children }: { children: React.ReactNode }) {
     ]
 
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-            <div className="hidden border-r bg-muted/40 md:block">
-                <div className="flex h-full max-h-screen flex-col gap-2 p-4">
-                    <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                        <Link href="/" className="flex items-center gap-2 font-semibold">
-                            {/* <DashboardIcon className="h-6 w-6" /> */}
-                            <span className="">Dashboard</span>
-                        </Link>
-                    </div>
-                    <div className="flex-1">
-                        <SidebarNavDashboard items={sidebarNavItems} />{" "}
-                    </div>
-                </div>
+      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
+        <div className="hidden border-r bg-muted/40 md:block">
+          <div className="flex h-full max-h-screen flex-col gap-2 p-4">
+            <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+              <Link href="/" className="flex items-center gap-2 font-semibold">
+                {/* <DashboardIcon className="h-6 w-6" /> */}
+                <span className="">Dashboard</span>
+              </Link>
             </div>
-            <div className="flex flex-col">
-                <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button
-                                variant="outline"
-                                size="default"
-                                className="shrink-0 md:hidden"
-                            >
-                                <Menu className="h-5 w-5" />
-                                <span className="sr-only">Toggle navigation menu</span>
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="flex flex-col">
-                            <SidebarNavDashboard items={sidebarNavItems} />
-                        </SheetContent>
-                    </Sheet>
-                    {/* <BreadcrumbComponent /> */}
-                </header>
-                <main className="flex flex-1 flex-col gap-4 bg-muted/20 p-4 lg:gap-6">
-                    {children}
-                </main>
+            <div className="flex-1">
+              <SidebarNavDashboard items={sidebarNavItems} />{" "}
             </div>
+          </div>
         </div>
-    )
+        <div className="flex flex-col">
+          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:p-6">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="shrink-0 md:hidden"
+                >
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="flex flex-col">
+                <SidebarNavDashboard items={sidebarNavItems} />
+              </SheetContent>
+            </Sheet>
+            {/* <BreadcrumbComponent /> */}
+          </header>
+          <main className="flex flex-1 flex-col gap-4 bg-muted/20 p-4 lg:gap-6">
+            {children}
+          </main>
+        </div>
+      </div>
+    );
 }

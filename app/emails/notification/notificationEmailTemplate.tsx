@@ -17,6 +17,7 @@ type NotificationEmailTemplateProps = {
   message: string;
   request?: any;
   brand?: any;
+  comment?: any;
 };
 
 export const NotificationEmailTemplate = ({
@@ -30,39 +31,55 @@ export const NotificationEmailTemplate = ({
     <Preview>
       {type === "brand"
         ? `Notificación de ${brand.title}`
-        : `Notificación de solicitud: ${request.title}`}
+        : type === "request"
+        ? `Notificación de solicitud: ${request.title}`
+        : "Notificación de comentario"}
     </Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src={
-            "https://www.rombo.design/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FRomboLogo.c20f936f.png&w=128&q=75"
+            "https://firebasestorage.googleapis.com/v0/b/rombo-design.appspot.com/o/Logos%2FRomboLogo.png?alt=media&token=b5b67c3d-7348-418d-9400-63698df7571a"
           }
-          width="103"
-          height="32"
           alt="Rombo Logo"
         />
         <Text style={title}>
           <strong>{`Notificación | ${
-            type === request ? request.title : request.brand
+            type === "request" || type === "comment"
+              ? request.title
+              : brand.title
           }`}</strong>
         </Text>
         <Section style={section}>
           <Text style={text}>¡Hola!</Text>
           <Text style={text}>
-            {type === "brand"
-              ? `Tenemos una notificación para la marca: ${brand.title}`
-              : `Tenemos una nueva notificación para la solicitud: ${request.title}`}
+            {type === "brand" ? (
+              <>
+                Tenemos una notificación para la marca:
+                <strong>{brand.title}</strong>
+              </>
+            ) : (
+              <>
+                Tenemos una nueva notificación para la solicitud:
+                <strong>{request.title}</strong>
+              </>
+            )}
           </Text>
 
           <>
             {type === "brand" ? (
-              <Text style={text}>Marca: {brand.title}</Text>
+              <Text style={text}>
+                Marca: <strong>{brand.title}</strong>
+              </Text>
             ) : (
-              <Text style={text}>Solicitud: {request.title}</Text>
+              <Text style={text}>
+                Solicitud: <strong>{request.title}</strong>
+              </Text>
             )}
           </>
-          <Text style={text}>Mensaje: {message}</Text>
+          <Text style={text}>
+            Mensaje: <strong>{message}</strong>
+          </Text>
 
           <Button
             href={

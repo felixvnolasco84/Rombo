@@ -1,11 +1,15 @@
 import { GET as getSingleBrand } from "@/app/api/brands/[id]/route";
 import { Button } from "@/components/ui/button";
-import { BookOpenIcon, PlusCircle } from "lucide-react";
+import {
+  BookOpenIcon,
+  Factory,
+  Globe,
+  GlobeIcon,
+  PlusCircle,
+} from "lucide-react";
 import { CalendarIcon, RefreshCwIcon, UserIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-// import DropdownMenuComponent from "@/components/DropdownMenu/DropdownMenuComponent";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
@@ -35,12 +39,36 @@ export default async function page({ params }: { params: { id: string } }) {
       </div>
       <div className="mx-auto flex w-full max-w-6xl items-center gap-4">
         <EditBrandImageDialog brand={brand} />
-        <div className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-4">
           <div className="flex justify-between">
             <h1 className="text-3xl font-bold">{brand.title}</h1>
             <DropdownMenuComponentBrand brand={brand} />
           </div>
           <TipTapOnlyContent content={brand.description} />
+          <div className="flex gap-4">
+            {brand.website && brand.website !== "" && (
+              <div className="flex items-center gap-1 text-sm">
+                <GlobeIcon className="h-4 w-4" />
+                <a
+                  href={brand.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 dark:text-gray-400"
+                >
+                  {brand.website}
+                </a>
+              </div>
+            )}
+            {brand.industry && brand.industry !== "" && (
+              <div className="flex items-center gap-1 text-sm">
+                <Factory className="h-4 w-4" />
+                <span className="text-gray-500 dark:text-gray-400">
+                  {brand.industry}
+                </span>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1">
               <UserIcon className="h-4 w-4" />
@@ -51,7 +79,6 @@ export default async function page({ params }: { params: { id: string } }) {
             <div className="flex items-center gap-1">
               <CalendarIcon className="h-4 w-4" />
               <span className="text-gray-500 dark:text-gray-400">
-                Creado el{" "}
                 {new Date(brand.createdAt).toLocaleDateString("es-MX", {
                   month: "long",
                   day: "numeric",
@@ -62,7 +89,6 @@ export default async function page({ params }: { params: { id: string } }) {
             <div className="flex items-center gap-1">
               <RefreshCwIcon className="h-4 w-4" />
               <span className="text-gray-500 dark:text-gray-400">
-                Última Actualización el{" "}
                 {new Date(brand.updatedAt).toLocaleDateString("es-Mx", {
                   month: "long",
                   day: "numeric",

@@ -49,7 +49,6 @@ export default async function RequestCard({ request }: { request: Request }) {
           <div className="flex items-center gap-1">
             <CalendarIcon className="h-4 w-4" />
             <span className="text-gray-500 dark:text-gray-400">
-              Creado el:{" "}
               {new Date(request.createdAt).toLocaleDateString("es-Mx", {
                 weekday: "long",
                 year: "numeric",

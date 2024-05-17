@@ -69,7 +69,47 @@ export async function sendEmailNotification(
       console.log(error);
       return { success: false, error };
     }
+  } else if (type === "comment") {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: notification.commentId,
+      },
+    });
+
+    if (!comment) {
+      return { success: false, error: "Comment not found" };
+    }
+
+    const request = await prisma.request.findUnique({
+      where: {
+        id: comment.requestId,
+      },
+    });
+
+    if (!request) {
+      return { success: false, error: "Request not found" };
+    }
+
+    try {
+      const data = await resend.emails.send({
+        from: "hola@rombo.design",
+        to: [email],
+        cc: [""],
+        subject: `Notificación de comentario en ${request.title}`,
+        react: NotificationEmailTemplate({
+          type,
+          message,
+          comment,
+          request,
+        }),
+      });
+      return { success: true, data };
+    } catch (error) {
+      console.log(error);
+      return { success: false, error };
+    }
   }
+
   // if (result.error) {
   //   return { success: false, error: result.error.format() };
   // }

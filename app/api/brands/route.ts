@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
+import { sendEmailNotification } from "@/app/_actions";
 
 //GET ALL BRANDS
 export const GET = async () => {
@@ -33,7 +34,7 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    await prisma.notification.create({
+    const notification = await prisma.notification.create({
       data: {
         type: "brand",
         message: `Nueva marca creada: ${brand.title}`,
@@ -41,6 +42,8 @@ export const POST = async (req: NextRequest) => {
         userId: brand.user.id,
       },
     });
+
+    await sendEmailNotification(notification, "hola@rombo.design");
 
     return new NextResponse(JSON.stringify(brand));
   } catch (err) {

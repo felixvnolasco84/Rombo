@@ -29,6 +29,7 @@ import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
+import { services } from "@/lib/utils";
 
 type RequestFormProps = {
   request: any;
@@ -108,32 +109,6 @@ export default function EditRequestForm({ request, setIsEditDialogOpen }: Reques
     }
   }
 
-  const services = [
-    {
-      id: 1,
-      name: "Gráficos de Redes Sociales",
-    },
-    {
-      id: 2,
-      name: "Papelería, Infografías, Folletos",
-    },
-    {
-      id: 3,
-      name: "Fotos de Stock Ilimitadas",
-    },
-    {
-      id: 4,
-      name: "Presentaciones",
-    },
-    {
-      id: 5,
-      name: "Reels y Motion Graphics",
-    },
-    {
-      id: 6,
-      name: "Branding & Logotipos",
-    },
-  ];
 
   return (
     <Form {...form}>

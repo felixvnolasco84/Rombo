@@ -9,12 +9,29 @@ import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponentRequest";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
+import DropdownMenuRequestStatus from "@/components/DropdownMenu/DropdownMenuRequestStatus";
+import DropdownMenuRequestCategory from "@/components/DropdownMenu/DropdownMenuRequestCategory";
+import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuRequestPriority";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
 
   const data = await getSingleRequest(params.id);
   const request = await data.json();
+
+  if (!session) {
+    return <div>Not Authenticated!</div>;
+  }
+
+  if (
+    session.user.email !==
+    (request.userEmail ||
+      "felix@polygonag.com" ||
+      "alba@polygonag.com" ||
+      "rodrigo@polygonag.com")
+  ) {
+    return <div>Not Authorized!</div>;
+  }
 
   return (
     <section className="mx-auto w-full max-w-2xl px-4 py-8 md:px-0">
@@ -26,9 +43,22 @@ export default async function page({ params }: { params: { id: string } }) {
       <div className="mb-8 grid grid-cols-2 gap-4">
         <div>
           <h3 className="font-semibold text-gray-600">Categoría</h3>
-          <Link href={`/portal/solicitudes?category=${request.category}`}>
-            <Badge variant={"outline"}>{request.category}</Badge>
-          </Link>
+          <DropdownMenuRequestCategory
+            id={request.id}
+            category={request.category}
+          />
+        </div>
+        <div className="">
+          <h3 className="font-semibold text-gray-600">Prioridad</h3>
+          <DropdownMenuRequestPriority
+            priority={request.priority}
+            id={request.id}
+          />
+          {/* <Badge variant={"outline"}>{request.priority}</Badge> */}
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-600">Status</h3>
+          <DropdownMenuRequestStatus id={request.id} status={request.status} />
         </div>
         <div>
           <h3 className="font-semibold text-gray-600">Creado Por</h3>
@@ -57,17 +87,11 @@ export default async function page({ params }: { params: { id: string } }) {
             })}
           </p>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-1">
           <h3 className="font-semibold text-gray-600">Marca</h3>
           <Link href={`/portal/marcas/${request.brand.id}`}>
             <Badge variant={"outline"}>{request.brand.title}</Badge>
           </Link>
-        </div>
-        <div className="">
-          <h3 className="font-semibold text-gray-600">Prioridad</h3>
-          {/* <Link href={`/portal/proyectos/${request.project.id}`}> */}
-          <Badge variant={"outline"}>{request.priority}</Badge>
-          {/* </Link> */}
         </div>
       </div>
       <div className="mb-8">

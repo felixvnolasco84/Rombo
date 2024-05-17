@@ -56,7 +56,7 @@ export const PUT = async (req: any, { params }: any) => {
       },
     });
 
-    const response = await sendEmailNotification(notification, "hola@rombo.design");
+    await sendEmailNotification(notification, "hola@rombo.design");
 
     return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {
@@ -106,6 +106,8 @@ export const DELETE = async (req: any, { params }: any) => {
         },
       }),
     ]);
+
+    
 
     return NextResponse.json({ message: "Request deleted successfully" });
   } catch (err) {
