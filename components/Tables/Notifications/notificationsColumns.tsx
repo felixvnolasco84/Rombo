@@ -153,6 +153,20 @@ export const notificationsColumns: ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: "user.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Usuario
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "createdAt",
     accessorFn: (value) =>
       new Date(value.createdAt).toLocaleDateString("es-Mx", {
@@ -172,25 +186,13 @@ export const notificationsColumns: ColumnDef<any>[] = [
       );
     },
   },
-  {
-    accessorKey: "user.name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Usuario
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
 
   {
     id: "actions",
     cell: ({ row }) => {
       const request = row.original;
+
+      console.log(request);
 
       const id =
         request.type === "request"

@@ -20,6 +20,7 @@ import {
   Table,
 } from "@/components/ui/table";
 import {
+  createCheckoutLink,
   createCustomerIfNull,
   generateCustomerPortalLink,
   hasSubscription,
@@ -59,10 +60,13 @@ export default async function page() {
     where: { email: session.user?.email },
   });
 
+  if (!user) {
+    return <p>404</p>;
+  }
+
   const manage: any = await generateCustomerPortalLink(
     "" + user?.stripe_customer_id
   );
-
   const data = await getAllSubscriptions({
     params: { customer_id: user?.stripe_customer_id },
   });
@@ -79,11 +83,13 @@ export default async function page() {
     };
   });
 
+  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+
+  // const checkout_link: any = await createCheckoutLink(""+user?.stripe_customer_id)
+
   //TODO: VALIDATE IF THE CUSTOMER HAS A SUBSCRIPTION
 
   const hasSub: any = await hasSubscription();
-
-  console.log(subscriptions);
 
   return (
     <div className="min-w-4xl">
@@ -166,8 +172,12 @@ export default async function page() {
         </div>
       )}
 
-      {/* <Link href={manage} className="mt-4">
+      <Link href={manage} className="mt-4">
         Administrar Método de Pago
+      </Link>
+
+      {/* <Link href={checkout_link} className="mt-4">
+        Upgrade
       </Link> */}
     </div>
   );

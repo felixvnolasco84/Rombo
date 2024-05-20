@@ -52,6 +52,7 @@ model User {
   accounts           Account[]
   sessions           Session[]
   comments           Comment[]
+  subscriptions      Subscription[]
   Notification       Notification[]
 }
 
@@ -133,6 +134,15 @@ model Notification {
   commentId String?
   comment   Comment? @relation(fields: [commentId], references: [id])
   read      Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+
+model Subscription {
+  id        String   @id @default(cuid()) @map("_id")  
+  productId String
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

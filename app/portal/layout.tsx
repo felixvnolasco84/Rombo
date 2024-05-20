@@ -28,7 +28,8 @@ export default function layout({ children }: { children: React.ReactNode }) {
             title: "Notificaciones",
             href: "/portal/notificaciones",
             icon: <Bell className="h-4 w-4" />,
-        }
+        },
+
     ]
 
     return (

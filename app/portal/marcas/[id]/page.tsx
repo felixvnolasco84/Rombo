@@ -15,12 +15,31 @@ import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNe
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import DropdownMenuComponentBrand from "@/components/DropdownMenu/DropdownMenuComponentBrand";
 import EditBrandImageDialog from "@/components/Dialogs/EditBrandImageDialog";
+import { getAuthSession } from "@/utils/AuthOptions";
 
 export default async function page({ params }: { params: { id: string } }) {
+  const session: any = await getAuthSession();
+
+  if (!session) {
+    return <div>Not Authenticated!</div>;
+  }
+
   const data = await getSingleBrand(params.id);
   const brand = await data.json();
 
-  console.log(brand);
+  if (!brand) {
+    return <div>Brand not found!</div>;
+  }
+
+  if (
+    session.user.email !==
+    (brand.userEmail ||
+      "felix@polygonag.com" ||
+      "alba@polygonag.com" ||
+      "rodrigo@polygonag.com")
+  ) {
+    return <div>Not Authorized!</div>;
+  }
 
   return (
     <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-gray-100/40 p-4 dark:bg-gray-800/40 md:gap-8">

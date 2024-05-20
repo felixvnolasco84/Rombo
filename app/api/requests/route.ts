@@ -6,9 +6,48 @@ import prisma from "@/utils/ConnectionPool";
 
 export const GET = async () => {
   const session: any = await getAuthSession();
+
+  console.log(session);
   if (!session) {
     return new NextResponse(JSON.stringify({ message: "Not Authenticated!" }));
   }
+
+  if (
+    session.user.email == "felix@polygonag.com" ||
+    session.user.email == "rodrigo@polygonag.com" ||
+    session.user.email == "alba@polygonag.com" ||
+    session.user.email == "hola@rombo.design"
+  ) {
+    try {
+      const requests = await prisma.request.findMany({
+        include: {
+          brand: true,
+        },
+      });
+      return new NextResponse(JSON.stringify(requests));
+    } catch (error) {
+      return new NextResponse(
+        JSON.stringify({ message: "Something went wrong!" })
+      );
+    }
+  } else {
+    try {
+      const requests = await prisma.request.findMany({
+        where: {
+          userEmail: session.user.email,
+        },
+        include: {
+          brand: true,
+        },
+      });
+      return new NextResponse(JSON.stringify(requests));
+    } catch (error) {
+      return new NextResponse(
+        JSON.stringify({ message: "Something went wrong!" })
+      );
+    }
+  }
+
   try {
     // const body = await req.json();
     const requests = await prisma.request.findMany({

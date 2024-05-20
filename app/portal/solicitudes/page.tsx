@@ -15,8 +15,6 @@ export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
 
-  console.log(requests);
-
   if (requests.message === "Not Authenticated!") {
     return (
       <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
@@ -36,33 +34,5 @@ export default async function page() {
       </div>
     );
   }
-
-  // if (requests === null || requests.length === 0) {
-  //   return (
-  //     <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
-  //       <Card>
-  //         <CardHeader>
-  //           <CardTitle>No Requests</CardTitle>
-  //         </CardHeader>
-  //         <CardContent>
-  //           <CardDescription>
-  //             <Link href="/portal/solicitudes/new">
-  //               <p className="text-blue-500">Create a Request</p>
-  //             </Link>
-  //           </CardDescription>
-  //         </CardContent>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
-
-  return (
-    <RequestsDataTable columns={requestColumns} data={requests} />
-
-    // <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
-    //   {requests.map((request: any, index: any) => (
-    //     <RequestCard key={index} request={request} />
-    //   ))}
-    // </div>
-  );
+  return <RequestsDataTable columns={requestColumns} data={requests} />;
 }

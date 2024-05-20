@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
+import {
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  Select,
+} from "@/components/ui/select";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,16 +19,16 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -29,25 +36,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { XIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function RequestsDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data,
     columns,
@@ -65,19 +73,86 @@ export function RequestsDataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
     },
-  })
+  });
+
+  const brands = data.map((item: any) => item.brand.title);
+  const uniqueValues = brands.filter(
+    (value, index, self) => self.indexOf(value) === index
+  );
+
+  const priorities: string[] = ["low", "medium", "high", "critical"];
 
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Buscar tarea..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="flex gap-1">
+          <Input
+            placeholder="Buscar tarea..."
+            value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("title")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+
+          <div className="flex w-full items-center gap-1">
+            <Select
+              value={
+                (table.getColumn("brand_title")?.getFilterValue() as string) ??
+                ""
+              }
+              onValueChange={(value: any) => {
+                table.getColumn("brand_title")?.setFilterValue(value);
+              }}
+              defaultValue=""
+            >
+              <SelectTrigger className="">
+                <SelectValue placeholder="Marcas" />
+              </SelectTrigger>
+              <SelectContent>
+                {uniqueValues.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              onClick={() => table.getColumn("brand_title")?.setFilterValue("")}
+            >
+              <XIcon className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex w-full items-center gap-1">
+            <Select
+              value={
+                (table.getColumn("priority")?.getFilterValue() as string) ?? ""
+              }
+              onValueChange={(value: any) => {
+                table.getColumn("priority")?.setFilterValue(value);
+              }}
+              defaultValue=""
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Prioridad" />
+              </SelectTrigger>
+              <SelectContent>
+                {priorities.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              onClick={() => table.getColumn("priority")?.setFilterValue("")}
+            >
+              <XIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -100,7 +175,7 @@ export function RequestsDataTable<TData, TValue>({
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -116,11 +191,11 @@ export function RequestsDataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -178,5 +253,5 @@ export function RequestsDataTable<TData, TValue>({
         {table.getFilteredRowModel().rows.length} fila(s) seleccionada(s).
       </div>
     </div>
-  )
+  );
 }
