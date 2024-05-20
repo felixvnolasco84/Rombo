@@ -46,7 +46,7 @@ model User {
   emailVerified      DateTime?
   brands             Brand[]
   image              String?
-  stripe_customer_id String?
+  stripe_customer_id String? @unique
   password           String?
   requests           Request[]
   accounts           Account[]
@@ -142,8 +142,8 @@ model Notification {
 
 model Subscription {
   id        String   @id @default(cuid()) @map("_id")  
-  productId String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  subscriptionId String
+  customerId    String
+  customer      User     @relation(fields: [customerId], references: [stripe_customer_id])
   createdAt DateTime @default(now())
 }

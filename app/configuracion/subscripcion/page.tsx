@@ -73,6 +73,8 @@ export default async function page() {
 
   const dataJson = await data.json();
 
+  console.log(dataJson);
+
   const subscriptions = dataJson.data.map((subscription: any) => {
     return {
       id: subscription.id,
@@ -84,6 +86,8 @@ export default async function page() {
   });
 
   const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+
+
 
   // const checkout_link: any = await createCheckoutLink(""+user?.stripe_customer_id)
 

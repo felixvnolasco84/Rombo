@@ -6,7 +6,9 @@ import prisma from "@/utils/ConnectionPool";
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
 
 const endpointSecret =
-  process.env.STRIPE_WEBHOOK_SECRET_CHECKOUT_COMPLETED || "";
+  process.env.STRIPE_WEBHOOK_SECRET_CHECKOUT_COMPLETE || "";
+
+console.log("env:" + process.env.STRIPE_WEBHOOK_SECRET_CHECKOUT_COMPLETED);
 
 export async function POST(request: any) {
   const body = await request.text();
@@ -48,10 +50,13 @@ export async function POST(request: any) {
 
       console.log(checkoutSessionCompleted);
 
+      const subscription: any = checkoutSessionCompleted.subscription;
+      const customer: any = checkoutSessionCompleted.customer;
+      
       await prisma.subscription.create({
         data: {
-          productId: checkoutSessionCompleted.metadata.productId,
-          userId: checkoutSessionCompleted.metadata.userId,
+          subscriptionId: subscription,
+          customerId: customer,
         },
       });
 
