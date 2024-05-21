@@ -61,7 +61,7 @@ export default function BacklogColumn({ backlogItems }: BacklogColumnProps) {
           </div>
         </div>
         <div className="h-fit w-fit space-y-4">
-          <div>
+          <div className="flex flex-col gap-4">
             {cards.map((request: any, i: any) => renderCard(request, i))}
           </div>
           {/* {backlogItems.map((request: any) => (
