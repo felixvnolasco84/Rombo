@@ -20,8 +20,6 @@ export type Item = {
 export default function BacklogColumn({ backlogItems }: BacklogColumnProps) {
   const [cards, setCards] = useState(backlogItems || []);
 
-  console.log(cards);
-
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
     setCards((prevCards: Item[]) =>
       update(prevCards, {
@@ -41,13 +39,6 @@ export default function BacklogColumn({ backlogItems }: BacklogColumnProps) {
         key={request.id}
         request={request}
       />
-      // <KanbanCard
-      //   key={card.id}
-      //   index={index}
-      //   id={card.id}
-      //   text={card.text}
-      //   moveCard={moveCard}
-      // />
     );
   }, []);
 
