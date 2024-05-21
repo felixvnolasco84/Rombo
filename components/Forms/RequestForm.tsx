@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Textarea } from "../ui/textarea";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
@@ -124,10 +123,10 @@ export default function RequestForm({ brandId }: RequestFormProps) {
                     <FormLabel>Titulo de la tarea</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="jhon@doe.com"
+                        placeholder="Escribe un título para tu tarea"
                         className="resize-none bg-transparent py-0"
                         autoCapitalize="none"
-                        autoComplete="email"
+                        type="text"
                         autoCorrect="off"
                         disabled={isLoading}
                         {...field}
@@ -238,15 +237,6 @@ export default function RequestForm({ brandId }: RequestFormProps) {
                       Agregar documentos relacionados a tu marca o organización
                     </FormDescription>
                     <FormControl>
-                      {/* <Textarea
-                      placeholder="Descripción de la marca"
-                      className="resize-none bg-transparent"
-                      autoCapitalize="none"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      disabled={isLoading}
-                      {...field}
-                    ></Textarea> */}
                       <UploadDocumentsFormField {...field} />
                     </FormControl>
                     <FormMessage />

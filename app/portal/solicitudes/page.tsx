@@ -10,6 +10,8 @@ import Link from "next/link";
 import { GET as getAllRequests } from "@/app/api/requests/route";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumns } from "@/components/Tables/Requests/requestColumns";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 export default async function page() {
   const data = await getAllRequests();
@@ -34,5 +36,22 @@ export default async function page() {
       </div>
     );
   }
-  return <RequestsDataTable columns={requestColumns} data={requests} />;
+  return (
+    <>
+      <div className="ml-auto flex items-center gap-2">
+        <Button size="sm">
+          <Link
+            className="flex items-center gap-1"
+            href="/portal/solicitudes/new"
+          >
+            <PlusCircle className="aspect-square w-4" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Agregar Solicitud
+            </span>
+          </Link>
+        </Button>
+      </div>
+      <RequestsDataTable columns={requestColumns} data={requests} />;
+    </>
+  );
 }

@@ -10,12 +10,12 @@ import {
 import { CalendarIcon, RefreshCwIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import DropdownMenuComponentBrand from "@/components/DropdownMenu/DropdownMenuComponentBrand";
 import EditBrandImageDialog from "@/components/Dialogs/EditBrandImageDialog";
 import { getAuthSession } from "@/utils/AuthOptions";
+import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleRequestDataTable";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -126,7 +126,7 @@ export default async function page({ params }: { params: { id: string } }) {
             <h3 className="text-xl font-bold">Sin solicitudes</h3>
           </div>
         ) : (
-          <RequestsDataTable
+          <SimpleRequestDataTable
             columns={requestColumnsNew}
             data={brand.requests}
           />

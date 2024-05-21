@@ -71,9 +71,7 @@ export default async function page() {
     params: { customer_id: user?.stripe_customer_id },
   });
 
-  const dataJson = await data.json();
-
-  console.log(dataJson);
+  const dataJson = await data.json();  
 
   const subscriptions = dataJson.data.map((subscription: any) => {
     return {
@@ -82,11 +80,25 @@ export default async function page() {
       date: subscription.start_date,
       payment_method: subscription.default_payment_method,
       description: subscription.description,
+      product: subscription.plan.product
     };
   });
 
+  const productsIds = subscriptions.map((subscription: any) => {
+    return subscription.product
+  })
+
+  console.log(productsIds)
+
   const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
 
+  const productsDraft = await stripe.products.list({
+    ids: productsIds,
+  });
+
+  const products = productsDraft.data;
+
+  console.log(products)
 
 
   // const checkout_link: any = await createCheckoutLink(""+user?.stripe_customer_id)

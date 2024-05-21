@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/utils/ConnectionPool";
 import { sendEmailNotification } from "@/app/_actions";
+import { revalidatePath } from "next/cache";
 
 //GET SINGLE REQUEST
 export const GET = async (id: any) => {
@@ -57,7 +58,7 @@ export const PUT = async (req: any, { params }: any) => {
     });
 
     await sendEmailNotification(notification, "hola@rombo.design");
-
+    revalidatePath(`/requests/${id}`);
     return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {
     console.log(err);
@@ -106,8 +107,6 @@ export const DELETE = async (req: any, { params }: any) => {
         },
       }),
     ]);
-
-    
 
     return NextResponse.json({ message: "Request deleted successfully" });
   } catch (err) {

@@ -23,13 +23,18 @@ export default async function page({ params }: { params: { id: string } }) {
     return <div>Not Authenticated!</div>;
   }
 
-  if (
-    session.user.email !==
-    (request.userEmail ||
-      "felix@polygonag.com" ||
-      "alba@polygonag.com" ||
-      "rodrigo@polygonag.com")
-  ) {
+  const sessionEmail = session.user.email
+  const ownerEmail = request.userEmail
+
+  const userList = [
+    "felix@polygonag.com",
+    "alba@polygonag.com",
+    "rodrigo@polygonag.com",
+    "hola@rombo.design",
+    ownerEmail,
+  ];
+
+  if (!userList.includes(sessionEmail)) {
     return <div>Not Authorized!</div>;
   }
 

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,17 +24,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Textarea } from "../ui/textarea";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { services } from "@/lib/utils";
+import UploadDocumentsFormField from "./UploadDocumentsFormField";
 
 type RequestFormProps = {
-  projects: any[];
+  brands: any[];
 };
 
 export default function RequestFormWithoutReference({
-  projects,
+  brands,
 }: RequestFormProps) {
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
@@ -42,14 +42,22 @@ export default function RequestFormWithoutReference({
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción" }),
-    attachments: z.string().optional(),
-    projectId: z.string(),
+    documents: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.string(),
+        })
+      )
+      .optional(),
+    brandId: z.string(),
     status: z.string(),
     priority: z.string(),
   });
 
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -57,48 +65,50 @@ export default function RequestFormWithoutReference({
       title: "",
       category: "",
       description: "",
-      attachments: "",
-      projectId: "",
+      documents: [],
+      brandId: "",
       status: "backlog",
       priority: "",
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      const jsonData = JSON.stringify(data);
+ async function onSubmit(data: z.infer<typeof FormSchema>) {
+   try {
+     const jsonData = JSON.stringify(data);
 
-      const response = await fetch("/api/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      });
+     const response = await fetch("/api/requests", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: jsonData,
+     });
 
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
-        });
-      } else {
-        toast({
-          variant: "default",
-          title: "¡Listo!",
-          description: "Tu solicitud ha sido enviada con éxito 🎉",
-        });
-        form.reset();
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
-      });
-    }
-  }
+     const responseJson = await response.json();
 
+     router.push(`/portal/solicitudes/${responseJson.request.id}`);
+     if (!response.ok) {
+       toast({
+         variant: "destructive",
+         title: "¡Oh!",
+         description: "Al parecer hubo un error, intentelo más tarde",
+       });
+     } else {
+       // toast({
+       //     variant: "default",
+       //     title: "¡Listo!",
+       //     description: "Tu solicitud ha sido enviada con éxito 🎉",
+       // })
+       // form.reset()
+     }
+   } catch (error: any) {
+     toast({
+       variant: "destructive",
+       title: "¡Oh!",
+       description: "Al parecer hubo un error, intentelo más tarde 🎉",
+     });
+   }
+ }
 
   return (
     <Form {...form}>
@@ -114,10 +124,10 @@ export default function RequestFormWithoutReference({
                     <FormLabel>Titulo de la tarea</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="jhon@doe.com"
+                        placeholder="Escribe un título para tu tarea"
                         className="resize-none bg-transparent py-0"
                         autoCapitalize="none"
-                        autoComplete="email"
+                        type="text"
                         autoCorrect="off"
                         disabled={isLoading}
                         {...field}
@@ -216,11 +226,38 @@ export default function RequestFormWithoutReference({
                 )}
               />
             </div>
+            <div className="grid w-full items-center gap-1.5">
+              <FormField
+                control={form.control}
+                name="documents"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Archivos Adjuntos</FormLabel>
+                    <FormDescription>
+                      Agregar documentos relacionados a tu marca o organización
+                    </FormDescription>
+                    <FormControl>
+                      {/* <Textarea
+                      placeholder="Descripción de la marca"
+                      className="resize-none bg-transparent"
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    ></Textarea> */}
+                      <UploadDocumentsFormField {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
-                name="projectId"
+                name="brandId"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel>Proyecto</FormLabel>
@@ -237,10 +274,10 @@ export default function RequestFormWithoutReference({
                           <SelectValue placeholder="Selecciona un Proyecto" />
                         </SelectTrigger>
                         <SelectContent>
-                          {projects.map((project) => {
+                          {brands.map((brand) => {
                             return (
-                              <SelectItem key={"low"} value={"low"}>
-                                {project.title}
+                              <SelectItem key={brand.id} value={brand.id}>
+                                {brand.title}
                               </SelectItem>
                             );
                           })}
