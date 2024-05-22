@@ -74,7 +74,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
           <DropdownMenuRequestStatus id={request.id} status={request.status} />
           <Link className="w-full" href={`/portal/marcas/${request.brand.id}`}>
-            <Badge className="w-full" variant={"primary"}>
+            <Badge className="w-full text-xs px-2.5 py-1" variant={"primary"}>
               {request.brand.title}
             </Badge>
           </Link>
