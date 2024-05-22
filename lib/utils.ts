@@ -230,3 +230,28 @@ export const services = [
     name: "Branding & Logotipos",
   },
 ];
+
+export function getPriorityColor(priority: string): string {
+  switch (priority) {
+    case "low":
+      return "bg-green-100 text-green-800";
+    case "medium":
+      return "bg-yellow-100 text-yellow-800";
+    default:
+      return "bg-red-100 text-red-800";
+  }
+}
+
+
+export function getStatusColor(status: string): string {
+
+  console.log(status)
+  switch (status) {
+    case "todo":
+      return "bg-blue-100 text-blue-800 ";
+    case "in-progress":
+      return "bg-yellow-100 text-yellow-800";
+    default:
+      return "bg-green-100 text-green-800";
+  }
+}

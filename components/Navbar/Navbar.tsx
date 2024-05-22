@@ -43,7 +43,7 @@ export default async function Navbar() {
   const session: any = await getAuthSession();
 
   return (
-    <div className="sticky top-0 z-50 flex justify-between bg-white py-6">
+    <div className="sticky top-0 z-50 mt-2 flex justify-between rounded-2xl bg-muted/40 px-4 py-6 shadow-sm">
       <div className="flex items-center">
         <Sheet>
           <SheetTrigger>

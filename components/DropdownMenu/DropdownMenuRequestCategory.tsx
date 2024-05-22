@@ -58,8 +58,12 @@ export default function DropdownMenuRequestCategory({ id, category }: Request) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button disabled={loading} variant={"ghost"} className="h-fit p-0">
-            <Badge variant={"outline"}>
+          <Button
+            disabled={loading}
+            variant={"ghost"}
+            className="h-fit w-full p-0 hover:bg-transparent focus-visible:ring-transparent"
+          >
+            <Badge className="w-full" variant={"primary"}>
               {loading ? <Loader className="h-4 w-4 animate-spin" /> : position}
             </Badge>
           </Button>

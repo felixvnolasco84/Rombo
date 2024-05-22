@@ -15,6 +15,7 @@ import {
 import { Badge } from "../ui/badge";
 import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
+import { getStatusColor } from "@/lib/utils";
 
 type Request = {
   id: string;
@@ -22,7 +23,7 @@ type Request = {
 };
 
 export default function DropdownMenuRequestStatus({ id, status }: Request) {
-  const [position, setPosition] = React.useState<string>(status);
+  const [currentStatus, setCurrentStatus] = React.useState<string>(status);
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const handleStatusChange = async (status: string) => {
@@ -44,7 +45,7 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
           variant: "default",
           duration: 3000,
         });
-        setPosition(status);
+        setCurrentStatus(status);
       }
     } catch (err) {
       console.log(err);
@@ -53,13 +54,23 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
     }
   };
 
+  const color = getStatusColor(currentStatus);
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button disabled={loading} variant={"ghost"} className="h-fit p-0">
-            <Badge variant={"outline"}>
-              {loading ? <Loader className="h-4 w-4 animate-spin" /> : position}
+          <Button
+            disabled={loading}
+            variant={"ghost"}
+            className="h-fit w-full p-0 hover:bg-transparent focus-visible:ring-transparent"
+          >
+            <Badge className={`${color} w-full text-base`} variant={"requestStatus"}>
+              {loading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                currentStatus
+              )}
             </Badge>
           </Button>
         </DropdownMenuTrigger>
@@ -67,7 +78,7 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
           <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
-            value={position}
+            value={currentStatus}
             onValueChange={handleStatusChange}
           >
             <DropdownMenuRadioItem value="backlog">

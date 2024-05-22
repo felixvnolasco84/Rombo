@@ -22,8 +22,6 @@ export default async function page() {
 
   const backlog = requests.filter((request) => request.status === "backlog");
 
-console.log(backlog)
-
   const todo = requests.filter((request) => request.status === "todo");
   const inProgress = requests.filter(
     (request) => request.status === "in progress"

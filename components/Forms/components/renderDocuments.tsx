@@ -20,7 +20,6 @@ export default function RenderDocuments({ documents }: RenderDocumentsProps) {
     <>
       {documents && documents.length > 0 && (
         <div className="flex flex-col gap-2">
-          <Separator className="mt-4" />
           <div className="grid w-full grid-cols-3 items-center justify-center gap-4 rounded-lg">
             {documents &&
               documents.map((file: any, index) => (

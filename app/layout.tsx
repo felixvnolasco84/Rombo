@@ -23,7 +23,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="container">
             <Navbar />
-            <main>{children}</main>
+            <main className="py-4">{children}</main>
             <Toaster />
           </div>
           <FooterComponent />

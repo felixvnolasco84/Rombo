@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import {
 import { Badge } from "../ui/badge";
 import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
+import { getPriorityColor } from "@/lib/utils";
 
 type Request = {
   id: string;
@@ -22,8 +23,9 @@ type Request = {
 };
 
 export default function DropdownMenuRequestPriority({ id, priority }: Request) {
-  const [position, setPosition] = React.useState<string>(priority);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [currentPriority, setCurrentPriority] = useState<string>(priority);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleStatusChange = async (priority: string) => {
     setLoading(true);
@@ -44,7 +46,7 @@ export default function DropdownMenuRequestPriority({ id, priority }: Request) {
           variant: "default",
           duration: 3000,
         });
-        setPosition(priority);
+        setCurrentPriority(priority);
       }
     } catch (err) {
       console.log(err);
@@ -53,38 +55,46 @@ export default function DropdownMenuRequestPriority({ id, priority }: Request) {
     }
   };
 
+  const color = getPriorityColor(currentPriority);
+
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button disabled={loading} variant={"ghost"} className="h-fit p-0">
-            <Badge variant={"outline"}>
-              {loading ? <Loader className="h-4 w-4 animate-spin" /> : position}
-            </Badge>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup
-            value={position}
-            onValueChange={handleStatusChange}
-          >
-            <DropdownMenuRadioItem key={"low"} value={"low"}>
-              low
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem key={"medium"} value={"medium"}>
-              medium
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem key={"high"} value={"high"}>
-              high
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem key={"critical"} value={"critical"}>
-              critical
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          disabled={loading}
+          variant={"ghost"}
+          className="h-fit p-0 hover:bg-transparent focus-visible:ring-transparent"
+        >
+          <Badge className={color} variant={"requestPriority"}>
+            {loading ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              currentPriority
+            )}
+          </Badge>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup
+          value={currentPriority}
+          onValueChange={handleStatusChange}
+        >
+          <DropdownMenuRadioItem key={"low"} value={"low"}>
+            low
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem key={"medium"} value={"medium"}>
+            medium
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem key={"high"} value={"high"}>
+            high
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem key={"critical"} value={"critical"}>
+            critical
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
