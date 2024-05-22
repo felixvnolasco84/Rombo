@@ -15,10 +15,10 @@ const badgeVariants = cva(
         secondary:
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         requestPriority: "border-transparent rounded-lg px-3 py-1 font-normal",
-        requestStatus: "border-transparent rounded-full px-4 py-3 font-normal ",
+        requestStatus: "border-transparent rounded-full px-2 py-1.5 font-normal ",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+        outline: "text-foreground ",
       },
     },
     defaultVariants: {

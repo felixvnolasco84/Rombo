@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { getStatusColor } from "@/lib/utils";
 
 export const notificationsColumns: ColumnDef<any>[] = [
   {
@@ -54,78 +55,60 @@ export const notificationsColumns: ColumnDef<any>[] = [
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "type",
-    accessorFn: (value) =>
-      value.type.charAt(0).toUpperCase() + value.type.slice(1),
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Tipo
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
     cell: ({ row }) => {
-      const type = row.original.type;
-      return (
-        <Badge
-          variant={"outline"}
-          className={`text-xs font-medium ${
-            type === "comment"
-              ? "bg-green-100 text-green-800"
-              : type === "request"
-              ? "bg-yellow-100 text-blue-800"
-              : "bg-red-100 text-purple-800"
-          }`}
-        >
-          {type}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "brand.title",
-    accessorFn: (value) => (
-      // <Link href={`/portal/marcas/${value.brand.title}`}>
-      // console.log(value.brand.title)
-      <Badge>{value.brand.title}</Badge>
-      // </Link>
-    ),
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Marca
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const brand = row.original.brand;
+      const message = row.original.message;
+      const name = row.original.user.name;
 
-      console.log(brand);
+      const textBeforeColon = message.split(":")[0];
       return (
-        <>
-          {brand !== null ? (
-            <Link href={`/portal/marcas/${brand.id}`}>
-              <Badge variant={"outline"}>{brand.title}</Badge>
-            </Link>
-          ) : (
-            <Badge variant={"outline"}>Sin marca</Badge>
-          )}
-        </>
+        <div className="flex items-center gap-1">
+          {/* truncate text if its too long */}
+          <span className="text-black/50">
+            {textBeforeColon.length > 40
+              ? textBeforeColon.slice(0, 40)
+              : textBeforeColon}{" "}
+            por{" "}
+          </span>
+          <span>{name}</span>
+        </div>
       );
-    },
+    }
   },
+    // {
+    //   accessorKey: "type",
+    //   accessorFn: (value) =>
+    //     value.type.charAt(0).toUpperCase() + value.type.slice(1),
+    //   header: ({ column }) => {
+    //     return (
+    //       <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //       >
+    //         Tipo
+    //         <ArrowUpDown className="ml-2 h-4 w-4" />
+    //       </Button>
+    //     );
+    //   },
+    //   cell: ({ row }) => {
+    //     const type = row.original.type;
+    //     return (
+    //       <Badge
+    //         variant={"outline"}
+    //         className={`text-xs font-medium ${
+    //           type === "comment"
+    //             ? "bg-green-100 text-green-800"
+    //             : type === "request"
+    //             ? "bg-yellow-100 text-blue-800"
+    //             : "bg-red-100 text-purple-800"
+    //         }`}
+    //       >
+    //         {type}
+    //       </Badge>
+    //     );
+    //   },
+    // },
   {
-    accessorKey: "request.title",
+    accessorKey: "request.category",
     header: ({ column }) => {
       return (
         <Button
@@ -141,31 +124,106 @@ export const notificationsColumns: ColumnDef<any>[] = [
       const request = row.original.request;
       return (
         <>
-          {request !== null ? (
-            <Link href={`/portal/solicitudes/${request.id}`}>
-              <Badge variant={"outline"}>{request.title}</Badge>
-            </Link>
-          ) : (
-            <Badge variant={"outline"}>Sin solicitud</Badge>
-          )}
+          <Link
+            href={request !== null ? `/portal/solicitudes/${request.id}` : "#"}
+          >
+            <Badge
+              className="w-full justify-center bg-[#F3F3F3] font-normal leading-none text-[#121415]"
+              variant={"outline"}
+            >
+              {request !== null ? request.category : <>Sin solicitud</>}
+            </Badge>
+          </Link>
         </>
       );
     },
   },
   {
-    accessorKey: "user.name",
+    accessorKey: "request.status",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Usuario
+          Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const status:any = row.getValue("request_status");
+      console.log(status)
+      if (!status) {
+        return (
+          <Badge
+            variant={"outline"}
+            className="w-full justify-center bg-[#F3F3F3] text-xs font-normal text-[#121415]"
+          >
+            Sin Estado
+          </Badge>
+        );
+      }
+      const color = getStatusColor(status);
+      return (
+        <Badge
+          variant={"requestStatus"}
+          className={`${color} w-full text-xs font-normal text-[#121415] justify-center leading-none`}
+        >
+          {status}
+        </Badge>
+      );
+    },
   },
+  // {
+  //   accessorKey: "brand.title",
+  //   accessorFn: (value) => (
+  //     // <Link href={`/portal/marcas/${value.brand.title}`}>
+  //     // console.log(value.brand.title)
+  //     <Badge>{value.brand.title}</Badge>
+  //     // </Link>
+  //   ),
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Marca
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const brand = row.original.brand;
+  //     return (
+  //       <>
+  //         {brand !== null ? (
+  //           <Link href={`/portal/marcas/${brand.id}`}>
+  //             <Badge variant={"outline"}>{brand.title}</Badge>
+  //           </Link>
+  //         ) : (
+  //           <Badge variant={"outline"}>Sin marca</Badge>
+  //         )}
+  //       </>
+  //     );
+  //   },
+  // },
+
+  // {
+  //   accessorKey: "user.name",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Usuario
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "createdAt",
     accessorFn: (value) =>
@@ -191,9 +249,6 @@ export const notificationsColumns: ColumnDef<any>[] = [
     id: "actions",
     cell: ({ row }) => {
       const request = row.original;
-
-      console.log(request);
-
       const id =
         request.type === "request"
           ? request.requestId

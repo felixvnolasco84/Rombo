@@ -65,7 +65,7 @@ export default function DropdownMenuRequestPriority({ id, priority }: Request) {
           variant={"ghost"}
           className="h-fit p-0 hover:bg-transparent focus-visible:ring-transparent"
         >
-          <Badge className={color} variant={"requestPriority"}>
+          <Badge className={`${color} px-2.5 py-1 w-full rounded-md`} variant={"requestPriority"}>
             {loading ? (
               <Loader className="h-4 w-4 animate-spin" />
             ) : (

@@ -242,16 +242,15 @@ export function getPriorityColor(priority: string): string {
   }
 }
 
-
 export function getStatusColor(status: string): string {
-
-  console.log(status)
   switch (status) {
     case "todo":
-      return "bg-blue-100 text-blue-800 ";
-    case "in-progress":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-[#C0D5F7]";
+    case "backlog":
+      return "bg-[#C0D5F7]";
+    case "in progress":
+      return "bg-[#FBDFC7]";
     default:
-      return "bg-green-100 text-green-800";
+      return "bg-[#DFFCAD] ";
   }
 }

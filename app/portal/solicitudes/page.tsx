@@ -51,7 +51,7 @@ export default async function page() {
           </Link>
         </Button>
       </div>
-      <RequestsDataTable columns={requestColumns} data={requests} />;
+      <RequestsDataTable columns={requestColumns} data={requests} />
     </>
   );
 }

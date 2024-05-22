@@ -2,9 +2,10 @@
 
 import KanbanCard from "../Cards/KanbanCard";
 import React, { useState, useRef } from "react";
-	import { DndProvider } from "react-dnd";
-  import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import BacklogColumn from "./BacklogColumn";
+import KanbanTitleSection from "./KanbanTitleSection";
 
 type KanbanBoardProps = {
   backlogItems: any;
@@ -48,61 +49,42 @@ export default function KanbanBoard({
 
   return (
     <div
-    //   onMouseDown={handleMouseDown}
-    //   onMouseUp={handleMouseUp}
-    //   onMouseMove={handleMouseMove}
-    //   onDragStart={handleDragStart}
-    //   ref={scrollRef}
-      className="flex max-w-5xl gap-6 overflow-x-auto px-4 py-8 md:px-6 md:py-12 lg:gap-12"
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      onDragStart={handleDragStart}
+      ref={scrollRef}
+      className="flex gap-4 overflow-x-auto py-8"
     >
-      <BacklogColumn backlogItems={backlogItems} />
-      <div className="h-fit w-fit space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">To Do</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            <span>{todoItems.length} Tareas</span>
-          </div>
-        </div>
-        <div className="h-fit w-fit space-y-4">
+      {/* <BacklogColumn backlogItems={backlogItems} /> */}
+      <div className="h-fit w-1/4 space-y-4">
+        <KanbanTitleSection title="To Do" items={todoItems} />
+        <div className="h-fit w-full space-y-4">
           {todoItems.map((request: any) => (
             <KanbanCard key={request.id} request={request} />
           ))}
         </div>
       </div>
-      <div className="h-fit w-fit space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">En Progreso</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            <span>{inProgressItems.length} Tareas</span>
-          </div>
-        </div>
-        <div className="h-fit w-fit space-y-4">
+      <div className="h-fit w-1/4 space-y-4">
+        <KanbanTitleSection title="En Progreso" items={inProgressItems} />
+        <div className="h-fit w-full space-y-4">
           {inProgressItems.map((request: any) => (
             <KanbanCard key={request.id} request={request} />
           ))}
         </div>
       </div>
-      <div className="h-fit w-fit space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">Revisión</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            <span>{toTestItems.length} Tareas</span>
-          </div>
-        </div>
-        <div className="h-fit w-fit space-y-4">
+      <div className="h-fit w-1/4 space-y-4">
+        <KanbanTitleSection title="Revisión" items={toTestItems} />
+        <div className="h-fit w-full space-y-4">
           {toTestItems.map((request: any) => (
             <KanbanCard key={request.id} request={request} />
           ))}
         </div>
       </div>
-      <div className="h-fit w-fit space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">Completado</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            <span>{completeItems.length} Tareas</span>
-          </div>
-        </div>
-        <div className="h-fit w-fit space-y-4">
+      <div className="h-fit w-1/4 space-y-4">
+        <KanbanTitleSection title="Completado" items={completeItems} />
+
+        <div className="h-fit w-full space-y-4">
           {completeItems.map((request: any) => (
             <KanbanCard key={request.id} request={request} />
           ))}

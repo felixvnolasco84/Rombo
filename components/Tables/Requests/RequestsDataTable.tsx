@@ -84,8 +84,8 @@ export function RequestsDataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <div className="flex gap-1">
+      <div className="flex items-center gap-1 py-4">
+        <div className="flex w-full gap-1">
           <Input
             placeholder="Buscar tarea..."
             value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -94,7 +94,6 @@ export function RequestsDataTable<TData, TValue>({
             }
             className="max-w-sm"
           />
-
           <div className="flex w-full items-center gap-1">
             <Select
               value={
@@ -118,12 +117,13 @@ export function RequestsDataTable<TData, TValue>({
               </SelectContent>
             </Select>
             <Button
+              className="bg-gray-200 hover:bg-gray-300"
+              variant={"ghost"}
               onClick={() => table.getColumn("brand_title")?.setFilterValue("")}
             >
               <XIcon className="h-4 w-4" />
             </Button>
           </div>
-
           <div className="flex w-full items-center gap-1">
             <Select
               value={
@@ -146,13 +146,14 @@ export function RequestsDataTable<TData, TValue>({
               </SelectContent>
             </Select>
             <Button
+              className="bg-gray-200 hover:bg-gray-300"
+              variant={"ghost"}
               onClick={() => table.getColumn("priority")?.setFilterValue("")}
             >
               <XIcon className="h-4 w-4" />
             </Button>
           </div>
         </div>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

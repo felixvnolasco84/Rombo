@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { getStatusColor } from "@/lib/utils";
 
 export const requestColumns: ColumnDef<any>[] = [
   {
@@ -54,6 +55,18 @@ export const requestColumns: ColumnDef<any>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const title = row.original.title;
+      return (
+        <Link className="hover:underline" href={`/portal/solicitudes/${row.original.id}`}>
+          <span>
+            {
+              title.length < 40 ? title : title.slice(0, 40) + "..."
+            }
+          </span>
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "category",
@@ -63,9 +76,23 @@ export const requestColumns: ColumnDef<any>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Categoría
+          Solicitud
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const category = row.original.category;
+      return (
+        <Badge
+          variant={"outline"}
+          className="w-full justify-center bg-[#F5F5F5] text-xs font-medium"
+        >
+          {
+            // truncate category if it's too long
+            category.length < 16 ? category : category.slice(0, 16) + "..."
+          }
+        </Badge>
       );
     },
   },
@@ -96,6 +123,46 @@ export const requestColumns: ColumnDef<any>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const color = getStatusColor(status);
+      return (
+        <Badge
+          variant={"outline"}
+          className={`${color} w-full text-xs font-normal text-[#121415] justify-center leading-none`}
+        >
+          {status}
+        </Badge>
+      );
+    },
+  },
+
+  {
+    accessorKey: "brand.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Marca
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const brand = row.original.brand.title;
+      return (
+        <Link href={`/portal/marcas/${row.original.brand.id}`}>
+          <Badge
+            variant={"outline"}
+            className="w-full justify-center bg-[#F5F5F5] text-xs font-medium"
+          >
+            {brand}
+          </Badge>
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "priority",
@@ -117,7 +184,7 @@ export const requestColumns: ColumnDef<any>[] = [
       return (
         <Badge
           variant={"outline"}
-          className={`text-xs font-medium ${
+          className={`text-xs font-medium w-full justify-center ${
             priority === "low"
               ? "bg-green-100 text-green-800"
               : priority === "medium"
@@ -127,20 +194,6 @@ export const requestColumns: ColumnDef<any>[] = [
         >
           {priority}
         </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "brand.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Marca
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
       );
     },
   },
@@ -164,26 +217,26 @@ export const requestColumns: ColumnDef<any>[] = [
       );
     },
   },
-  {
-    accessorKey: "updatedAt",
-    accessorFn: (value) =>
-      new Date(value.updatedAt).toLocaleDateString("es-Mx", {
-        year: "numeric",
-        month: "2-digit",
-        day: "numeric",
-      }),
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Actualizado
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "updatedAt",
+  //   accessorFn: (value) =>
+  //     new Date(value.updatedAt).toLocaleDateString("es-Mx", {
+  //       year: "numeric",
+  //       month: "2-digit",
+  //       day: "numeric",
+  //     }),
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Actualizado
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {

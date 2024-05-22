@@ -65,7 +65,10 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
             variant={"ghost"}
             className="h-fit w-full p-0 hover:bg-transparent focus-visible:ring-transparent"
           >
-            <Badge className={`${color} w-full text-base`} variant={"requestStatus"}>
+            <Badge
+              className={`${color} w-full text-xs  px-2.5 py-1 `}
+              variant={"requestStatus"}
+            >
               {loading ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : (

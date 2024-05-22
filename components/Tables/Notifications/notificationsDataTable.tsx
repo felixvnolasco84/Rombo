@@ -2,6 +2,13 @@
 
 import * as React from "react";
 import {
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  Select,
+} from "@/components/ui/select";
+import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
@@ -30,6 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { XIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,6 +55,10 @@ export function NotificationsDataTable<TData, TValue>({
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+
+  const brands = data.map((item: any) => item.brand);
+
+
   const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data,
@@ -67,18 +79,48 @@ export function NotificationsDataTable<TData, TValue>({
     },
   });
   
-
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Buscar por tipo..."
-          value={(table.getColumn("type")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("type")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="flex w-full gap-1">
+          {/* <Input
+            placeholder="Buscar por tipo..."
+            value={(table.getColumn("type")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("type")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          /> */}
+          
+          {/* <div className="flex w-full items-center gap-1">
+            <Select
+              value={
+                (table.getColumn("brand_title")?.getFilterValue() as string) ??
+                ""
+              }
+              onValueChange={(value: any) => {
+                table.getColumn("brand_title")?.setFilterValue(value);
+              }}
+              defaultValue=""
+            >
+              <SelectTrigger className="">
+                <SelectValue placeholder="Marcas" />
+              </SelectTrigger>
+              <SelectContent>
+                {uniqueValues.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              onClick={() => table.getColumn("brand_title")?.setFilterValue("")}
+            >
+              <XIcon className="h-4 w-4" />
+            </Button>
+          </div> */}
+        </div>
 
 
         <DropdownMenu>
