@@ -81,7 +81,7 @@ export const DELETE = async (req: any, { params }: any) => {
     });
 
     await prisma.$transaction([
-      prisma.notification.deleteMany({ where: { brandId: id } }),
+      // prisma.notification.deleteMany({ where: { brandId: id } }),
       prisma.brand.delete({ where: { id: id } }),
       prisma.notification.create({
         data: {

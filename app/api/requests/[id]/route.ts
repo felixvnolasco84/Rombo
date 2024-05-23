@@ -92,9 +92,9 @@ export const DELETE = async (req: any, { params }: any) => {
 
   try {
     await prisma.$transaction([
-      prisma.notification.deleteMany({
-        where: { requestId: id },
-      }),
+      // prisma.notification.deleteMany({
+      //   where: { requestId: id },
+      // }),
       prisma.request.delete({
         where: { id: id },
       }),
