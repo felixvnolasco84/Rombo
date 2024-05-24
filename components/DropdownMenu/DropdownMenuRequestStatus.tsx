@@ -66,7 +66,17 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
             className="h-fit w-full p-0 hover:bg-transparent focus-visible:ring-transparent"
           >
             <Badge
-              className={`${color} w-full text-xs  px-2.5 py-1 `}
+              className={`${
+                currentStatus === "todo"
+                  ? "bg-green-100 text-green-800"
+                  : currentStatus === "in progress"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : currentStatus === "to-test"
+                  ? "bg-blue-100 text-blue-800"
+                  : currentStatus === "complete"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }  w-full text-xs  px-2.5 py-1 `}
               variant={"requestStatus"}
             >
               {loading ? (

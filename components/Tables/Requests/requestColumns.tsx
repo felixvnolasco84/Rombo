@@ -125,13 +125,30 @@ export const requestColumns: ColumnDef<any>[] = [
     },
     cell: ({ row }) => {
       const status = row.original.status;
-      const color = getStatusColor(status);
+      // const color = getStatusColor(status);
       return (
         <Badge
           variant={"outline"}
-          className={`${color} w-full text-xs font-normal text-[#121415] justify-center leading-none`}
+          className={`${
+            status === "todo"
+              ? "bg-[#C0D5F7]"
+              : status === "in progress"
+              ? "bg-[#FBDFC7]"
+              : status === "to-test"
+              ? "bg-[#FCDBF9]"
+              : status === "complete"
+              ? "bg-[#DFFCAD]"
+              : "bg-red-100 text-red-800"
+            // } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
+          } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
         >
-          {status}
+          {status === "todo"
+            ? "To Do"
+            : status === "in progress"
+            ? "In Progress"
+            : status === "to-test"
+            ? "To Test"
+            : "Done"}
         </Badge>
       );
     },
@@ -184,15 +201,21 @@ export const requestColumns: ColumnDef<any>[] = [
       return (
         <Badge
           variant={"outline"}
-          className={`text-xs font-medium w-full justify-center ${
+          className={`text-xs font-medium w-full justify-center leading-none ${
             priority === "low"
-              ? "bg-green-100 text-green-800"
+              ? "bg-[#EAFFF7] text-[#44C195]"
               : priority === "medium"
-              ? "bg-yellow-100 text-yellow-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-[#FEF6E7] text-[#FF9B57]"
+              : "bg-[#FDE7E7] text-[#F67376]"
           }`}
         >
-          {priority}
+          {priority === "low"
+            ? "Low"
+            : priority === "medium"
+            ? "Medium"
+            : priority === "high"
+            ? "High"
+            : "Critical"}
         </Badge>
       );
     },

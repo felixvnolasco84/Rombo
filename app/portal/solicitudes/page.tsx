@@ -17,6 +17,8 @@ export default async function page() {
   const data = await getAllRequests();
   const requests = await data.json();
 
+  console.log(requests)
+
   if (requests.message === "Not Authenticated!") {
     return (
       <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">

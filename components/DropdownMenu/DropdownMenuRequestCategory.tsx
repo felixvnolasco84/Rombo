@@ -63,7 +63,7 @@ export default function DropdownMenuRequestCategory({ id, category }: Request) {
             variant={"ghost"}
             className="h-fit w-full p-0 hover:bg-transparent focus-visible:ring-transparent"
           >
-            <Badge className="w-full bg-[#F5F5F5] px-2.5 py-1 text-xs font-normal" variant={"outline"}>
+            <Badge className="w-full bg-[#F5F5F5] px-2.5 py-1 font-normal" variant={"outline"}>
               {loading ? <Loader className="h-4 w-4 animate-spin" /> : position}
             </Badge>
           </Button>

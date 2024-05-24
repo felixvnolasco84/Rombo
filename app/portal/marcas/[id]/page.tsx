@@ -1,3 +1,9 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { GET as getSingleBrand } from "@/app/api/brands/[id]/route";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,7 +66,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <EditBrandImageDialog brand={brand} />
         <div className="flex w-full flex-col gap-4">
           <div className="flex justify-between">
-            <h1 className="text-3xl font-bold">{brand.title}</h1>
+            <h1 className="text-3xl text-[#121415]">{brand.title}</h1>
             <DropdownMenuComponentBrand brand={brand} />
           </div>
           <TipTapOnlyContent content={brand.description} />
@@ -118,26 +124,46 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      <div className="mx-auto w-full max-w-6xl">
-        <h2 className="mb-4 text-2xl font-bold">Solicitudes</h2>
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+        <h2 className="text-2xl text-[#121415]">Solicitudes</h2>
         {brand.requests.length === 0 ? (
-          <div className="flex flex-col items-center gap-4">
-            <BookOpenIcon className="h-12 w-12" />
-            <h3 className="text-xl font-bold">Sin solicitudes</h3>
-          </div>
+          <Link className="w-full" href={`/portal/marcas/${brand.id}/new`}>
+            <Button
+              variant="ghost"
+              className="flex h-24 w-full items-center justify-center rounded-lg border border-gray-300"
+            >
+              No existen solicitudes
+            </Button>
+          </Link>
         ) : (
           <SimpleRequestDataTable
             columns={requestColumnsNew}
             data={brand.requests}
           />
-          // <div className="grid gap-6 md:grid-cols-2">
-          //   {brand.requests.map((request: any, index: any) => (
-          //     <RequestCard key={index} request={request} />
-          //   ))}
-          // </div>
         )}
-        <h2 className="mb-4 text-2xl font-bold">Documentos Adjuntos</h2>
-        <RenderDocuments documents={brand.documents} />
+        <Accordion
+          defaultValue={brand.documents.length === 0 ? "" : "documents"}
+          type="single"
+          collapsible
+          className="w-full"
+        >
+          <AccordionItem value="documents">
+            <AccordionTrigger>
+              <h2 className="mb-4 text-2xl text-[#121415]">
+                Documentos Adjuntos
+              </h2>
+            </AccordionTrigger>
+            <AccordionContent>
+              {brand.documents && brand.documents.length > 0 ? (
+                <RenderDocuments documents={brand.documents} />
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No hay documentos adjuntos.
+                </p>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

@@ -75,13 +75,6 @@ export function SimpleRequestDataTable<TData, TValue>({
     },
   });
 
-  console.log(data)
-
-  // const brands = data.map((item: any) => item.brand.title);
-  // const uniqueValues = brands.filter(
-  //   (value, index, self) => self.indexOf(value) === index
-  // );
-
   const priorities: string[] = ["low", "medium", "high", "critical"];
 
   return (

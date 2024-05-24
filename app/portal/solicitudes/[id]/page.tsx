@@ -1,18 +1,23 @@
 import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { getAuthSession } from "@/utils/AuthOptions";
-import { PersonStanding } from "lucide-react";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponentRequest";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
-import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 import DropdownMenuRequestStatus from "@/components/DropdownMenu/DropdownMenuRequestStatus";
 import DropdownMenuRequestCategory from "@/components/DropdownMenu/DropdownMenuRequestCategory";
 import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuRequestPriority";
-import { Separator } from "@/components/ui/separator";
+import CommentSection from "@/components/CommentSection";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -74,7 +79,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
           <DropdownMenuRequestStatus id={request.id} status={request.status} />
           <Link className="w-full" href={`/portal/marcas/${request.brand.id}`}>
-            <Badge className="w-full text-xs px-2.5 py-1" variant={"primary"}>
+            <Badge className="w-full px-2.5 py-1 text-xs" variant={"primary"}>
               {request.brand.title}
             </Badge>
           </Link>
@@ -145,59 +150,64 @@ export default async function page({ params }: { params: { id: string } }) {
       </div> */}
       <TipTapOnlyContent content={request.description} />
 
-      {request.documents && request.documents.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <h2 className="text-2xl text-[#121415]">Documentos Adjuntos</h2>
-          <Separator className="mb-4" />
-          <RenderDocuments documents={request.documents} />
-        </div>
-      )}
-
-      <div className="space-y-4">
-        <h2 className="text-2xl text-[#121415]">Comentarios</h2>
-        <div className="space-y-4">
-          {request.comments.length === 0 ? (
-            <div className="flex flex-col items-center gap-4">
-              <PersonStanding className="h-12 w-12" />
-              <h3 className="text-xl font-bold">No tenemos comentarios</h3>
-            </div>
-          ) : (
-            request.comments.map((comment: any, index: any) => (
-              <div
-                key={index}
-                className="flex items-start space-x-4 rounded-md border p-4"
-              >
-                <Avatar className="h-10 w-10">
-                  <AvatarImage
-                    alt="User avatar"
-                    src="/placeholder-avatar.jpg"
-                  />
-                  <AvatarFallback>
-                    {comment.userEmail.slice(0, 2)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="w-full">
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="font-semibold">{comment.userEmail}</p>
-
-                    {session.user.email === comment.userEmail && (
-                      <DropdownMenuComponentComment comment={comment} />
-                    )}
-                  </div>
-
-                  <TipTapOnlyContent content={comment.desc} />
-                  {/* <p className="text-sm text-gray-600">{comment.desc}</p> */}
-                  <RenderDocuments documents={comment.documents} />
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="space-y-4">
-          <CommentForm requestId={request.id} />
-        </div>
+      <div className="flex flex-col gap-1">
+        <Accordion
+          defaultValue={request.documents.length === 0 ? "" : "documents"}
+          type="single"
+          collapsible
+          className="w-full"
+        >
+          <AccordionItem value="documents">
+            <AccordionTrigger>
+              <h2 className="mb-4 text-2xl text-[#121415]">
+                Documentos Adjuntos
+              </h2>
+            </AccordionTrigger>
+            <AccordionContent>
+              {request.documents && request.documents.length > 0 ? (
+                <RenderDocuments documents={request.documents} />
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No hay documentos adjuntos.
+                </p>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
+
+      <Accordion
+        defaultValue={request.comments.length === 0 ? "" : "comments"}
+        type="single"
+        collapsible
+        className="w-full"
+      >
+        <AccordionItem value="comments">
+          <AccordionTrigger>
+            <h2 className="mb-4 text-2xl text-[#121415]">Comentarios</h2>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4">
+              <div className="space-y-4">
+                {request.comments.length === 0 ? (
+                  <p className="text-sm text-gray-500">
+                    No existen comentarios.
+                  </p>
+                ) : (
+                  <CommentSection
+                    userEmail={sessionEmail}
+                    comments={request.comments}
+                  />
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <CommentForm requestId={request.id} />
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </section>
   );
 }

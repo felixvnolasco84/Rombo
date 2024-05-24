@@ -245,12 +245,12 @@ export function getPriorityColor(priority: string): string {
 export function getStatusColor(status: string): string {
   switch (status) {
     case "todo":
-      return "bg-[#C0D5F7]";
+      return "bg-green-200";
     case "backlog":
-      return "bg-[#C0D5F7]";
+      return "bg-green-200";
     case "in progress":
-      return "bg-[#FBDFC7]";
+      return "bg-yellow-200";
     default:
-      return "bg-[#DFFCAD] ";
+      return "bg-red-200";
   }
 }

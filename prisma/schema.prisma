@@ -10,6 +10,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum TABLE_TYPE {
+  BOARD
+  LIST
+  CARD
+}
+
+model AudLog {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  orgId      String?
+  action     ACTION
+  tableId    String
+  tableType  TABLE_TYPE
+  tableTitle String
+  userId     String     @db.ObjectId
+  userImage  String
+  userName   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Label {
+//   id    String @id @default(auto()) @map("_id") @db.ObjectId
+//   name  String
+//   color String
+//   requestId String? @unique
+//   request   Request?   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+// }
+
 model Account {
   id                String  @id @default(cuid()) @map("_id")
   userId            String
@@ -54,6 +89,12 @@ model User {
   comments           Comment[]
   subscriptions      Subscription[]
   Notification       Notification[]
+  // orgIds        String[]       
+  // organizations Organization[] @relation(fields: [orgIds], references: [id])
+
+  // boardIds String[] 
+  // boards   Board[]  @relation(fields: [boardIds], references: [id])
+
 }
 
 model VerificationToken {
@@ -63,6 +104,42 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// model Organization {
+//   id    String @id @default(cuid()) @map("_id") 
+//   title String
+//   image String
+//   userIds String[] 
+//   users   User[]   @relation(fields: [userIds], references: [id])
+//   boards Board[]
+// }
+
+// model Board {
+//   id String @id @default(cuid()) @map("_id")
+//   orgId        String       
+//   organization Organization @relation(fields: [orgId], references: [id])
+
+//   title String
+//   image String
+
+//   userIds String[]
+//   Users   User[]   @relation(fields: [userIds], references: [id])
+//   lists     List[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   requests      Request[]
+// }
+
+// model List {
+//   id      String  @id @default(cuid()) @map("_id") 
+//   title   String
+//   order   Int
+//   boardId String 
+//   board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+//   requests Request[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model Comment {
   id           String         @id @default(cuid()) @map("_id")
@@ -87,7 +164,6 @@ model Request {
   title        String
   description  String
   category     String
-  documents    Document[]
   status       String
   priority     String
   brandId      String
@@ -96,8 +172,15 @@ model Request {
   user         User           @relation(fields: [userEmail], references: [id])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  comments     Comment[]
+  // order        Int            @default(0)
+  // listId      String   
+  // list        List     @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // boardId     String   
+  // board       Board    @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // label     Label[]
   deadline     DateTime       @default("2021-12-31T23:59:59.000Z") 
+  documents    Document[]
+  comments     Comment[]
   Notification Notification[]
 }
 
