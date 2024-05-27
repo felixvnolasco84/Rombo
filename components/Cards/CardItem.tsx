@@ -36,9 +36,9 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
           </div>
         )}
       </Draggable>
-      {isModal && (
+      {/* {isModal && (
         <CardModal id={card.id} isModal={isModal} setIsModal={setIsModal} />
-      )}
+      )} */}
     </>
   );
 };
