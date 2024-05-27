@@ -12,7 +12,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 // import FormSubmit from "./FormSubmit";
 import { toast } from "sonner";
-import { listCopy, listDelete } from "@/services/list";
+// import { listCopy, listDelete } from "@/services/list";
 
 // const ListOption = ({ list }: { list: List }) => {
 const ListOption = ({ list }: { list: any }) => {
@@ -22,10 +22,10 @@ const ListOption = ({ list }: { list: any }) => {
         toast.error("something went wrong");
         return;
       }
-      const res = await listCopy({ id: list?.id, boardId: list?.boardId });
-      if (res?.result) {
-        toast.success("list copied successfully");
-      }
+      // const res = await listCopy({ id: list?.id, boardId: list?.boardId });
+      // if (res?.result) {
+      //   toast.success("list copied successfully");
+      // }
     } catch (error) {
       toast.error("list not copied");
     }
@@ -38,10 +38,10 @@ const ListOption = ({ list }: { list: any }) => {
         toast.error("something went wrong");
         return;
       }
-      const res = await listDelete({ id: list?.id, boardId: list?.boardId });
-      if (res?.result) {
-        toast.success("list copied successfully");
-      }
+      // const res = await listDelete({ id: list?.id, boardId: list?.boardId });
+      // if (res?.result) {
+      //   toast.success("list copied successfully");
+      // }
     } catch (error) {
       toast.error("list not copied");
     }
