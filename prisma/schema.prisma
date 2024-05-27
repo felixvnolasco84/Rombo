@@ -6,10 +6,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
+
 
 enum ACTION {
   CREATE
@@ -23,37 +23,27 @@ enum TABLE_TYPE {
   CARD
 }
 
-model Organization {
-  id    String @id @default(cuid()) @map("_id") 
-  title String
-  image String
-  // userIds String[] 
-  // users   User[]   @relation(fields: [userIds], references: [id])
-  users   User[]
-  boards Board[]
-}
-
 model AudLog {
-  id         String     @id @default(cuid()) @map("_id") @db.Uuid
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   orgId      String?
   action     ACTION
   tableId    String
   tableType  TABLE_TYPE
   tableTitle String
-  userId     String     @db.Uuid
+  userId     String     @db.ObjectId
   userImage  String
   userName   String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Label {
-  id    String @id @default(cuid()) @map("_id") @db.Uuid
-  name  String
-  color String
-  requestId String? @unique
-  request   Request?   @relation(fields: [requestId], references: [id], onDelete: Cascade)
-}
+// model Label {
+//   id    String @id @default(auto()) @map("_id") @db.ObjectId
+//   name  String
+//   color String
+//   requestId String? @unique
+//   request   Request?   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+// }
 
 model Account {
   id                String  @id @default(cuid()) @map("_id")
@@ -91,7 +81,7 @@ model User {
   emailVerified      DateTime?
   brands             Brand[]
   image              String?
-  stripe_customer_id String?        @unique
+  stripe_customer_id String? @unique
   password           String?
   requests           Request[]
   accounts           Account[]
@@ -101,10 +91,10 @@ model User {
   Notification       Notification[]
   // orgIds        String[]       
   // organizations Organization[] @relation(fields: [orgIds], references: [id])
+
   // boardIds String[] 
   // boards   Board[]  @relation(fields: [boardIds], references: [id])
-  boards   Board[] 
-  orgs     Organization[]
+
 }
 
 model VerificationToken {
@@ -115,50 +105,41 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// model Organization {
+//   id    String @id @default(cuid()) @map("_id") 
+//   title String
+//   image String
+//   userIds String[] 
+//   users   User[]   @relation(fields: [userIds], references: [id])
+//   boards Board[]
+// }
 
+// model Board {
+//   id String @id @default(cuid()) @map("_id")
+//   orgId        String       
+//   organization Organization @relation(fields: [orgId], references: [id])
 
-model Board {
-  id String @id @default(cuid()) @map("_id")
-  orgId        String       
-  organization Organization @relation(fields: [orgId], references: [id])
+//   title String
+//   image String
 
-  title String
-  image String
+//   userIds String[]
+//   Users   User[]   @relation(fields: [userIds], references: [id])
+//   lists     List[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   requests      Request[]
+// }
 
-  userIds String[]
-  // Users   User[]   @relation(fields: [userIds], references: [id])
-  Users   User[]   
-  lists     List[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  requests      Request[]
-}
-
-model List {
-  id      String  @id @default(cuid()) @map("_id") 
-  title   String
-  order   Int
-  boardId String 
-  board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  requests Request[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Document {
-  id        String  @id @default(cuid()) @map("_id")
-  name      String
-  url       String
-  requestId String
-  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
-  brandId   String
-  brand     Brand   @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  commentId String
-  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-}
+// model List {
+//   id      String  @id @default(cuid()) @map("_id") 
+//   title   String
+//   order   Int
+//   boardId String 
+//   board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+//   requests Request[]
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model Comment {
   id           String         @id @default(cuid()) @map("_id")
@@ -173,10 +154,10 @@ model Comment {
   Notification Notification[]
 }
 
-// type Document {
-//   name String
-//   url  String
-// }
+type Document {
+  name String
+  url  String
+}
 
 model Request {
   id           String         @id @default(cuid()) @map("_id")
@@ -191,13 +172,13 @@ model Request {
   user         User           @relation(fields: [userEmail], references: [id])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  order        Int            @default(0)
-  listId      String   
-  list        List     @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  boardId     String   
-  board       Board    @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  label     Label[]
-  deadline     DateTime       @default("2021-12-31T23:59:59.000Z")
+  // order        Int            @default(0)
+  // listId      String   
+  // list        List     @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // boardId     String   
+  // board       Board    @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // label     Label[]
+  deadline     DateTime       @default("2021-12-31T23:59:59.000Z") 
   documents    Document[]
   comments     Comment[]
   Notification Notification[]
@@ -242,10 +223,11 @@ model Notification {
   createdAt DateTime @default(now())
 }
 
+
 model Subscription {
-  id             String   @id @default(cuid()) @map("_id")
+  id        String   @id @default(cuid()) @map("_id")  
   subscriptionId String
-  customerId     String
-  customer       User     @relation(fields: [customerId], references: [stripe_customer_id])
-  createdAt      DateTime @default(now())
+  customerId    String
+  customer      User     @relation(fields: [customerId], references: [stripe_customer_id])
+  createdAt DateTime @default(now())
 }
