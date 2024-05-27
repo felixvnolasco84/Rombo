@@ -2,7 +2,7 @@
 // import { List } from "@/interfaces";
 import React, { useRef, useState } from "react";
 // import InputForm from "./InputForm";
-import { updateList } from "@/services/list";
+// import { updateList } from "@/services/list";
 import { toast } from "sonner";
 import ListOption from "./ListOption";
 
@@ -22,9 +22,9 @@ const ListHeader = ({ list }: { list: any }) => {
       setIsEditable(false);
     }
     try {
-      const res: any = await updateList({ title, boardId, id });
-      setTitle(res?.result?.title);
-      if (res?.result) toast.success("List successfully updated");
+      // const res: any = await updateList({ title, boardId, id });
+      // setTitle(res?.result?.title);
+      // if (res?.result) toast.success("List successfully updated");
     } catch (error) {
       toast.error("List not updated");
     }
