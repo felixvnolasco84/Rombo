@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 // import CreateList from "./CreateList";
-import { reorderList } from "@/services/list";
+// import { reorderList } from "@/services/list";
 import ListItem from "./ListItem";
 
 interface ListProps {
@@ -44,7 +44,7 @@ const ListContainer = ({ boardId, list }: ListProps) => {
         (item: any, index: number) => ({ ...item, order: index })
       );
       setListData(data);
-      await reorderList({ items: data, boardId });
+      // await reorderList({ items: data, boardId });
     }
   };
   return (
