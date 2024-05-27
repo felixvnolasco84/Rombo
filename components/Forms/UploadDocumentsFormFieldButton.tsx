@@ -3,12 +3,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { removeFile } from "@/app/utils/removeFile";
 import { uploadFile } from "@/app/utils/uploadImage";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Clipboard, File, Paperclip, X, XIcon } from "lucide-react";
+import {  Paperclip, XIcon } from "lucide-react";
 import getFileIcon, { DocumentUpload } from "@/lib/utils";
 
 interface UploadDocumentsFormFieldProps {
@@ -20,27 +20,6 @@ interface UploadDocumentsFormFieldProps {
   ref: React.Ref<any>;
 }
 
-function UploadIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="17 8 12 3 7 8" />
-      <line x1="12" x2="12" y1="3" y2="15" />
-    </svg>
-  );
-}
-
 const UploadDocumentsFormFieldButton = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
     const [files, setFiles] = useState<File[]>([]);
@@ -49,8 +28,6 @@ const UploadDocumentsFormFieldButton = forwardRef(
     const [removing, setRemoving] = useState<boolean>(false);
 
     useEffect(() => {
-      // Cada vez que filesURL cambia, llamamos a props.onChange para actualizar el valor del formulario
-      console.log(props.name);
       props.onChange({ target: { name: props.name, value: filesArray } });
     }, [filesArray]);
 
@@ -85,10 +62,6 @@ const UploadDocumentsFormFieldButton = forwardRef(
       <div className="w-full">
         <div className="space-y-8">
           <div className="flex flex-col items-end justify-center space-y-4 rounded-lg">
-            {/* <UploadIcon className="h-8 w-8 text-gray-400" /> */}
-            {/* <p className="text-gray-500">
-              Arrastra y Suelta tus documentos aquí
-            </p> */}
             <Input
               className="hidden"
               id="file-upload"
@@ -101,7 +74,7 @@ const UploadDocumentsFormFieldButton = forwardRef(
               }}
             />
             <Label
-              className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-sm hover:bg-gray-300"
+              className="cursor-pointer rounded-md border border-gray-200 bg-transparent px-4 py-2 text-sm hover:bg-gray-100"
               htmlFor="file-upload"
             >
               <Paperclip size={21} />

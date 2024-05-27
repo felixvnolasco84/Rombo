@@ -193,7 +193,7 @@ model Category {
 
 model Brand {
   id           String         @id @default(cuid()) @map("_id")
-  img          String?
+  img          String? @default("https://firebasestorage.googleapis.com/v0/b/rombo-design.appspot.com/o/Rombo%20Placeholders%2Fprofile-placeholder-rombo.png?alt=media&token=a1799224-3858-4c4d-a1f8-cdfb1434a0b2")
   title        String
   description  String
   industry     String

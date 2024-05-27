@@ -1,7 +1,8 @@
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
-import KanbanCard from "@/components/Cards/KanbanCard";
 import KanbanBoard from "@/components/Kanban/KanbanBoard";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function page() {
   const session: any = await getAuthSession();
@@ -31,13 +32,24 @@ export default async function page() {
 
   return (
     <>
-      <KanbanBoard
-        backlogItems={backlog}
-        todoItems={todo}
-        inProgressItems={inProgress}
-        toTestItems={toTest}
-        completeItems={complete}
-      />
+      {requests.length > 0 ? (
+        <KanbanBoard
+          backlogItems={backlog}
+          todoItems={todo}
+          inProgressItems={inProgress}
+          toTestItems={toTest}
+          completeItems={complete}
+        />
+      ) : (
+        <Link className="w-full" href="/portal/solicitudes/new">
+          <Button
+            variant="ghost"
+            className="flex h-96 w-full items-center justify-center rounded-lg border border-gray-300"
+          >
+            No hay solicitudes registradas
+          </Button>
+        </Link>
+      )}
     </>
   );
 }

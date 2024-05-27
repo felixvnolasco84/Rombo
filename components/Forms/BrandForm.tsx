@@ -31,6 +31,7 @@ import TipTapEditor from "../TipTap";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { useRouter } from "next/navigation";
 import { industries } from "@/lib/utils";
+import UpdateImageFormField from "./UpdateImageFormField";
 
 export default function BrandForm() {
   const router = useRouter();
@@ -114,33 +115,20 @@ export default function BrandForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-4">
-          {/* <div className="grid w-full items-center gap-1.5">
-              <FormField
-                control={form.control}
-                name="img"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Imagen de la Marca</FormLabel>
-                    <FormDescription>
-                      Agregar una imagen de tu marca o organización
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        onChange={(e) => {
-                          handleFileChange(e);
-                          field.onChange(e);
-                        }}
-                        disabled={isLoading}
-                        // {...field}
-                      ></Input>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              </div> */}
+          <div className="grid w-full items-center gap-1.5">
+            <FormField
+              control={form.control}
+              name="img"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormControl>
+                    <UpdateImageFormField  {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <div className="grid w-full items-center gap-1.5">
             <FormField

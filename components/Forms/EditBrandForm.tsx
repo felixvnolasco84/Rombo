@@ -40,7 +40,10 @@ export default function EditBrandForm({
   brand,
   setIsEditDialogOpen,
 }: RequestFormProps) {
+
+
   const FormSchema = z.object({
+    img: z.string().optional(),
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     industry: z.string().min(1, { message: "Por favor ingresa una industria" }),
     description: z
@@ -62,6 +65,7 @@ export default function EditBrandForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      img: brand.img,
       title: brand.title,
       industry: brand.industry,
       description: brand.description,
@@ -69,22 +73,6 @@ export default function EditBrandForm({
     },
   });
 
-  //TODO: IMPROVE THIS
-
-//   form.watch("documents", (files) => {
-//     console.log(files);
-//   }
-// );
-  // const update = await prisma.brand.update({
-  //   where: {
-  //     id: "1",
-  //   },
-  //   data: {
-  //     documents: {
-  //       set: filesArray,
-  //     },
-  //   },
-  // });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // console.log(data)
@@ -129,10 +117,9 @@ export default function EditBrandForm({
             <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
-                name="title"
+                name="img"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
-                    {/* <FormLabel>Titulo de la tarea</FormLabel> */}
                     <FormControl>
                       <UpdateImageFormField img={brand.img} {...field} />
                     </FormControl>

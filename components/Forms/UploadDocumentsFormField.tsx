@@ -256,7 +256,7 @@ const UploadDocumentsFormField = forwardRef(
                     <div key={index} className="flex items-center space-x-4">
                       <Image
                         alt="File Thumbnail"
-                        className={`aspect-[1/1] rounded-md object-cover ${
+                        className={`aspect-[1/1] rounded-md object-cover fill-green-700 ${
                           uploading ? "animate-pulse" : ""
                         }`}
                         height="40"

@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from "clsx";
 import pdfIcon from "@/public/svg/pdf-icon.svg";
 import xlsIcon from "@/public/svg/xls-icon.svg";
 import docxIcon from "@/public/svg/docx-icon.svg";
+import imageIcon from "@/public/svg/image.svg";
+import simpleDocument from "@/public/svg/simple-document.svg";
 
 import { twMerge } from "tailwind-merge";
 
@@ -149,8 +151,12 @@ export default function getFileIcon(file: File) {
     case "csv":
     case "xlsx":
       return xlsIcon;
+    case "jpg":
+    case "jpeg":
+    case "png":
+      return imageIcon;
     default:
-      return "/placeholder.svg";
+      return simpleDocument;
   }
 }
 

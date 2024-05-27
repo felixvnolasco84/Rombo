@@ -18,6 +18,7 @@ import DropdownMenuRequestStatus from "@/components/DropdownMenu/DropdownMenuReq
 import DropdownMenuRequestCategory from "@/components/DropdownMenu/DropdownMenuRequestCategory";
 import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuRequestPriority";
 import CommentSection from "@/components/CommentSection";
+import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -41,7 +42,7 @@ export default async function page({ params }: { params: { id: string } }) {
   ];
 
   if (!userList.includes(sessionEmail)) {
-    return <div>Not Authorized!</div>;
+    return <NotAutorizedComponent/>;
   }
 
   return (
@@ -94,61 +95,11 @@ export default async function page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {/* <div className="mb-8 grid grid-cols-2 gap-4">
-        <div>
-          <h3 className="font-semibold text-gray-600">Categoría</h3>
-
-          <DropdownMenuRequestCategory
-            id={request.id}
-            category={request.category}
-          />
-        </div>
-        <div className="">
-          <h3 className="font-semibold text-gray-600">Prioridad</h3>
-          <DropdownMenuRequestPriority
-            priority={request.priority}
-            id={request.id}
-          />
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-600">Status</h3>
-          <DropdownMenuRequestStatus id={request.id} status={request.status} />
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-600">Creado Por</h3>
-          <p>{request.userEmail}</p>
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-600">Creado</h3>
-          <p>
-            {new Date(request.createdAt).toLocaleDateString("es-Mx", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-600">Actualizado</h3>
-          <p>
-            {new Date(request.updatedAt).toLocaleDateString("es-Mx", {
-              weekday: "long",
-              year: "numeric",
-
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </div>
-        <div className="col-span-1">
-          <h3 className="font-semibold text-gray-600">Marca</h3>
-          <Link href={`/portal/marcas/${request.brand.id}`}>
-            <Badge variant={"outline"}>{request.brand.title}</Badge>
-          </Link>
-        </div>
-      </div> */}
-      <TipTapOnlyContent content={request.description} />
+      {request.description ? (
+        <TipTapOnlyContent content={request.description} />
+      ) : (
+        <p className="text-sm text-gray-500">No existe una descripción.</p>
+      )}
 
       <div className="flex flex-col gap-1">
         <Accordion

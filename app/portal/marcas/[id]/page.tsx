@@ -22,6 +22,7 @@ import DropdownMenuComponentBrand from "@/components/DropdownMenu/DropdownMenuCo
 import EditBrandImageDialog from "@/components/Dialogs/EditBrandImageDialog";
 import { getAuthSession } from "@/utils/AuthOptions";
 import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleRequestDataTable";
+import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -44,7 +45,7 @@ export default async function page({ params }: { params: { id: string } }) {
       "alba@polygonag.com" ||
       "rodrigo@polygonag.com")
   ) {
-    return <div>Not Authorized!</div>;
+    return <NotAutorizedComponent/> ;
   }
 
   return (

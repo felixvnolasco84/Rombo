@@ -18,15 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es-Mx">
       <body className={`${AgrandirRegular.className}`}>
         <AuthProvider>
-          <div className="container">
-            <Navbar />
-            <main className="py-4">{children}</main>
-            <Toaster />
+          <div className="flex h-full flex-col justify-between">
+            <div className="container flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-grow py-4">{children}</main>
+              <Toaster />
+            </div>
+            <FooterComponent />
           </div>
-          <FooterComponent />
         </AuthProvider>
       </body>
     </html>

@@ -39,6 +39,7 @@ export default function CommentForm({ requestId }: { requestId: string }) {
       documents: [],
     },
   });
+  
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
@@ -93,10 +94,6 @@ export default function CommentForm({ requestId }: { requestId: string }) {
             <FormItem className="mb-2">
               <FormControl>
                 <TipTapComment onStateChange={field.onChange} />
-                {/* <Textarea
-                  placeholder="Escribe tu comentario aquí."
-                  {...field}
-                /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
