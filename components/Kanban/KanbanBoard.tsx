@@ -1,14 +1,9 @@
 "use client";
 
 import KanbanCard from "../Cards/KanbanCard";
-import React, { useState, useRef } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import BacklogColumn from "./BacklogColumn";
 import KanbanTitleSection from "./KanbanTitleSection";
 
 type KanbanBoardProps = {
-  backlogItems: any;
   todoItems: any;
   inProgressItems: any;
   toTestItems: any;
@@ -16,47 +11,13 @@ type KanbanBoardProps = {
 };
 
 export default function KanbanBoard({
-  backlogItems,
   todoItems,
   inProgressItems,
   toTestItems,
   completeItems,
 }: KanbanBoardProps) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const handleMouseDown = (e: any) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: any) => {
-    if (isDragging && scrollRef.current) {
-      scrollRef.current.scrollLeft =
-        scrollRef.current.scrollLeft + startX - e.clientX;
-      setStartX(e.clientX);
-    }
-  };
-
-  const handleDragStart = (e: any) => {
-    e.preventDefault();
-  };
-
   return (
-    <div
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      onDragStart={handleDragStart}
-      ref={scrollRef}
-      className="flex gap-4 overflow-x-auto py-8"
-    >
-      <BacklogColumn backlogItems={backlogItems} />
+    <div className="flex gap-4 overflow-x-auto py-8">
       <div className="h-fit w-1/4 space-y-4">
         <KanbanTitleSection title="To Do" items={todoItems} />
         <div className="h-fit w-full space-y-4">

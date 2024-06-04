@@ -5,6 +5,9 @@
 // import { ACTION, TABLE_TYPE } from "@prisma/client";
 // import { revalidatePath } from "next/cache";
 
+import { getAuthSession } from "@/utils/AuthOptions";
+import prisma from "@/utils/ConnectionPool";
+
 // export const createLists = async (data: { title: string; boardId: string }) => {
 //   const session = await getAuthSession();
 //   if (!session) {
@@ -187,29 +190,30 @@
 // };
 
 // // re order list
-// export const reorderList = async (data: { items: any; boardId: string }) => {
-//   const session = await getAuthSession();
-//   if (!session) {
-//     return {
-//       error: "user not found",
-//     };
-//   }
-//   const { items, boardId } = data;
-//   let lists;
-//   try {
-//     const transaction = items.map((list: any) =>
-//       prismaDB.list.update({
-//         where: { id: list.id },
-//         data: {
-//           order: list.order,
-//         },
-//       })
-//     );
-//     lists = await prismaDB.$transaction(transaction);
-//   } catch (error) {
-//     return { error: "list not reordered" };
-//   }
+export const reorderList = async (data: { items: any }) => {
+  // export const reorderList = async (data: { items: any; boardId: string }) => {
+  const session = await getAuthSession();
+  if (!session) {
+    return {
+      error: "user not found",
+    };
+  }
+  const { items } = data;
+  let lists;
+  try {
+    const transaction = items.map((list: any) =>
+      prisma.list.update({
+        where: { id: list.id },
+        data: {
+          order: list.order,
+        },
+      })
+    );
+    lists = await prisma.$transaction(transaction);
+  } catch (error) {
+    return { error: "list not reordered" };
+  }
 
-//   revalidatePath(`/board/${boardId}`);
-//   return { result: lists };
-// };
+  //   revalidatePath(`/board/${boardId}`);
+  return { result: lists };
+};

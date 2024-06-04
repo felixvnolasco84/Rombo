@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 // import CreateList from "./CreateList";
-// import { reorderList } from "@/services/list";
+import { reorderList } from "@/services/list";
 import ListItem from "./ListItem";
 
 interface ListProps {
-  boardId: string;
+  // boardId: string;
   list: any;
 }
 // re order data
@@ -19,9 +19,15 @@ const reOrderData = (list: any, desIndex: number, sourceIndex: number) => {
   return result;
 };
 
+// const ListContainer = ({ boardId, list }: ListProps) => {
+const ListContainer = ({ list }: ListProps) => {
 
-const ListContainer = ({ boardId, list }: ListProps) => {
+
+
   const [listData, setListData] = useState(list);
+
+  console.log(listData)
+
 
   useEffect(() => {
     setListData(list);
@@ -45,6 +51,8 @@ const ListContainer = ({ boardId, list }: ListProps) => {
       );
       setListData(data);
       // await reorderList({ items: data, boardId });
+      const response = await reorderList({ items: data });
+      console.log(response)
     }
   };
   return (

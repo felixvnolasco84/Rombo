@@ -69,7 +69,7 @@ export default function RequestFormWithoutReference({
       description: "",
       documents: [],
       brandId: "",
-      status: "backlog",
+      status: "todo",
       priority: "",
     },
   });

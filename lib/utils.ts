@@ -252,8 +252,6 @@ export function getStatusColor(status: string): string {
   switch (status) {
     case "todo":
       return "bg-green-200";
-    case "backlog":
-      return "bg-green-200";
     case "in progress":
       return "bg-yellow-200";
     default:

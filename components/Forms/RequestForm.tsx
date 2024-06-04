@@ -66,7 +66,7 @@ export default function RequestForm({ brandId }: RequestFormProps) {
       description: "",
       documents: [],
       brandId: brandId,
-      status: "backlog",
+      status: "todo",
       priority: "",
     },
   });

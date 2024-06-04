@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import CardItem from "./CardItem";
 // import CreateCard from "./CreateCard";
 
-// const ListItem = ({ list, index }: { list: List; index: number }) => {
 const ListItem = ({ list, index }: { list: any; index: number }) => {
   return (
     <Draggable draggableId={list.id} index={index}>
@@ -14,7 +13,7 @@ const ListItem = ({ list, index }: { list: any; index: number }) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          style={provided.draggableProps.style as React.CSSProperties} // Aquí está el cambio
+          style={provided.draggableProps.style as React.CSSProperties}
           className="h-full w-[272px] shrink-0 select-none"
         >
           <div
@@ -32,8 +31,7 @@ const ListItem = ({ list, index }: { list: any; index: number }) => {
                     list?.cards?.length > 0 ? "mt-2" : "mt-0"
                   )}
                 >
-                  {/* {list?.cards?.map((card: Card, index: number) => ( */}
-                  {list?.cards?.map((card: any, index: number) => (
+                  {list?.requests?.map((card: any, index: number) => (
                     <CardItem key={card.id} card={card} index={index} />
                   ))}
                   {provided.placeholder}

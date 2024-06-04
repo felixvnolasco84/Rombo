@@ -123,7 +123,7 @@ model Board {
   image String
   userIds String[]
   Users   User[]   @relation(fields: [userIds], references: [id])
-  lists     List[]
+  // lists     List[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   requests      Request[]
@@ -133,8 +133,8 @@ model List {
   id      String  @id @default(cuid()) @map("_id") 
   title   String
   order   Int
-  boardId String 
-  board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // boardId String 
+  // board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   requests Request[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -168,7 +168,7 @@ model Request {
   brandId      String
   brand        Brand          @relation(fields: [brandId], references: [id], onDelete: Cascade)
   userEmail    String
-  user         User           @relation(fields: [userEmail], references: [id])
+  user         User           @relation(fields: [userEmail], references: [email])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   order        Int            @default(0)

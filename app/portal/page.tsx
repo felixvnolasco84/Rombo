@@ -1,4 +1,5 @@
 import { getAuthSession } from "@/utils/AuthOptions";
+import ListContainer from "@/components/Cards/KanbanList";
 import prisma from "@/utils/ConnectionPool";
 import KanbanBoard from "@/components/Kanban/KanbanBoard";
 import Link from "next/link";
@@ -7,34 +8,52 @@ import { Button } from "@/components/ui/button";
 export default async function page() {
   const session: any = await getAuthSession();
 
-  const requests = await prisma.request.findMany({
-    where: {
-      userEmail: session.user.email,
+  const list = await prisma.list.findMany({
+    include: {
+      requests: {
+        orderBy: {
+          order: "asc",
+        },
+        include: {
+          user: true,
+        },
+      },
     },
-    select: {
-      id: true,
-      title: true,
-      priority: true,
-      status: true,
-      category: true,
-      brand: true,
+    orderBy: {
+      order: "asc",
     },
   });
 
-  const backlog = requests.filter((request) => request.status === "backlog");
+  console.log(list);
 
-  const todo = requests.filter((request) => request.status === "todo");
-  const inProgress = requests.filter(
-    (request) => request.status === "in progress"
-  );
-  const toTest = requests.filter((request) => request.status === "to-test");
-  const complete = requests.filter((request) => request.status === "complete");
+  // const requests = await prisma.request.findMany({
+  //   where: {
+  //     userEmail: session.user.email,
+  //   },
+  //   select: {
+  //     id: true,
+  //     title: true,
+  //     priority: true,
+  //     status: true,
+  //     category: true,
+  //     brand: true,
+  //   },
+  // });
+
+  // const todo = requests.filter((request) => request.status === "todo");
+  // const inProgress = requests.filter(
+  //   (request) => request.status === "in progress"
+  // );
+  // const toTest = requests.filter((request) => request.status === "to-test");
+  // const complete = requests.filter((request) => request.status === "complete");
 
   return (
     <>
-      {requests.length > 0 ? (
+      <div className="w-full overflow-x-auto p-4">
+        <ListContainer list={list} />
+      </div>
+      {/* {requests.length > 0 ? (
         <KanbanBoard
-          backlogItems={backlog}
           todoItems={todo}
           inProgressItems={inProgress}
           toTestItems={toTest}
@@ -49,7 +68,7 @@ export default async function page() {
             No hay solicitudes registradas
           </Button>
         </Link>
-      )}
+      )} */}
     </>
   );
 }
