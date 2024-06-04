@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { LucidePersonStanding } from "lucide-react";
+import { Loader, LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
 import { uploadFile } from "@/app/utils/uploadImage";
 import TipTapEditor from "../TipTap";
@@ -59,8 +59,6 @@ export default function BrandForm() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // const [cover, setCover] = useState<string>("");
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -74,8 +72,8 @@ export default function BrandForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data);
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
       const draftResponse = await fetch("/api/brands ", {
         method: "POST",
@@ -108,6 +106,8 @@ export default function BrandForm() {
         title: "Oops!",
         description: "Al parecer hubo un error, intentelo más tarde",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -122,7 +122,7 @@ export default function BrandForm() {
               render={({ field }) => (
                 <FormItem className="space-y-1">
                   <FormControl>
-                    <UpdateImageFormField  {...field} />
+                    <UpdateImageFormField {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -137,12 +137,9 @@ export default function BrandForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre de la Marca</FormLabel>
-                  <FormDescription>
-                    Agregar el nombre de tu marca o organización
-                  </FormDescription>
                   <FormControl>
                     <Input
-                      placeholder="Nombre de la Marca"
+                      placeholder="Agregar el nombre de tu marca o organización"
                       autoCapitalize="none"
                       autoComplete="off"
                       autoCorrect="off"
@@ -163,16 +160,13 @@ export default function BrandForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Industria</FormLabel>
-                  <FormDescription>
-                    Selecciona la industria a la que pertenece tu marca
-                  </FormDescription>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona una Industria" />
+                        <SelectValue placeholder="Selecciona la industria a la que pertenece tu marca" />
                       </SelectTrigger>
                       <SelectContent>
                         {industries.map((industry) => (
@@ -195,19 +189,7 @@ export default function BrandForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descripción de la Marca</FormLabel>
-                  <FormDescription>
-                    Agregar una descripción de tu marca o organización
-                  </FormDescription>
                   <FormControl>
-                    {/* <Textarea
-                        placeholder="Descripción de la marca"
-                        className="resize-none bg-transparent"
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      ></Textarea> */}
                     <TipTapEditor onStateChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
@@ -222,10 +204,7 @@ export default function BrandForm() {
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel> Sitio web</FormLabel>
-                  <FormDescription>
-                    Agregar la URL de tu sitio web o red social
-                  </FormDescription>
+                  <FormLabel>Sitio Web o Red Social</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="https://www.example.com"
@@ -252,15 +231,6 @@ export default function BrandForm() {
                     Agregar documentos relacionados a tu marca o organización
                   </FormDescription>
                   <FormControl>
-                    {/* <Textarea
-                      placeholder="Descripción de la marca"
-                      className="resize-none bg-transparent"
-                      autoCapitalize="none"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      disabled={isLoading}
-                      {...field}
-                    ></Textarea> */}
                     <UploadDocumentsFormField {...field} />
                   </FormControl>
                   <FormMessage />
@@ -269,10 +239,11 @@ export default function BrandForm() {
             />
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+            {isLoading ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              "Crear Marca"
             )}
-            Crear Marca
           </Button>
         </div>
       </form>

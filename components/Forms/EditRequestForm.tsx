@@ -36,7 +36,10 @@ type RequestFormProps = {
   setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function EditRequestForm({ request, setIsEditDialogOpen }: RequestFormProps) {
+export default function EditRequestForm({
+  request,
+  setIsEditDialogOpen,
+}: RequestFormProps) {
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
@@ -53,7 +56,7 @@ export default function EditRequestForm({ request, setIsEditDialogOpen }: Reques
       .optional(),
     brandId: z.string(),
     status: z.string(),
-    priority: z.string(),
+    priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
 
   const { toast } = useToast();
@@ -74,9 +77,8 @@ export default function EditRequestForm({ request, setIsEditDialogOpen }: Reques
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data)
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
 
       const response = await fetch(`/api/requests/${request.id}`, {
@@ -108,7 +110,6 @@ export default function EditRequestForm({ request, setIsEditDialogOpen }: Reques
       setIsLoading(false);
     }
   }
-
 
   return (
     <Form {...form}>
@@ -256,8 +257,11 @@ export default function EditRequestForm({ request, setIsEditDialogOpen }: Reques
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              Actualizar
+              {isLoading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                "Actualizar"
+              )}
             </Button>
           </DialogFooter>
         </div>

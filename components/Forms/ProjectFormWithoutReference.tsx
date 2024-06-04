@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Select,
@@ -11,31 +11,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
-import { Textarea } from "../ui/textarea"
-import { LucidePersonStanding } from "lucide-react"
-import { FormLabel } from "../react-hook-form"
-import { uploadFile } from "@/app/utils/uploadImage"
-import TipTapEditor from "../TipTap"
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { Textarea } from "../ui/textarea";
+import { LucidePersonStanding } from "lucide-react";
+import { FormLabel } from "../react-hook-form";
+import { uploadFile } from "@/app/utils/uploadImage";
+import TipTapEditor from "../TipTap";
 
 type ProjectFormProp = {
   brands: any[];
 };
 
-export default function ProjectFormWithoutReference({brands}: ProjectFormProp) {
+export default function ProjectFormWithoutReference({
+  brands,
+}: ProjectFormProp) {
   const FormSchema = z.object({
     title: z
       .string()
@@ -68,12 +70,13 @@ export default function ProjectFormWithoutReference({brands}: ProjectFormProp) {
       title: "",
       description: "",
       img: "",
-      brandId: ""
+      brandId: "",
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
       const response = await fetch("/api/projects", {
         method: "POST",
@@ -104,9 +107,12 @@ export default function ProjectFormWithoutReference({brands}: ProjectFormProp) {
         title: "Oops!",
         description: "Al parecer hubo un error, intentelo más tarde",
       });
+    } finally {
+      setIsLoading(false);
     }
+
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -191,7 +197,7 @@ export default function ProjectFormWithoutReference({brands}: ProjectFormProp) {
                             </SelectItem>
                           ))}
                         </SelectContent>
-                      </Select>                      
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -200,10 +206,11 @@ export default function ProjectFormWithoutReference({brands}: ProjectFormProp) {
             </div>
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+            {isLoading ? (
+              <LucidePersonStanding className="h-4 w-4 animate-spin" />
+            ) : (
+              "Crear Proyecto"
             )}
-            Crear Proyecto
           </Button>
         </div>
       </form>

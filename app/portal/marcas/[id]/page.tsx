@@ -45,7 +45,7 @@ export default async function page({ params }: { params: { id: string } }) {
       "alba@polygonag.com" ||
       "rodrigo@polygonag.com")
   ) {
-    return <NotAutorizedComponent/> ;
+    return <NotAutorizedComponent />;
   }
 
   return (

@@ -19,6 +19,7 @@ import DropdownMenuRequestCategory from "@/components/DropdownMenu/DropdownMenuR
 import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuRequestPriority";
 import CommentSection from "@/components/CommentSection";
 import NotAutorizedComponent from "@/components/NotAutorizedComponent";
+import TimeAgoDate from "@/components/TimeAgoDate";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -42,7 +43,7 @@ export default async function page({ params }: { params: { id: string } }) {
   ];
 
   if (!userList.includes(sessionEmail)) {
-    return <NotAutorizedComponent/>;
+    return <NotAutorizedComponent />;
   }
 
   return (
@@ -91,7 +92,10 @@ export default async function page({ params }: { params: { id: string } }) {
             priority={request.priority}
             id={request.id}
           />
-          <p className="text-sm text-[#0062FF]">Lorem, ipsum dolor.</p>
+          <p className="text-sm text-[#0062FF]">
+            <TimeAgoDate date={request.deadline} />
+          </p>
+
         </div>
       </div>
 

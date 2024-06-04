@@ -153,12 +153,11 @@ export const notificationsColumns: ColumnDef<any>[] = [
     },
     cell: ({ row }) => {
       const status:any = row.getValue("request_status");
-      console.log(status)
       if (!status) {
         return (
           <Badge
             variant={"outline"}
-            className="w-full justify-center bg-[#F3F3F3] text-xs font-normal text-[#121415]"
+            className="w-full justify-center bg-[#F3F3F3] px-2.5 py-1 text-xs font-normal text-[#121415]"
           >
             Sin Estado
           </Badge>
@@ -168,9 +167,25 @@ export const notificationsColumns: ColumnDef<any>[] = [
       return (
         <Badge
           variant={"requestStatus"}
-          className={`${color} w-full text-xs font-normal text-[#121415] justify-center leading-none`}
+          className={`${
+            status === "todo"
+              ? "bg-[#C0D5F7]"
+              : status === "in progress"
+              ? "bg-[#FBDFC7]"
+              : status === "to-test"
+              ? "bg-[#FCDBF9]"
+              : status === "complete"
+              ? "bg-[#DFFCAD]"
+              : "bg-red-100 text-red-800"
+          } w-full text-xs font-normal text-[#121415] justify-center leading-none px-2.5 py-1`}
         >
-          {status}
+          {status === "todo"
+            ? "To Do"
+            : status === "in progress"
+            ? "In Progress"
+            : status === "to-test"
+            ? "To Test"
+            : "Done"}
         </Badge>
       );
     },

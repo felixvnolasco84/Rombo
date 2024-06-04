@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
-import { Textarea } from "../ui/textarea"
-import { LucidePersonStanding } from "lucide-react"
-import { FormLabel } from "../react-hook-form"
-import { uploadFile } from "@/app/utils/uploadImage"
-import TipTapEditor from "../TipTap"
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { Textarea } from "../ui/textarea";
+import { Loader, LucidePersonStanding } from "lucide-react";
+import { FormLabel } from "../react-hook-form";
+import { uploadFile } from "@/app/utils/uploadImage";
+import TipTapEditor from "../TipTap";
 
 type ProjectFormProp = {
-  brandId: string
-}
+  brandId: string;
+};
 
 export default function ProjectForm({ brandId }: ProjectFormProp) {
   const FormSchema = z.object({
@@ -60,12 +60,13 @@ export default function ProjectForm({ brandId }: ProjectFormProp) {
       title: "",
       description: "",
       img: "",
-      brandId: brandId
+      brandId: brandId,
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
       const response = await fetch("/api/projects", {
         method: "POST",
@@ -96,6 +97,8 @@ export default function ProjectForm({ brandId }: ProjectFormProp) {
         title: "Oops!",
         description: "Al parecer hubo un error, intentelo más tarde",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -191,10 +194,11 @@ export default function ProjectForm({ brandId }: ProjectFormProp) {
             </div>
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+            {isLoading ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              "Crear Proyecto"
             )}
-            Crear Proyecto
           </Button>
         </div>
       </form>

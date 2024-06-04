@@ -56,7 +56,7 @@ export default function KanbanBoard({
       ref={scrollRef}
       className="flex gap-4 overflow-x-auto py-8"
     >
-      {/* <BacklogColumn backlogItems={backlogItems} /> */}
+      <BacklogColumn backlogItems={backlogItems} />
       <div className="h-fit w-1/4 space-y-4">
         <KanbanTitleSection title="To Do" items={todoItems} />
         <div className="h-fit w-full space-y-4">

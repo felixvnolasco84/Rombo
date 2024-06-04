@@ -1,6 +1,5 @@
 "use client";
 
-import SignupFormComponent from "./SignupFormComponent";
 import GoogleIcon from "@/public/images/logos/google.png";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -17,21 +16,12 @@ export function LoginFormSection({ className, ...props }: UserAuthFormProps) {
   const searchParams = useSearchParams();
   const callbackUrl: any = searchParams.get("callbackUrl");
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
-
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <LoginFormComponent />
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="border-t w-full" />
+          <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center uppercase">
           <span className="bg-background px-2 text-muted-foreground">
@@ -46,11 +36,7 @@ export function LoginFormSection({ className, ...props }: UserAuthFormProps) {
         className="text-lg"
         disabled={isLoading}
       >
-        {isLoading ? (
-          <Image src={GoogleIcon} alt="Google" className="mr-1 w-4 h-4" />
-        ) : (
-          <Image src={GoogleIcon} alt="Google" className="mr-1 w-4 h-4" />
-        )}
+        <Image src={GoogleIcon} alt="Google" className="mr-1 h-4 w-4" />
       </Button>
     </div>
   );

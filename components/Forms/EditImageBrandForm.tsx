@@ -31,7 +31,6 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
 
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -41,9 +40,8 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    setIsLoading(true);
-
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
       const response = await fetch(`/api/brands/${brand.id}`, {
         method: "PUT",
@@ -101,8 +99,11 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              Actualizar
+              {isLoading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                "Actualizar"
+              )}
             </Button>
           </DialogFooter>
         </div>

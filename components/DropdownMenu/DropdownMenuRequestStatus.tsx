@@ -54,8 +54,6 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
     }
   };
 
-  const color = getStatusColor(currentStatus);
-
   return (
     <>
       <DropdownMenu>
@@ -81,8 +79,15 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
             >
               {loading ? (
                 <Loader className="h-4 w-4 animate-spin" />
+              ) : // currentStatus
+              currentStatus === "todo" ? (
+                "To Do"
+              ) : status === "in progress" ? (
+                "In Progress"
+              ) : status === "to-test" ? (
+                "To Test"
               ) : (
-                currentStatus
+                "Done"
               )}
             </Badge>
           </Button>

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
+import { now } from "next-auth/client/_utils";
 
 //GET ALL REQUESTS
-
 export const GET = async () => {
   const session: any = await getAuthSession();
   if (!session) {
@@ -73,10 +73,55 @@ export const POST = async (req: any) => {
   }
   try {
     const body = await req.json();
+
+    if (!body) {
+      return new NextResponse(JSON.stringify({ message: "Body is required!" }));
+    }
+
+    const { category } = body;
+
+    if (!category) {
+      return new NextResponse(
+        JSON.stringify({ message: "Category is required!" })
+      );
+    }
+
+    switch (category) {
+      case "Gráficos de Redes Sociales":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 1);
+        break;
+      case "Papelería, Infografías, Folletos":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 1);
+        break;
+      case "Fotos de Stock Ilimitadas":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 1);
+        break;
+      case "Presentaciones":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2);
+        break;
+      case "Reels y Motion Graphics":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2);
+        break;
+      case "Branding & Logotipos":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3);
+        break;
+      case "Ilustraciones":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2);
+        break;
+      case "Páginas Web":
+        body.deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3);
+        break;
+      default:
+        return new NextResponse(
+          JSON.stringify({ message: "Category is invalid!" })
+        );
+    }
+
     const request = await prisma.request.create({
       data: {
         ...body,
         userEmail: session.user.email,
+        order: 0,
       },
       include: {
         brand: true,

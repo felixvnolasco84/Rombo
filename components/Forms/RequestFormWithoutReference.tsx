@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LucidePersonStanding } from "lucide-react";
+import { Loader, LucidePersonStanding } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -36,6 +36,8 @@ type RequestFormProps = {
 export default function RequestFormWithoutReference({
   brands,
 }: RequestFormProps) {
+
+  
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
@@ -50,9 +52,9 @@ export default function RequestFormWithoutReference({
         })
       )
       .optional(),
-    brandId: z.string(),
+    brandId: z.string().min(1, { message: "Por favor selecciona un proyecto" }),
     status: z.string(),
-    priority: z.string(),
+    priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
 
   const { toast } = useToast();
@@ -72,43 +74,45 @@ export default function RequestFormWithoutReference({
     },
   });
 
- async function onSubmit(data: z.infer<typeof FormSchema>) {
-   try {
-     const jsonData = JSON.stringify(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const jsonData = JSON.stringify(data);
+      setIsLoading(true);
+      const response = await fetch("/api/requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonData,
+      });
 
-     const response = await fetch("/api/requests", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: jsonData,
-     });
+      const responseJson = await response.json();
 
-     const responseJson = await response.json();
-
-     router.push(`/portal/solicitudes/${responseJson.request.id}`);
-     if (!response.ok) {
-       toast({
-         variant: "destructive",
-         title: "¡Oh!",
-         description: "Al parecer hubo un error, intentelo más tarde",
-       });
-     } else {
-       // toast({
-       //     variant: "default",
-       //     title: "¡Listo!",
-       //     description: "Tu solicitud ha sido enviada con éxito 🎉",
-       // })
-       // form.reset()
-     }
-   } catch (error: any) {
-     toast({
-       variant: "destructive",
-       title: "¡Oh!",
-       description: "Al parecer hubo un error, intentelo más tarde 🎉",
-     });
-   }
- }
+      router.push(`/portal/solicitudes/${responseJson.request.id}`);
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          title: "¡Oh!",
+          description: "Al parecer hubo un error, intentelo más tarde",
+        });
+      } else {
+        // toast({
+        //     variant: "default",
+        //     title: "¡Listo!",
+        //     description: "Tu solicitud ha sido enviada con éxito 🎉",
+        // })
+        // form.reset()
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "¡Oh!",
+        description: "Al parecer hubo un error, intentelo más tarde 🎉",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <Form {...form}>
@@ -291,10 +295,11 @@ export default function RequestFormWithoutReference({
             </div>
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+            {isLoading ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              "Enviar Solicitud"
             )}
-            Enviar Solicitud
           </Button>
         </div>
       </form>

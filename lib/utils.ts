@@ -260,3 +260,54 @@ export function getStatusColor(status: string): string {
       return "bg-red-200";
   }
 }
+
+export const features = [
+  {
+    title: "Gráficos de Redes Sociales",
+    included: true,
+  },
+  {
+    title: "Papelería, Infografías, Folletos",
+    included: true,
+  },
+  {
+    title: "Fotos de Stock Ilimitadas",
+    included: true,
+  },
+  {
+    title: "Papelería, Infografías, Folletos",
+    included: true,
+  },
+  {
+    title: "Presentaciones",
+    included: true,
+  },
+  {
+    title: "Fotos de Stock Ilimitadas",
+    included: false,
+  },
+  {
+    title: "Reels y Motion Graphics",
+    included: false,
+  },
+  {
+    title: "Branding & Logotipos",
+    included: false,
+  },
+  {
+    title: "Ilustraciones",
+    included: false,
+  },
+  {
+    title: "Páginas Web",
+    included: false,
+  },
+];
+
+
+// @ts-ignore
+import mexStrings from "react-timeago/lib/language-strings/es";
+// @ts-ignore
+import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
+
+export const formatter = buildFormatter(mexStrings);

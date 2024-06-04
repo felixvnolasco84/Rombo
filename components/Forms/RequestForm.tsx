@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LucidePersonStanding } from "lucide-react";
+import { Loader, LucidePersonStanding } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -51,7 +51,7 @@ export default function RequestForm({ brandId }: RequestFormProps) {
       .optional(),
     brandId: z.string(),
     status: z.string(),
-    priority: z.string(),
+    priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
 
   const { toast } = useToast();
@@ -73,6 +73,7 @@ export default function RequestForm({ brandId }: RequestFormProps) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
 
       const response = await fetch("/api/requests", {
@@ -106,6 +107,8 @@ export default function RequestForm({ brandId }: RequestFormProps) {
         title: "¡Oh!",
         description: "Al parecer hubo un error, intentelo más tarde 🎉",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -246,10 +249,11 @@ export default function RequestForm({ brandId }: RequestFormProps) {
             </div>
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <LucidePersonStanding className="mr-2 h-4 w-4 animate-spin" />
+            {isLoading ? (
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Enviar Solicitud"
             )}
-            Enviar Solicitud
           </Button>
         </div>
       </form>

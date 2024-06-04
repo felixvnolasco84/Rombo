@@ -56,11 +56,9 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data)
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
-
       const response = await fetch(`/api/comments/${comment.id}`, {
         method: "PUT",
         headers: {
@@ -68,12 +66,7 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
         },
         body: jsonData,
       });
-
-      // const response = await UpdateRequest(data, request.id);
       const responseJson = await response.json();
-
-      console.log(responseJson);
-
       if (responseJson.message === "Comment updated!") {
         toast({
           title: "¡Listo!",
@@ -131,7 +124,7 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
                     <FormControl>
                       <UploadDocumentsFormField
                         files={comment?.documents}
-                        objectId={{ id: comment.id, type: "comment"}}
+                        objectId={{ id: comment.id, type: "comment" }}
                         {...field}
                       />
                     </FormControl>
@@ -148,8 +141,11 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              Actualizar
+              {isLoading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                "Actualizar"
+              )}
             </Button>
           </DialogFooter>
         </div>

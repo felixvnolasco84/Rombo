@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import TimeAgo from "react-timeago";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+
+// @ts-ignore
+import mexStrings from "react-timeago/lib/language-strings/es";
+// @ts-ignore
+import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,7 +21,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { getStatusColor } from "@/lib/utils";
+
+const formatter = buildFormatter(mexStrings);
 
 export const requestColumns: ColumnDef<any>[] = [
   {
@@ -58,12 +65,11 @@ export const requestColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const title = row.original.title;
       return (
-        <Link className="hover:underline" href={`/portal/solicitudes/${row.original.id}`}>
-          <span>
-            {
-              title.length < 40 ? title : title.slice(0, 40) + "..."
-            }
-          </span>
+        <Link
+          className="hover:underline"
+          href={`/portal/solicitudes/${row.original.id}`}
+        >
+          <span>{title.length < 40 ? title : title.slice(0, 40) + "..."}</span>
         </Link>
       );
     },
@@ -139,7 +145,6 @@ export const requestColumns: ColumnDef<any>[] = [
               : status === "complete"
               ? "bg-[#DFFCAD]"
               : "bg-red-100 text-red-800"
-            // } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
           } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
         >
           {status === "todo"
@@ -237,6 +242,14 @@ export const requestColumns: ColumnDef<any>[] = [
           Creado
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const createdAt = row.original.createdAt;
+      return (
+        <div className="flex w-full items-center justify-center gap-1">
+          <TimeAgo date={createdAt} formatter={formatter} />
+        </div>
       );
     },
   },

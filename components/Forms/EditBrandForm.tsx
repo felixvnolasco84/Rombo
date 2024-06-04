@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import {
@@ -40,8 +40,6 @@ export default function EditBrandForm({
   brand,
   setIsEditDialogOpen,
 }: RequestFormProps) {
-
-
   const FormSchema = z.object({
     img: z.string().optional(),
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
@@ -73,13 +71,10 @@ export default function EditBrandForm({
     },
   });
 
-
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data)
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const jsonData = JSON.stringify(data);
-
       const response = await fetch(`/api/brands/${brand.id}`, {
         method: "PUT",
         headers: {
@@ -233,8 +228,11 @@ export default function EditBrandForm({
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              Actualizar
+              {isLoading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                "Actualizar"
+              )}
             </Button>
           </DialogFooter>
         </div>
