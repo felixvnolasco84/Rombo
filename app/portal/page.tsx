@@ -52,7 +52,7 @@ export default async function page() {
       {/* <div className="w-full overflow-x-auto p-4">
         <ListContainer list={list} />
       </div> */}
-      {requests.length > 0 ? (
+      {/* {requests.length > 0 ? (
         <KanbanBoard
           todoItems={todo}
           inProgressItems={inProgress}
@@ -68,7 +68,7 @@ export default async function page() {
             No hay solicitudes registradas
           </Button>
         </Link>
-      )}
+      )} */}
     </>
   );
 }
