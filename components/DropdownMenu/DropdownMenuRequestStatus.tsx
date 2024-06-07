@@ -99,15 +99,12 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
             value={currentStatus}
             onValueChange={handleStatusChange}
           >
-            <DropdownMenuRadioItem value="backlog">
-              Backlog
-            </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="todo">To Do</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="in progress">
-              In progress
+              En Progreso
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="to-test">
-              En Aprobación
+              Revisión
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="complete">
               Completado

@@ -89,12 +89,11 @@ model User {
   comments           Comment[]
   subscriptions      Subscription[]
   Notification       Notification[]
+  // orgIds        String[]       
+  // organizations Organization[] @relation(fields: [orgIds], references: [id])
 
-  orgIds        String[]       
-  organizations Organization[] @relation(fields: [orgIds], references: [id])
-
-  boardIds String[] 
-  boards   Board[]  @relation(fields: [boardIds], references: [id])
+  // boardIds String[] 
+  // boards   Board[]  @relation(fields: [boardIds], references: [id])
 
 }
 
@@ -106,35 +105,36 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Organization {
-  id    String @id @default(cuid()) @map("_id") 
-  title String
-  image String
-  userIds String[] 
-  users   User[]   @relation(fields: [userIds], references: [id])
-  boards Board[]
-}
+// model Organization {
+//   id    String @id @default(cuid()) @map("_id") 
+//   title String
+//   image String
+//   userIds String[] 
+//   users   User[]   @relation(fields: [userIds], references: [id])
+//   boards Board[]
+// }
 
 model Board {
   id String @id @default(cuid()) @map("_id")
-  orgId        String       
-  organization Organization @relation(fields: [orgId], references: [id])
-  title String
-  image String
-  userIds String[]
-  Users   User[]   @relation(fields: [userIds], references: [id])
-  // lists     List[]
+  // orgId        String       
+  // organization Organization @relation(fields: [orgId], references: [id])
+  brandId String
+  brand   Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  // title String
+  // image String
+  // userIds String[]
+  // Users   User[]   @relation(fields: [userIds], references: [id])
+  lists     List[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  requests      Request[]
 }
 
 model List {
   id      String  @id @default(cuid()) @map("_id") 
   title   String
   order   Int
-  // boardId String 
-  // board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  boardId String 
+  board   Board  @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   requests Request[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -174,8 +174,6 @@ model Request {
   order        Int            @default(0)
   listId      String?
   list        List?     @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  boardId     String?   
-  board       Board?    @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   label     Label[]
   deadline     DateTime?       @default(now()) 
   documents    Document[]
@@ -196,6 +194,7 @@ model Brand {
   title        String
   description  String
   industry     String
+  Board        Board[]
   website      String?
   documents    Document[]
   userEmail    String

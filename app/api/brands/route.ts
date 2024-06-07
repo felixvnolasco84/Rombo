@@ -27,12 +27,50 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const body = await req.json();
+
     const brand = await prisma.brand.create({
       data: { ...body, userEmail: session.user.email },
       include: {
         user: true,
       },
     });
+
+    const board = await prisma.board.create({
+      data: {
+        brandId: brand.id,
+      },
+    });
+
+    await prisma.$transaction([
+      prisma.list.create({
+        data: {
+          title: "To Do",
+          boardId: board.id,
+          order: 1,
+        },
+      }),
+      prisma.list.create({
+        data: {
+          title: "In Progress",
+          boardId: board.id,
+          order: 2,
+        },
+      }),
+      prisma.list.create({
+        data: {
+          title: "Revisión",
+          boardId: board.id,
+          order: 3,
+        },
+      }),
+      prisma.list.create({
+        data: {
+          title: "Done",
+          boardId: board.id,
+          order: 4,
+        },
+      }),
+    ]);
 
     const notification = await prisma.notification.create({
       data: {

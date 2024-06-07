@@ -1,4 +1,4 @@
-import ListContainer from "@/components/Cards/KanbanList";
+// import KanBan from "@/components/Cards/KanbanList";
 import prisma from "@/utils/ConnectionPool";
 
 import React from "react";
@@ -20,10 +20,9 @@ const BoardPage = async ({ params }: { params: { boardId: string } }) => {
     },
   });
 
-  
   return (
     <div className="w-full overflow-x-auto p-4">
-      <ListContainer list={list} />
+      {/* <KanBan list={list} /> */}
     </div>
   );
 };

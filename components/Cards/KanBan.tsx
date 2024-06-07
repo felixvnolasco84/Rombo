@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 // import CreateList from "./CreateList";
-import { reorderList } from "@/services/list";
+import { reorderList, updateDataOrderList } from "@/services/list";
 import ListItem from "./ListItem";
+import { toast } from "../ui/use-toast";
 
 interface ListProps {
   // boardId: string;
@@ -15,19 +16,13 @@ const reOrderData = (list: any, desIndex: number, sourceIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(sourceIndex, 1);
   result.splice(desIndex, 0, removed);
-
+  console.log(result);
   return result;
 };
 
 // const ListContainer = ({ boardId, list }: ListProps) => {
-const ListContainer = ({ list }: ListProps) => {
-
-
-
+const KanBan = ({ list }: ListProps) => {
   const [listData, setListData] = useState(list);
-
-  console.log(listData)
-
 
   useEffect(() => {
     setListData(list);
@@ -45,14 +40,65 @@ const ListContainer = ({ list }: ListProps) => {
       return;
     }
 
+    if (type == "card" && (destination.droppableId == source.droppableId)) {
+
+      console.log(destination.droppableId);
+
+      console.log(listData);
+
+      console.log(listData[destination.droppableId]);
+
+      const item = listData.find(
+        (item: any) => item.id === destination.droppableId
+      );
+      console.log(item);
+
+      const data = reOrderData(
+        // listData[destination.droppableId].cards,
+        item.requests,
+        destination.index,
+        source.index
+      ).map((item: any, index: number) => ({ ...item, order: index }));
+      const listIndex = listData.findIndex(
+        (list: any) => list.id == destination.droppableId
+      );
+      const list = listData[listIndex];
+      listData[listIndex] = { ...list, requests: data };
+
+      console.log(listData[listIndex]);
+      const response = await updateDataOrderList({
+        listId: destination.droppableId,
+        items: listData[listIndex].requests,
+      });
+
+      console.log(response);
+
+      setListData([...listData]);
+
+      if (!response.error) {
+        toast({
+          title: "Tablero Actualizado",
+          description: "Se ha actualizado el orden de las tarjetas",
+        });
+      }
+    }
+
     if (type == "list") {
       const data = reOrderData(listData, destination.index, source.index).map(
         (item: any, index: number) => ({ ...item, order: index })
       );
       setListData(data);
-      // await reorderList({ items: data, boardId });
-      const response = await reorderList({ items: data });
-      console.log(response)
+      const response = await reorderList({
+        items: data,
+        boardId: listData[0].boardId,
+      });
+
+      if (!response.error) {
+        toast({
+          title: "Tablero Actualizado",
+          description: "Se han reordenado las listas",
+        });
+      }
     }
   };
   return (
@@ -62,9 +108,8 @@ const ListContainer = ({ list }: ListProps) => {
           <ol
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex h-full gap-x-3"
+            className="flex h-full w-full gap-x-3"
           >
-            {/* {listData?.map((list: List, index: number) => ( */}
             {listData?.map((list: any, index: number) => (
               <ListItem key={list.id} list={list} index={index} />
             ))}
@@ -77,4 +122,4 @@ const ListContainer = ({ list }: ListProps) => {
   );
 };
 
-export default ListContainer;
+export default KanBan;

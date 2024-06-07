@@ -9,6 +9,26 @@ export const GET = async (id: any) => {
       include: {
         user: true,
         requests: true,
+        Board: {
+          include: {
+            lists: {
+              include: {
+                requests: {
+                  include: {
+                    brand: true,
+                    comments: true,
+                  },
+                  orderBy: {
+                    order: "asc",
+                  },
+                },
+              },
+              orderBy: {
+                order: "asc",
+              },
+            },
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify(post));

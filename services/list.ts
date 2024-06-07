@@ -1,9 +1,9 @@
-// "use server";
+"use server";
 // import { getAuthSession } from "@/lib/auth";
 // import { prismaDB } from "@/providers/connection";
 // import { createAudLog } from "./audit";
 // import { ACTION, TABLE_TYPE } from "@prisma/client";
-// import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
@@ -190,15 +190,17 @@ import prisma from "@/utils/ConnectionPool";
 // };
 
 // // re order list
-export const reorderList = async (data: { items: any }) => {
+export const reorderList = async (data: { items: any; boardId: string }) => {
   // export const reorderList = async (data: { items: any; boardId: string }) => {
-  const session = await getAuthSession();
-  if (!session) {
-    return {
-      error: "user not found",
-    };
-  }
-  const { items } = data;
+  // const session = await getAuthSession();
+  // if (!session) {
+  //   return {
+  //     error: "user not found",
+  //   };
+  // }
+  const { items, boardId } = data;
+
+  console.log(items);
   let lists;
   try {
     const transaction = items.map((list: any) =>
@@ -210,10 +212,56 @@ export const reorderList = async (data: { items: any }) => {
       })
     );
     lists = await prisma.$transaction(transaction);
+
+    console.log(lists);
+    return { result: lists };
   } catch (error) {
     return { error: "list not reordered" };
+  } finally {
+    // revalidatePath(`/portal/marcas/${boardId}`);
+    revalidatePath(`/portal/marcas/clx4a5vnb0001e8tn7hwfm83i`);
   }
+};
 
-  //   revalidatePath(`/board/${boardId}`);
-  return { result: lists };
+export const updateDataOrderList = async (data: {
+  listId: string;
+  items: any;
+}) => {
+  const { items, listId } = data;
+  try {
+    // const response = await prisma.list.update({
+    //   where: { id: listId },
+    //   data: {
+    //     requests: items,
+    //   },
+    // });
+
+    const transaction = items.map((request: any) =>
+      prisma.request.update({
+        where: { id: request.id },
+        data: {
+          order: request.order,
+        },
+      })
+    );
+
+    const response  = await prisma.$transaction(transaction);
+
+    // const response = await prisma.request.updateMany({
+    //   where: {
+    //     listId
+    //   },
+    //   data: {
+    //     order: {
+    //       set: items.map((item: any, index: number) => index)
+    //     }
+    //   }
+    // });
+    return { result: response };
+  } catch (error) {
+    console.log(error);
+    return { error: "list not reordered" };
+  } finally {
+    revalidatePath(`/portal/marcas/clx4a5vnb0001e8tn7hwfm83i`);
+  }
 };

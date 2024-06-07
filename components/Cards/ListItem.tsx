@@ -14,7 +14,7 @@ const ListItem = ({ list, index }: { list: any; index: number }) => {
           {...provided.draggableProps}
           ref={provided.innerRef}
           style={provided.draggableProps.style as React.CSSProperties}
-          className="h-full w-[272px] shrink-0 select-none"
+          className="h-full w-1/4 select-none"
         >
           <div
             {...provided.dragHandleProps}

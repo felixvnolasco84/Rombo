@@ -20,10 +20,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MenuIcon, Trash2Icon } from "lucide-react";
+import { MenuIcon, RefreshCcw, Trash2Icon } from "lucide-react";
 import EditRequestForm from "../Forms/EditRequestForm";
 import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default function DropdownMenuComponentRequest({
   request,
@@ -58,9 +59,9 @@ export default function DropdownMenuComponentRequest({
       setLoading(false);
     }
   };
-
+  
   return (
-    <>
+    <div className="flex items-center gap-1">
       <DropdownMenu>
         <DropdownMenuTrigger>
           <MenuIcon />
@@ -116,6 +117,6 @@ export default function DropdownMenuComponentRequest({
           )}
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

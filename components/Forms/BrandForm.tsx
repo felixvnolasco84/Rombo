@@ -75,7 +75,7 @@ export default function BrandForm() {
     try {
       setIsLoading(true);
       const jsonData = JSON.stringify(data);
-      const draftResponse = await fetch("/api/brands ", {
+      const draftResponse = await fetch("/api/brands", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export default function BrandForm() {
         toast({
           variant: "default",
           title: "¡Listo!",
-          description: "Tu proyecto se ha creado correctamente",
+          description: "Tu Marca se ha creado correctamente",
         });
         form.reset();
         router.push(`/portal/marcas/${response.id}`);

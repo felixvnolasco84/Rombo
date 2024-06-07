@@ -117,6 +117,8 @@ export const POST = async (req: any) => {
         );
     }
 
+  
+
     const request = await prisma.request.create({
       data: {
         ...body,
@@ -127,6 +129,44 @@ export const POST = async (req: any) => {
         brand: true,
       },
     });
+
+
+    const board = await prisma.board.findFirst({
+      where: {
+        brandId: body.brandId,
+      },
+      include: {
+        lists: true
+      }
+    });
+
+    if (!board) {
+      return new NextResponse(
+        JSON.stringify({ message: "Board not found!" })
+      );
+    }
+
+    const todoListid = board.lists[0].id;
+
+    if (!todoListid) {
+      return new NextResponse(
+        JSON.stringify({ message: "List not found!" })
+      );
+    }
+
+    const todoList = await prisma.list.update({
+      where: {
+        id: todoListid,
+      },
+      data: {
+        requests: {
+          connect: {
+            id: request.id,
+          },
+        },
+        }
+      }
+    );
 
     const user = await prisma.user.findUnique({
       where: {

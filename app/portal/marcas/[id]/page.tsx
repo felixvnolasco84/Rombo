@@ -5,6 +5,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { GET as getSingleBrand } from "@/app/api/brands/[id]/route";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Button } from "@/components/ui/button";
 import {
   BookOpenIcon,
@@ -23,6 +25,9 @@ import EditBrandImageDialog from "@/components/Dialogs/EditBrandImageDialog";
 import { getAuthSession } from "@/utils/AuthOptions";
 import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleRequestDataTable";
 import NotAutorizedComponent from "@/components/NotAutorizedComponent";
+import KanBan from "@/components/Cards/KanBan";
+import Board from "@/components/Kanban/KanbanBoard";
+import { authorQuoteMap } from "@/components/Kanban/data";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -63,7 +68,7 @@ export default async function page({ params }: { params: { id: string } }) {
           </Link>
         </Button>
       </div>
-      <div className="mx-auto flex w-full max-w-6xl items-center gap-4">
+      <div className="mx-auto flex w-full items-center gap-4">
         <EditBrandImageDialog brand={brand} />
         <div className="flex w-full flex-col gap-4">
           <div className="flex justify-between">
@@ -125,23 +130,35 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <h2 className="text-2xl text-[#121415]">Solicitudes</h2>
-        {brand.requests.length === 0 ? (
-          <Link className="w-full" href={`/portal/marcas/${brand.id}/new`}>
-            <Button
-              variant="ghost"
-              className="flex h-24 w-full items-center justify-center rounded-lg border border-gray-300"
-            >
-              No existen solicitudes
-            </Button>
-          </Link>
-        ) : (
-          <SimpleRequestDataTable
-            columns={requestColumnsNew}
-            data={brand.requests}
-          />
-        )}
+      <div className="mx-auto flex w-full flex-col gap-8">
+        <Tabs defaultValue="table" className="w-full">
+          <TabsList>
+            <TabsTrigger value="table">Tabla de Solicitudes</TabsTrigger>
+            <TabsTrigger value="kanban">Tablero de Kanban</TabsTrigger>
+          </TabsList>
+          <TabsContent value="table">
+            {brand.requests.length === 0 ? (
+              <Link className="w-full" href={`/portal/marcas/${brand.id}/new`}>
+                <Button
+                  variant="ghost"
+                  className="flex h-24 w-full items-center justify-center rounded-lg border border-gray-300"
+                >
+                  No existen solicitudes
+                </Button>
+              </Link>
+            ) : (
+              <SimpleRequestDataTable
+                columns={requestColumnsNew}
+                data={brand.requests}
+              />
+            )}
+          </TabsContent>
+          <TabsContent value="kanban">
+            <KanBan list={brand.Board[0].lists} />
+            {/* <Board initial={authorQuoteMap} /> */}
+            {/* <Board initial={brand.Board[0].lists} /> */}
+          </TabsContent>
+        </Tabs>
         <Accordion
           defaultValue={brand.documents.length === 0 ? "" : "documents"}
           type="single"

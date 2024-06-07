@@ -29,14 +29,25 @@ export const PUT = async (req: any, { params }: any) => {
     const body = await req.json();
     const id = params.id;
 
+    console.log(body)
+    
     const request = await prisma.request.update({
       where: { id: id },
       data: {
         ...body,
       },
       include: {
-        brand: true,
+        brand: {
+          include: {
+            Board: true
+          }
+        },
       },
+    });
+
+    const ListIds = await prisma.list.findMany({
+      where: { boardId: request.brand.Board[0].id},
+      select: { id: true, title: true },
     });
 
     const user = await prisma.user.findUnique({
@@ -58,7 +69,7 @@ export const PUT = async (req: any, { params }: any) => {
     });
 
     await sendEmailNotification(notification, "hola@rombo.design");
-    revalidatePath(`/requests/${id}`);
+    revalidatePath(`/portal/solicitudes/${id}`);
     return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {
     console.log(err);
