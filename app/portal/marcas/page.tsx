@@ -1,12 +1,28 @@
+// import { GET as getAllBrands } from "@/app/api/brands/route";
 import { Button } from "@/components/ui/button";
+import { getAuthSession } from "@/utils/AuthOptions";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
-import { GET as getAllBrands } from "@/app/api/brands/route";
 import BrandCard from "../../../components/Cards/BrandCard";
+import prisma from "@/utils/ConnectionPool";
+import { adminList } from "@/lib/utils";
 
 export default async function page() {
-  const data = await getAllBrands();
-  const brands = await data.json();
+  // const data = await getAllBrands();
+  // const brands = await data.json();
+  const session: any = await getAuthSession();
+
+  let brands = [];
+
+  if (adminList.includes(session.user.email)) {
+    brands = await prisma.brand.findMany();
+  } else {
+    brands = await prisma.brand.findMany({
+      where: {
+        userEmail: session.user.email,
+      },
+    });
+  }
 
   return (
     <div>
@@ -20,7 +36,7 @@ export default async function page() {
           </Link>
         </Button>
       </div>
-      <div className="flex flex-wrap gap-4 p-4">
+      <div className="grid w-fit grid-cols-2 gap-4 p-4">
         {brands.length > 0 ? (
           brands.map((project: any, index: any) => (
             <BrandCard key={index} project={project} />

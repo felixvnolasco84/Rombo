@@ -20,6 +20,8 @@ import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuR
 import CommentSection from "@/components/CommentSection";
 import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 import TimeAgoDate from "@/components/TimeAgoDate";
+import { adminList } from "@/lib/utils";
+import ApproveRequestButton from "@/components/Buttons/ApproveRequestButton";
 
 export default async function page({ params }: { params: { id: string } }) {
   const session: any = await getAuthSession();
@@ -71,15 +73,45 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-
       <div className="flex items-start justify-between gap-4">
         <div className="flex w-1/2 flex-col gap-2">
-          <DropdownMenuRequestCategory
-            id={request.id}
-            category={request.category}
-          />
+          <Badge
+            className="w-full bg-[#F5F5F5] px-2.5 py-1 font-normal"
+            variant={"outline"}
+          >
+            {request.category}
+          </Badge>
 
-          <DropdownMenuRequestStatus id={request.id} status={request.status} />
+          {adminList.includes(session.user.email) ? (
+            <DropdownMenuRequestStatus
+              id={request.id}
+              status={request.status}
+            />
+          ) : (
+            <Badge
+              className={`${
+                request.status === "To Do"
+                  ? "bg-green-100 text-green-800"
+                  : request.status === "in progress"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : request.status === "to-test"
+                  ? "bg-blue-100 text-blue-800"
+                  : request.status === "complete"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }  w-full text-xs  px-2.5 py-1 `}
+              variant={"requestStatus"}
+            >
+              {request.status === "To Do"
+                ? "To Do"
+                : request.status === "in progress"
+                ? "In Progress"
+                : request.status === "to-test"
+                ? "To Test"
+                : "Done"}
+            </Badge>
+          )}
+
           <Link className="w-full" href={`/portal/marcas/${request.brand.id}`}>
             <Badge className="w-full px-2.5 py-1 text-xs" variant={"primary"}>
               {request.brand.title}
@@ -95,16 +127,19 @@ export default async function page({ params }: { params: { id: string } }) {
           <p className="text-sm text-[#0062FF]">
             <TimeAgoDate date={request.deadline} />
           </p>
-
         </div>
       </div>
+
+      {/* <ApproveRequestButton
+        request={request}
+        autorization={(request.userEmail === sessionEmail) || adminList.includes(sessionEmail)}
+      /> */}
 
       {request.description ? (
         <TipTapOnlyContent content={request.description} />
       ) : (
         <p className="text-sm text-gray-500">No existe una descripción.</p>
       )}
-
       <div className="flex flex-col gap-1">
         <Accordion
           defaultValue={request.documents.length === 0 ? "" : "documents"}
@@ -130,7 +165,6 @@ export default async function page({ params }: { params: { id: string } }) {
           </AccordionItem>
         </Accordion>
       </div>
-
       <Accordion
         defaultValue={request.comments.length === 0 ? "" : "comments"}
         type="single"

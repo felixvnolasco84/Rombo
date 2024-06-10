@@ -69,7 +69,7 @@ export default function DropdownMenuRequestCategory({ id, category }: Request) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
+          <DropdownMenuLabel>Cambiar Categoria</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
             value={position}

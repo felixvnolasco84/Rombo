@@ -65,13 +65,13 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
           >
             <Badge
               className={`${
-                currentStatus === "todo"
+                currentStatus === "To Do"
                   ? "bg-green-100 text-green-800"
-                  : currentStatus === "in progress"
+                  : currentStatus === "En Progreso"
                   ? "bg-yellow-100 text-yellow-800"
-                  : currentStatus === "to-test"
+                  : currentStatus === "Revisión"
                   ? "bg-blue-100 text-blue-800"
-                  : currentStatus === "complete"
+                  : currentStatus === "Completado"
                   ? "bg-green-100 text-green-800"
                   : "bg-red-100 text-red-800"
               }  w-full text-xs  px-2.5 py-1 `}
@@ -80,33 +80,25 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
               {loading ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : // currentStatus
-              currentStatus === "todo" ? (
-                "To Do"
-              ) : status === "in progress" ? (
-                "In Progress"
-              ) : status === "to-test" ? (
-                "To Test"
-              ) : (
-                "Done"
-              )}
+              currentStatus}
             </Badge>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
+          <DropdownMenuLabel>Cambiar Status</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
             value={currentStatus}
             onValueChange={handleStatusChange}
           >
-            <DropdownMenuRadioItem value="todo">To Do</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="in progress">
+            <DropdownMenuRadioItem value="To Do">To Do</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="En Progreso">
               En Progreso
             </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="to-test">
+            <DropdownMenuRadioItem value="Revisión">
               Revisión
             </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="complete">
+            <DropdownMenuRadioItem value="Completado">
               Completado
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>

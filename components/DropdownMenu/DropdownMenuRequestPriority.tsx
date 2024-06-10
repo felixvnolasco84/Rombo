@@ -75,7 +75,7 @@ export default function DropdownMenuRequestPriority({ id, priority }: Request) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Estado de la solicitud</DropdownMenuLabel>
+        <DropdownMenuLabel>Cambiar Prioridad</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={currentPriority}

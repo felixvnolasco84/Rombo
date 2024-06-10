@@ -89,12 +89,6 @@ model User {
   comments           Comment[]
   subscriptions      Subscription[]
   Notification       Notification[]
-  // orgIds        String[]       
-  // organizations Organization[] @relation(fields: [orgIds], references: [id])
-
-  // boardIds String[] 
-  // boards   Board[]  @relation(fields: [boardIds], references: [id])
-
 }
 
 model VerificationToken {
@@ -105,25 +99,10 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// model Organization {
-//   id    String @id @default(cuid()) @map("_id") 
-//   title String
-//   image String
-//   userIds String[] 
-//   users   User[]   @relation(fields: [userIds], references: [id])
-//   boards Board[]
-// }
-
 model Board {
   id String @id @default(cuid()) @map("_id")
-  // orgId        String       
-  // organization Organization @relation(fields: [orgId], references: [id])
   brandId String
   brand   Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  // title String
-  // image String
-  // userIds String[]
-  // Users   User[]   @relation(fields: [userIds], references: [id])
   lists     List[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

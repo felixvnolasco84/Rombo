@@ -29,47 +29,111 @@ export const PUT = async (req: any, { params }: any) => {
     const body = await req.json();
     const id = params.id;
 
-    console.log(body)
-    
-    const request = await prisma.request.update({
+    console.log(body);
+
+    const request = await prisma.request.findUnique({
       where: { id: id },
-      data: {
-        ...body,
-      },
-      include: {
-        brand: {
-          include: {
-            Board: true
-          }
+      select: { title: true, userEmail: true, brandId: true, status: true },
+    });
+
+    if (!request) {
+      throw new Error("Request not found");
+    }
+
+    if (body.status == request?.status) {
+      const request = await prisma.request.update({
+        where: { id: id },
+        data: {
+          ...body,
         },
-      },
-    });
+        include: {
+          brand: {
+            include: {
+              Board: true,
+            },
+          },
+        },
+      });
 
-    const ListIds = await prisma.list.findMany({
-      where: { boardId: request.brand.Board[0].id},
-      select: { id: true, title: true },
-    });
+      const user = await prisma.user.findUnique({
+        where: { email: request.userEmail },
+        select: { id: true },
+      });
+      const notification = await prisma.notification.create({
+        data: {
+          type: "request",
+          message: `Solicitud actualizada: ${request.title}	`,
+          brandId: request.brandId,
+          requestId: id,
+          userId: user!.id,
+        },
+        include: {
+          request: true,
+        },
+      });
+      await sendEmailNotification(notification, "hola@rombo.design");
+      revalidatePath(`/portal/solicitudes/${id}`);
+    }
 
-    const user = await prisma.user.findUnique({
-      where: { email: request.userEmail },
-      select: { id: true },
-    });
+    if (body.status !== request.status) {
+      
+      const request = await prisma.request.update({
+        where: { id: id },
+        data: {
+          ...body,
+        },
+        include: {
+          brand: {
+            include: {
+              Board: true,
+            },
+          },
+        },
+      });
 
-    const notification = await prisma.notification.create({
-      data: {
-        type: "request",
-        message: `Solicitud actualizada: ${request.title}	`,
-        brandId: request.brandId,
-        requestId: id,
-        userId: user!.id,
-      },
-      include: {
-        request: true,
-      },
-    });
+      const findBoard = request.brand.Board.find(
+        (board) => board.brandId === request.brand.id
+      );
 
-    await sendEmailNotification(notification, "hola@rombo.design");
-    revalidatePath(`/portal/solicitudes/${id}`);
+      if (!findBoard) {
+        throw new Error("Board not found");
+      }
+
+      const ListIds = await prisma.list.findMany({
+        where: { boardId: findBoard.id },
+        select: { id: true, title: true },
+      });
+
+      const newList = ListIds.find((list) => list.title === body.status);
+
+      await prisma.request.update({
+        where: { id: id },
+        data: {
+          listId: newList?.id,
+        },
+      });
+
+      const user = await prisma.user.findUnique({
+        where: { email: request.userEmail },
+        select: { id: true },
+      });
+
+      const notification = await prisma.notification.create({
+        data: {
+          type: "request",
+          message: `Solicitud actualizada: ${request.title}	`,
+          brandId: request.brandId,
+          requestId: id,
+          userId: user!.id,
+        },
+        include: {
+          request: true,
+        },
+      });
+      await sendEmailNotification(notification, "hola@rombo.design");
+      revalidatePath(`/portal/solicitudes/${id}`);
+    }
+
     return NextResponse.json({ message: "Request updated successfully" });
   } catch (err) {
     console.log(err);

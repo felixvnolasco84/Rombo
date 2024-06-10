@@ -18,30 +18,30 @@ import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/lib/utils";
 
 export const notificationsColumns: ColumnDef<any>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value: any) =>
+  //         table.toggleAllPageRowsSelected(!!value)
+  //       }
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "message",
     header: ({ column }) => {
@@ -168,7 +168,7 @@ export const notificationsColumns: ColumnDef<any>[] = [
         <Badge
           variant={"requestStatus"}
           className={`${
-            status === "todo"
+            status === "To Do"
               ? "bg-[#C0D5F7]"
               : status === "in progress"
               ? "bg-[#FBDFC7]"
@@ -179,7 +179,7 @@ export const notificationsColumns: ColumnDef<any>[] = [
               : "bg-red-100 text-red-800"
           } w-full text-xs font-normal text-[#121415] justify-center leading-none px-2.5 py-1`}
         >
-          {status === "todo"
+          {status === "To Do"
             ? "To Do"
             : status === "in progress"
             ? "In Progress"

@@ -302,10 +302,16 @@ export const features = [
   },
 ];
 
-
 // @ts-ignore
 import mexStrings from "react-timeago/lib/language-strings/es";
 // @ts-ignore
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 
 export const formatter = buildFormatter(mexStrings);
+
+export const adminList = [
+  "felix@polygonag.com",
+  "alba@polygonag.com",
+  "rodrigo@polygonag.com",
+  "hola@rombo.design",
+];

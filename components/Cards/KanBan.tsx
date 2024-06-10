@@ -40,8 +40,7 @@ const KanBan = ({ list }: ListProps) => {
       return;
     }
 
-    if (type == "card" && (destination.droppableId == source.droppableId)) {
-
+    if (type == "card" && destination.droppableId == source.droppableId) {
       console.log(destination.droppableId);
 
       console.log(listData);

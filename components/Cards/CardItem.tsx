@@ -1,7 +1,7 @@
 "use client";
-// import { Card, User } from "@/interfaces";
+
 import Link from "next/link";
-import DropdownMenuRequestCategory from "../DropdownMenu/DropdownMenuRequestCategory";
+// import DropdownMenuRequestCategory from "../DropdownMenu/DropdownMenuRequestCategory";
 import DropdownMenuRequestPriority from "../DropdownMenu/DropdownMenuRequestPriority";
 import DropdownMenuRequestStatus from "../DropdownMenu/DropdownMenuRequestStatus";
 import { Badge } from "../ui/badge";
@@ -13,16 +13,31 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Draggable } from "@hello-pangea/dnd";
-import React, { useState } from "react";
-import CardModal from "./CardModal";
+import React from "react";
+import { Grip } from "lucide-react";
+import { adminList } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
-// const CardItem = ({ card, index }: { card: Card; index: number }) => {
 const CardItem = ({ card, index }: { card: any; index: number }) => {
+  const { data } = useSession();
 
-  const [isModal, setIsModal] = useState(false);
+  if (!data) {
+    return <div>Not Authenticated!</div>;
+  }
+
+  const user = data.user;
+
+  if (!user) {
+    return <div>Not Authenticated!</div>;
+  }
+
   return (
     <>
-      <Draggable draggableId={card.id} index={index}>
+      <Draggable
+        draggableId={card.id}
+        index={index}
+        disableInteractiveElementBlocking
+      >
         {(provided) => (
           <Card
             {...provided.draggableProps}
@@ -30,32 +45,67 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
             ref={provided.innerRef}
             style={provided.draggableProps.style as React.CSSProperties}
             key={card.id}
-            className="w-full overflow-hidden rounded-lg bg-white shadow-md"
+            className="group w-full overflow-hidden rounded-lg bg-white shadow-md"
           >
-            <CardHeader className="border-b border-b-[#D1D1D1] px-4 pb-2 pt-4">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b border-b-[#D1D1D1] px-4 pb-2 pt-4">
               <Link
                 className="hover:underline"
                 href={`/portal/solicitudes/${card.id}`}
               >
-                <CardTitle className="] text-lg font-normal text-[#121415]">
+                <CardTitle className="text-lg font-normal leading-none text-[#121415]">
                   {card.title}
                 </CardTitle>
               </Link>
+              <Grip className="hidden h-3 w-3 cursor-move text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
             </CardHeader>
             <CardContent className="p-4">
               <div className="flex flex-col gap-y-2">
-                <DropdownMenuRequestCategory
+                <Badge
+                  className="w-full bg-[#F5F5F5] px-2.5 py-1 font-normal"
+                  variant={"outline"}
+                >
+                  {card.category}
+                </Badge>
+                {/* <DropdownMenuRequestCategory
                   id={card.id}
                   category={card.category}
-                />
-
+                /> */}
                 <Badge
                   variant={"outline"}
                   className="bg-[#F5F5F5] px-2.5 py-1 font-normal"
                 >
                   {card.brand.title}
                 </Badge>
-                <DropdownMenuRequestStatus id={card.id} status={card.status} />
+
+                {adminList.includes(user.email || "") ? (
+                  <DropdownMenuRequestStatus
+                    id={card.id}
+                    status={card.status}
+                  />
+                ) : (
+                  <Badge
+                    className={`${
+                      card.status === "To Do"
+                        ? "bg-green-100 text-green-800"
+                        : card.status === "in progress"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : card.status === "to-test"
+                        ? "bg-blue-100 text-blue-800"
+                        : card.status === "complete"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }  w-full text-xs  px-2.5 py-1 `}
+                    variant={"requestStatus"}
+                  >
+                    {card.status === "To Do"
+                      ? "To Do"
+                      : card.status === "in progress"
+                      ? "In Progress"
+                      : card.status === "to-test"
+                      ? "To Test"
+                      : "Done"}
+                  </Badge>
+                )}
               </div>
             </CardContent>
             <CardFooter className="flex justify-end px-3 pb-4 pt-0">
@@ -65,35 +115,8 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
               />
             </CardFooter>
           </Card>
-
-          // <div
-          //   {...provided.draggableProps}
-          //   {...provided.dragHandleProps}
-          //   ref={provided.innerRef}
-          //   style={provided.draggableProps.style as React.CSSProperties} // Aquí está el cambio
-          //   onClick={() => setIsModal(true)}
-          //   role="button"
-          //   className="truncate rounded-md bg-white px-3 py-2 text-sm shadow-md"
-          // >
-          //   {card.title}
-          //   <div className="mt-3 flex justify-end gap-2">
-          //     {/* {card?.users?.map((user: User) => ()} */}
-          //     {card?.users?.map((user: any) => (
-          //       <div className="" key={user.id}>
-          //         <img
-          //           src={user?.image}
-          //           alt=""
-          //           className="h-7 w-7 rounded-full"
-          //         />
-          //       </div>
-          //     ))}
-          //   </div>
-          // </div>
         )}
       </Draggable>
-      {/* {isModal && (
-        <CardModal id={card.id} isModal={isModal} setIsModal={setIsModal} />
-      )} */}
     </>
   );
 };

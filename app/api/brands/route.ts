@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
       }),
       prisma.list.create({
         data: {
-          title: "In Progress",
+          title: "En Progreso",
           boardId: board.id,
           order: 2,
         },
@@ -65,7 +65,7 @@ export const POST = async (req: NextRequest) => {
       }),
       prisma.list.create({
         data: {
-          title: "Done",
+          title: "Completado",
           boardId: board.id,
           order: 4,
         },

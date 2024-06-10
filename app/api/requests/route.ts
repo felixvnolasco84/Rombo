@@ -45,23 +45,6 @@ export const GET = async () => {
       );
     }
   }
-
-  try {
-    // const body = await req.json();
-    const requests = await prisma.request.findMany({
-      where: {
-        userEmail: session.user.email,
-      },
-      include: {
-        brand: true,
-      },
-    });
-    return new NextResponse(JSON.stringify(requests));
-  } catch (error) {
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong!" })
-    );
-  }
 };
 
 //CREATE REQUEST
@@ -117,8 +100,6 @@ export const POST = async (req: any) => {
         );
     }
 
-  
-
     const request = await prisma.request.create({
       data: {
         ...body,
@@ -130,33 +111,29 @@ export const POST = async (req: any) => {
       },
     });
 
-
     const board = await prisma.board.findFirst({
       where: {
         brandId: body.brandId,
       },
       include: {
-        lists: true
-      }
+        lists: true,
+      },
     });
 
     if (!board) {
-      return new NextResponse(
-        JSON.stringify({ message: "Board not found!" })
-      );
+      return new NextResponse(JSON.stringify({ message: "Board not found!" }));
     }
 
-    const todoListid = board.lists[0].id;
+    const todoList = board.lists.find((list) => list.title === "To Do");
 
-    if (!todoListid) {
-      return new NextResponse(
-        JSON.stringify({ message: "List not found!" })
-      );
+    if (!todoList) {
+      return new NextResponse(JSON.stringify({ message: "List not found!" }));
     }
 
-    const todoList = await prisma.list.update({
+    // const addRequesttodoList = await prisma.list.update({
+    await prisma.list.update({
       where: {
-        id: todoListid,
+        id: todoList.id,
       },
       data: {
         requests: {
@@ -164,9 +141,8 @@ export const POST = async (req: any) => {
             id: request.id,
           },
         },
-        }
-      }
-    );
+      },
+    });
 
     const user = await prisma.user.findUnique({
       where: {
