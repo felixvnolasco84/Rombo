@@ -44,7 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function SimpleRequestDataTable<TData, TValue>({
+export function SimpleRequestDataTableHome<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

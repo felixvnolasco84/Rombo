@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import * as z from "zod"
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { cn } from "@/lib/utils"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -26,7 +26,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/react-hook-form"
+} from "@/components/react-hook-form";
 
 const profileFormSchema = z.object({
   username: z
@@ -50,49 +50,46 @@ const profileFormSchema = z.object({
       })
     )
     .optional(),
-})
+});
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
   bio: "Solo un tipo común.",
-  urls: [
-    { value: "#" },
-    { value: "#" },
-  ],
-}
+  urls: [{ value: "#" }, { value: "#" }],
+};
 
 export function ProfileForm({
   name,
   email,
   profilePicture,
 }: {
-  name: any
-  email: any
-  profilePicture: any
+  name: any;
+  email: any;
+  profilePicture: any;
 }) {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
-  })
+  });
 
   function onSubmit(data: ProfileFormValues) {
     toast({
       title: "Has enviado los siguientes valores:",
       description: (
-        <pre className="bg-slate-950 mt-2 p-4 rounded-md w-[340px]">
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
-        <Avatar className="w-9 h-9">
+        <Avatar className="h-9 w-9">
           <AvatarImage src={profilePicture} alt="@shadcn" />
           <AvatarFallback>EX</AvatarFallback>
         </Avatar>
@@ -103,7 +100,7 @@ export function ProfileForm({
             <FormItem>
               <FormLabel>Nombre de Usuario</FormLabel>
               <FormControl>
-                <Input placeholder={name} {...field} />
+                <Input disabled={true} placeholder={name} {...field} />
               </FormControl>
               <FormDescription>
                 Este es su nombre para mostrar público. Puede ser tu nombre real
@@ -120,7 +117,7 @@ export function ProfileForm({
             <FormItem>
               <FormLabel>Correo Electrónico</FormLabel>
               <FormControl>
-                <Input placeholder={email} {...field} />
+                <Input disabled={true} placeholder={email} {...field} />
               </FormControl>
               <FormDescription>
                 Puede administrar direcciones de correo electrónico verificadas
@@ -134,8 +131,10 @@ export function ProfileForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Actualizar Perfil</Button>
+        <Button disabled={true} type="submit">
+          Actualizar Perfil
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

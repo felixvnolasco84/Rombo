@@ -25,6 +25,8 @@ export async function hasSubscription() {
       customer: String(user?.stripe_customer_id),
     });
 
+    console.log(subscriptions);
+
     return subscriptions.data.length > 0;
   }
 
@@ -47,6 +49,26 @@ export async function createCheckoutLink(customer: string) {
   return checkout.url;
 }
 
+export async function updateCreateCheckoutLink(
+  customer: string,
+  priceId: string
+) {
+  const checkout = await stripe.checkout.sessions.create({
+    success_url: "http://localhost:3000/success",
+    cancel_url: "http://localhost:3000/",
+    customer: customer,
+    line_items: [
+      {
+        price: priceId,
+        quantity: 1,
+      },
+    ],
+    mode: "subscription",
+  });
+
+  return checkout.url;
+}
+
 export async function createCustomerIfNull() {
   const session: any = await getServerSession(authOptions);
 
@@ -60,7 +82,7 @@ export async function createCustomerIfNull() {
         email: String(user?.email),
       });
 
-      await prisma.user.update({
+      const newUser = await prisma.user.update({
         where: {
           id: user?.id,
         },
@@ -68,6 +90,8 @@ export async function createCustomerIfNull() {
           stripe_customer_id: customer.id,
         },
       });
+
+      return newUser?.stripe_customer_id;
     }
     const user2 = await prisma.user.findFirst({
       where: { email: session.user?.email },

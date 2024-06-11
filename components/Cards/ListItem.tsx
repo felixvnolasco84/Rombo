@@ -17,11 +17,11 @@ const ListItem = async ({ list, index }: { list: any; index: number }) => {
           {...provided.draggableProps}
           ref={provided.innerRef}
           style={provided.draggableProps.style as React.CSSProperties}
-          className="h-full w-1/4 select-none"
+          className="w-1/4 select-none"
         >
           <div
             {...provided.dragHandleProps}
-            className="my-11 w-full rounded-md bg-slate-50 shadow-md"
+            className="mt-4 w-full rounded-md bg-slate-50 shadow-md"
           >
             <ListHeader list={list} />
             <Droppable droppableId={list.id} type="card">

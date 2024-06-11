@@ -170,22 +170,16 @@ export const notificationsColumns: ColumnDef<any>[] = [
           className={`${
             status === "To Do"
               ? "bg-[#C0D5F7]"
-              : status === "in progress"
+              : status === "En Progreso"
               ? "bg-[#FBDFC7]"
-              : status === "to-test"
+              : status === "Revisión"
               ? "bg-[#FCDBF9]"
-              : status === "complete"
+              : status === "Completado"
               ? "bg-[#DFFCAD]"
               : "bg-red-100 text-red-800"
           } w-full text-xs font-normal text-[#121415] justify-center leading-none px-2.5 py-1`}
         >
-          {status === "To Do"
-            ? "To Do"
-            : status === "in progress"
-            ? "In Progress"
-            : status === "to-test"
-            ? "To Test"
-            : "Done"}
+          {status}
         </Badge>
       );
     },

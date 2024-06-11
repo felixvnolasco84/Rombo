@@ -6,8 +6,14 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    console.log(data)
+    console.log(data);
     const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+
+    const customerId = await createCustomerIfNull();
+
+    if (!customerId) {
+      return NextResponse.json({ error: "Customer not found" });
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -18,15 +24,11 @@ export async function POST(request: Request) {
         },
       ],
       mode: "subscription",
-      customer: data.customer_id,
+      customer: customerId,
       success_url:
         process.env.SUCCESS_URL || "https://www.rombo.design/success",
       cancel_url: process.env.CANCEL_URL || "https://www.rombo.design/",
-       
     });
-
-    await createCustomerIfNull();
-
 
     return NextResponse.json({ url: session.url, session: session });
   } catch (error) {

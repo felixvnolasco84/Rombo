@@ -6,10 +6,11 @@ import Features from "@/components/Features/Features";
 import PricingSection from "@/components/Pricing/PricingSection";
 import HeroSection from "@/components/Sections/HeroSection";
 import SloganComponent from "@/components/Slogan/SloganComponent";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-4 lg:gap-7 pb-6">
+    <main className="relative flex flex-col gap-4 pb-6 lg:gap-7">
       <HeroSection />
       <CTATrial />
       <Carrousel />
@@ -17,8 +18,8 @@ export default function Home() {
       <PricingSection />
       <SloganComponent />
       <CTAContact />
-
       <FAQComponent />
+      <WhatsAppButton />
     </main>
   );
 }

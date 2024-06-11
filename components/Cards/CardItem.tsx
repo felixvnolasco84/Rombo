@@ -56,7 +56,7 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
                   {card.title}
                 </CardTitle>
               </Link>
-              <Grip className="hidden h-3 w-3 cursor-move text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
+              <Grip className="hidden h-3 w-3 cursor-grab text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
             </CardHeader>
             <CardContent className="p-4">
               <div className="flex flex-col gap-y-2">

@@ -5,7 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function FooterComponent() {
-  const session = await getAuthSession();
+  const session: any = await getAuthSession();
+
+  console.log(session);
+
+  const email = session?.user?.email;
+
+  console.log(email)
+
+  
 
   return (
     <div className="flex flex-col items-center gap-12 bg-[#C8FA6F] py-12 text-[#121415] xl:gap-24">

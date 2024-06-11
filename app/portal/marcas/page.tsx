@@ -36,11 +36,13 @@ export default async function page() {
           </Link>
         </Button>
       </div>
-      <div className="grid w-fit grid-cols-2 gap-4 p-4">
+      <div className="w-full">
         {brands.length > 0 ? (
-          brands.map((project: any, index: any) => (
-            <BrandCard key={index} project={project} />
-          ))
+          <div className="grid w-fit grid-cols-2 gap-4 p-4">
+            {brands.map((project: any, index: any) => (
+              <BrandCard key={index} project={project} />
+            ))}
+          </div>
         ) : (
           <Link className="w-full" href="/portal/marcas/new">
             <Button
