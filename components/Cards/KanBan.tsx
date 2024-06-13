@@ -12,7 +12,7 @@ import ListItem from "./ListItem";
 import { toast } from "../ui/use-toast";
 
 interface ListProps {
-  boardId: string;
+  boardId?: string;
   list: any;
 }
 // re order data
@@ -83,7 +83,7 @@ const KanBan = ({ list, boardId }: ListProps) => {
 
       setListData(newLists);
 
-      const response = await updateWholeBoard(newLists, boardId );
+      const response = await updateWholeBoard(newLists, boardId || "" );
 
       // if (!response.error) {
       //   toast({
@@ -103,7 +103,7 @@ const KanBan = ({ list, boardId }: ListProps) => {
     }
 
     if (type == "card" && destination.droppableId == source.droppableId) {
-      console.log(destination.droppableId);
+      console.log(destination.droppableId); 
 
       console.log(listData);
 
