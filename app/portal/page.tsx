@@ -24,9 +24,7 @@ export default async function page() {
 
   let brands: any = [];
 
-  if (adminList.includes(session.user.email)) {
-    brands = await prisma.brand.findRaw();
-  }
+
 
   brands = await prisma.brand.findMany({
     where: {
@@ -57,6 +55,36 @@ export default async function page() {
       },
     },
   });
+
+    if (adminList.includes(session.user.email)) {
+        brands = await prisma.brand.findMany({
+
+          include: {
+            user: true,
+            requests: true,
+            Board: {
+              include: {
+                lists: {
+                  include: {
+                    requests: {
+                      include: {
+                        brand: true,
+                        comments: true,
+                      },
+                      orderBy: {
+                        order: "asc",
+                      },
+                    },
+                  },
+                  orderBy: {
+                    order: "asc",
+                  },
+                },
+              },
+            },
+          },
+        });
+    }
 
   return (
     <>
