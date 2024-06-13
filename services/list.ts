@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 
 import { getAuthSession } from "@/utils/AuthOptions";
 import prisma from "@/utils/ConnectionPool";
+import { set } from "date-fns";
 
 // export const createLists = async (data: { title: string; boardId: string }) => {
 //   const session = await getAuthSession();
@@ -229,13 +230,6 @@ export const updateDataOrderList = async (data: {
 }) => {
   const { items, listId } = data;
   try {
-    // const response = await prisma.list.update({
-    //   where: { id: listId },
-    //   data: {
-    //     requests: items,
-    //   },
-    // });
-
     const transaction = items.map((request: any) =>
       prisma.request.update({
         where: { id: request.id },
@@ -245,23 +239,44 @@ export const updateDataOrderList = async (data: {
       })
     );
 
-    const response  = await prisma.$transaction(transaction);
+    const response = await prisma.$transaction(transaction);
 
-    // const response = await prisma.request.updateMany({
-    //   where: {
-    //     listId
-    //   },
-    //   data: {
-    //     order: {
-    //       set: items.map((item: any, index: number) => index)
-    //     }
-    //   }
-    // });
     return { result: response };
   } catch (error) {
     console.log(error);
     return { error: "list not reordered" };
-  } finally {
-    revalidatePath(`/portal/marcas/clx4a5vnb0001e8tn7hwfm83i`);
+  }
+  // } finally {
+  //   revalidatePath(`/portal/marcas/clx4a5vnb0001e8tn7hwfm83i`);
+  // }
+};
+
+export const updateWholeBoard = async (lists: any, boardId: string) => {
+  console.log(lists);
+
+
+  const allRequests = lists.flatMap((list: any) => list.requests);
+
+  console.log(allRequests);
+
+  try {
+    const requestsTransaction = allRequests.map((request: any) =>
+      prisma.request.update({
+        where: {
+          id: request.id,
+        },
+        data: {
+          order: request.order,
+          status: request.status,
+          listId: request.listId,
+        },
+      })
+    );
+
+    const response = await prisma.$transaction(requestsTransaction);
+
+    return { result: response };
+  } catch (error) {
+    return { error: "failed to update" };
   }
 };

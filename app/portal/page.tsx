@@ -141,7 +141,7 @@ export default async function page() {
                     )}
                   </TabsContent>
                   <TabsContent value="kanban">
-                    <KanBan list={brand.Board[0].lists} />
+                    <KanBan boardId={brand.Board[0].id} list={brand.Board[0].lists} />
                   </TabsContent>
                 </Tabs>
               </div>
