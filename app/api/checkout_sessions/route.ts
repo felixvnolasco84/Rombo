@@ -25,6 +25,9 @@ export async function POST(request: Request) {
       ],
       mode: "subscription",
       customer: customerId,
+      subscription_data: {
+        trial_period_days: 14,
+      },
       success_url:
         process.env.SUCCESS_URL || "https://www.rombo.design/success",
       cancel_url: process.env.CANCEL_URL || "https://www.rombo.design/",
