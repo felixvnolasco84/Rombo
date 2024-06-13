@@ -81,13 +81,29 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
                 </Badge>
 
                 {adminList.includes(user.email || "") ? (
-                  <QueryClientProvider client={queryClient}>
-                    <DropdownMenuRequestStatus
-                      id={card.id}
-                      status={card.status}
-                    />
-                  </QueryClientProvider>
+                  <Badge
+                    className={`${
+                      card.status === "To Do"
+                        ? "bg-green-100 text-green-800"
+                        : card.status === "En Progreso"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : card.status === "Revisión"
+                        ? "bg-blue-100 text-blue-800"
+                        : card.status === "Completado"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }  w-full text-xs  px-2.5 py-1 `}
+                    variant={"requestStatus"}
+                  >
+                      card.status
+                  </Badge>
                 ) : (
+                  // <QueryClientProvider client={queryClient}>
+                  //   <DropdownMenuRequestStatus
+                  //     id={card.id}
+                  //     status={card.status}
+                  //   />
+                  // </QueryClientProvider>
                   // <DropdownMenuRequestStatus
                   //   id={card.id}
                   //   status={card.status}
