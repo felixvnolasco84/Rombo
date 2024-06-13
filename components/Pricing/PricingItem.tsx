@@ -20,8 +20,7 @@ export type feature = {
   included: boolean;
 };
 
-export default async function PricingItem({ item, disabled }: { item: PricingItemType, disabled?: boolean}) {
-
+export default async function PricingItem({ item }: { item: PricingItemType }) {
   return (
     <div className="relative col-span-1 rounded-xl border border-gray-100 bg-white px-4 py-9 text-[#121415] shadow-xl xl:px-6 xl:py-9">
       {item.hasPromotion && (
@@ -60,7 +59,7 @@ export default async function PricingItem({ item, disabled }: { item: PricingIte
 
       <div className="flex flex-col gap-4">
         {/* <PricingButton customer_id={customer_id} priceId={item.priceId} /> */}
-        <PricingButton disabled={disabled} priceId={item.priceId} />
+        <PricingButton priceId={item.priceId} />
         <div className="flex w-full justify-center border-b-2 border-[#C8FA70] pb-6 xl:pb-12">
           <Link href={item.phoneLink} className="mx-auto">
             <Button variant="CTAUnderline" size={"underline"}>

@@ -8,10 +8,6 @@ import Computer from "@/public/svg/Computer.svg";
 import Phone from "@/public/svg/Phone.svg";
 import { Button } from "../ui/button";
 import CarrouselPlans from "../Carrousel/CarrouselPlans";
-import prisma from "@/utils/ConnectionPool";
-import { getAuthSession } from "@/utils/AuthOptions";
-import { createCustomerIfNull } from "@/lib/stripeUtils";
-import { checkPrimeSync } from "crypto";
 
 async function loadPrices() {
   const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
@@ -186,36 +182,9 @@ export default async function PricingSection() {
     },
   ];
 
-  const session: any = await getAuthSession();
-
-  if (!session) {
-    return null;
-  }
-
-  const user = await prisma.user.findFirst({
-    where: { email: session.user?.email },
-  });
-
-  if (!user?.stripe_customer_id) {
-    createCustomerIfNull();
-  }
-
-  const data = await getAllSubscriptions({
-    params: { customer_id: user?.stripe_customer_id },
-  });
-  
-
-  const subscriptionsJson = await data.json();
-
-  console.log(subscriptionsJson)
-
-  const subsriptions = subscriptionsJson.data;
-
   return (
     <>
-      {subsriptions.length > 0 ||
-      !session ||
-      !user?.stripe_customer_id ? null : (
+      {
         <div id="planes">
           <div className="py-12 xl:py-24">
             <h3 className="text-center text-xl font-semibold text-[#121415] md:text-2xl lg:text-5xl xl:text-6xl">
@@ -272,7 +241,7 @@ export default async function PricingSection() {
 
           <CarrouselPlans pricingItems={pricingItems} />
         </div>
-      )}
+      }
     </>
   );
 }

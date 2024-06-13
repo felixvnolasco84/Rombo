@@ -44,9 +44,9 @@ export default async function page({ params }: { params: { id: string } }) {
     ownerEmail,
   ];
 
-  if (!userList.includes(sessionEmail)) {
-    return <NotAutorizedComponent />;
-  }
+  // if (!userList.includes(sessionEmail)) {
+  //   return <NotAutorizedComponent />;
+  // }
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-8 md:px-0">

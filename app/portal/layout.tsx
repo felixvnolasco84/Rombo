@@ -28,9 +28,9 @@ export default async function layout({
 }) {
   const session: any = await getAuthSession();
 
-  if (!session) {
-    return <NotAutorizedComponent />;
-  }
+  // if (!session) {
+  //   return <NotAutorizedComponent />;
+  // }
 
   const user = await prisma.user.findFirst({
     where: { email: session.user?.email },
@@ -69,9 +69,9 @@ export default async function layout({
 
   return (
     <>
-      {subsriptions.length == 0 || !session ? (
-        <NotAutorizedComponent />
-      ) : (
+      {/* {subsriptions.length == 0 || !session ? ( */}
+        {/* <NotAutorizedComponent /> */}
+      {/* ) : ( */}
         <div className="py-4">
           <div className="grid w-full overflow-hidden rounded-2xl shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
             <div className="hidden border-r bg-muted/40 md:block">
@@ -117,7 +117,7 @@ export default async function layout({
             </div>
           </div>
         </div>
-      )}
+      {/* )} */}
     </>
   );
 }

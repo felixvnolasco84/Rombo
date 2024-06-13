@@ -42,12 +42,12 @@ export default async function page({ params }: { params: { id: string } }) {
     return <div>Brand not found!</div>;
   }
 
-  if (
-    session.user.email !== brand.userEmail ||
-    !adminList.includes(session.user.email) 
-  ) {
-    return <NotAutorizedComponent />;
-  }
+  // if (
+  //   session.user.email !== brand.userEmail ||
+  //   !adminList.includes(session.user.email) 
+  // ) {
+  //   return <NotAutorizedComponent />;
+  // }
   
     return (
       <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-gray-100/40 p-4 dark:bg-gray-800/40 md:gap-8">
