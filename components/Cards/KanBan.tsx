@@ -20,6 +20,9 @@ const reOrderData = (list: any, desIndex: number, sourceIndex: number) => {
   return result;
 };
 
+
+
+
 // const ListContainer = ({ boardId, list }: ListProps) => {
 const KanBan = ({ list }: ListProps) => {
   const [listData, setListData] = useState(list);
@@ -29,7 +32,7 @@ const KanBan = ({ list }: ListProps) => {
   }, [list]);
 
   const onDragNDrop = async (result: any) => {
-    const { destination, source, type } = result;
+    const { destination, source, type, draggableId } = result;
 
     if (!destination) return;
 
@@ -40,47 +43,128 @@ const KanBan = ({ list }: ListProps) => {
       return;
     }
 
-    if (type == "card" && destination.droppableId == source.droppableId) {
-      console.log(destination.droppableId);
+    if (type == "card" && destination.droppableId !== source.droppableId) {
 
-      console.log(listData);
+      console.log(result)
 
-      console.log(listData[destination.droppableId]);
 
-      const item = listData.find(
-        (item: any) => item.id === destination.droppableId
-      );
-      console.log(item);
+              const destinationList = listData.find(
+                (item: any) => item.id === destination.droppableId
+              );
+              console.log(destinationList);
 
-      const data = reOrderData(
-        // listData[destination.droppableId].cards,
-        item.requests,
-        destination.index,
-        source.index
-      ).map((item: any, index: number) => ({ ...item, order: index }));
-      const listIndex = listData.findIndex(
-        (list: any) => list.id == destination.droppableId
-      );
-      const list = listData[listIndex];
-      listData[listIndex] = { ...list, requests: data };
+              const sourceList = listData.find(
+                (item: any) => item.id === source.droppableId
+              );
+              console.log(sourceList);
 
-      console.log(listData[listIndex]);
-      const response = await updateDataOrderList({
-        listId: destination.droppableId,
-        items: listData[listIndex].requests,
-      });
+              const card = sourceList.requests.find(
+                (item: any) => item.id === draggableId
+              );
 
-      console.log(response);
+              card.status = destinationList.title;
+              console.log(card);
 
-      setListData([...listData]);
+              const newRequests = destinationList.requests;
 
-      if (!response.error) {
-        toast({
-          title: "Tablero Actualizado",
-          description: "Se ha actualizado el orden de las tarjetas",
-        });
-      }
+              newRequests.splice(destination.index, 0, card);
+
+              const newSourceRequests = sourceList.requests.filter(
+                (item: any) => item.id !== draggableId
+              );
+
+              const newSourceList = { ...sourceList, requests: newSourceRequests };
+
+              const newDestinationList = { ...destinationList, requests: newRequests };
+
+              const newLists = listData.map((item: any) => {
+                if (item.id === destination.droppableId) {
+                  return newDestinationList;
+                }
+                if (item.id === source.droppableId) {
+                  return newSourceList;
+                }
+                return item;
+              });
+
+
+              console.log(newLists);
+
+              setListData(newLists);
+
+
+              // const data = reOrderData(
+              //   destinationList.requests,
+              //   destination.index,
+              //   source.index
+              // ).map((item: any, index: number) => ({ ...item, order: index }));
+
+              // const listIndex = listData.findIndex(
+              //   (list: any) => list.id == destination.droppableId
+              // );
+
+              // const list = listData[listIndex];
+
+              // listData[listIndex] = { ...list, requests: data };
+
+              // const response = await updateDataOrderList({
+              //   listId: destination.droppableId,
+              //   items: listData[listIndex].requests,
+              // });
+
+              // setListData([...listData]);
+
+              // if (!response.error) {
+              //   toast({
+              //     title: "Tablero Actualizado",
+              //     description: "Se ha actualizado el orden de las tarjetas",
+              //   });
+              // }
+
+              return;
     }
+    
+      if (type == "card" && destination.droppableId == source.droppableId) {
+        console.log(destination.droppableId);
+
+        console.log(listData);
+
+        console.log(listData[destination.droppableId]);
+
+        const item = listData.find(
+          (item: any) => item.id === destination.droppableId
+        );
+        console.log(item);
+
+        const data = reOrderData(
+          // listData[destination.droppableId].cards,
+          item.requests,
+          destination.index,
+          source.index
+        ).map((item: any, index: number) => ({ ...item, order: index }));
+        const listIndex = listData.findIndex(
+          (list: any) => list.id == destination.droppableId
+        );
+        const list = listData[listIndex];
+        listData[listIndex] = { ...list, requests: data };
+
+        console.log(listData[listIndex]);
+        const response = await updateDataOrderList({
+          listId: destination.droppableId,
+          items: listData[listIndex].requests,
+        });
+
+        console.log(response);
+
+        setListData([...listData]);
+
+        if (!response.error) {
+          toast({
+            title: "Tablero Actualizado",
+            description: "Se ha actualizado el orden de las tarjetas",
+          });
+        }
+      }
 
     if (type == "list") {
       const data = reOrderData(listData, destination.index, source.index).map(

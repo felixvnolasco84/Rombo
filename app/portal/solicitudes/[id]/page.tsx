@@ -130,10 +130,12 @@ export default async function page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {/* <ApproveRequestButton
-        request={request}
-        autorization={(request.userEmail === sessionEmail) || adminList.includes(sessionEmail)}
-      /> */}
+      {request.status == "Revisión" && (
+        <ApproveRequestButton
+          request={request}
+          autorization={request.userEmail === sessionEmail}
+        />
+      )}
 
       {request.description ? (
         <TipTapOnlyContent content={request.description} />

@@ -8,8 +8,6 @@ import { getAuthSession } from "@/utils/AuthOptions";
 // import CreateCard from "./CreateCard";
 
 const ListItem = async ({ list, index }: { list: any; index: number }) => {
-
-
   return (
     <Draggable draggableId={list.id} index={index}>
       {(provided) => (
@@ -30,7 +28,7 @@ const ListItem = async ({ list, index }: { list: any; index: number }) => {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className={cn(
-                    "mx-1 px-1 py-3 flex flex-col gap-y-2 rounded-md",
+                    " px-1 py-3 flex flex-col gap-y-2 rounded-md",
                     list?.cards?.length > 0 ? "mt-2" : "mt-0"
                   )}
                 >

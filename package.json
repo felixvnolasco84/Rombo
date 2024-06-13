@@ -60,6 +60,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
+    "react-query": "^3.39.3",
     "react-timeago": "^7.2.0",
     "resend": "^3.2.0",
     "sass": "^1.74.1",

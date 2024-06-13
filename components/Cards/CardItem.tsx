@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 // import DropdownMenuRequestCategory from "../DropdownMenu/DropdownMenuRequestCategory";
+import { QueryClient, QueryClientProvider } from "react-query";
 import DropdownMenuRequestPriority from "../DropdownMenu/DropdownMenuRequestPriority";
 import DropdownMenuRequestStatus from "../DropdownMenu/DropdownMenuRequestStatus";
 import { Badge } from "../ui/badge";
@@ -19,6 +20,8 @@ import { adminList } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 
 const CardItem = ({ card, index }: { card: any; index: number }) => {
+  const queryClient = new QueryClient();
+
   const { data } = useSession();
 
   if (!data) {
@@ -78,11 +81,17 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
                 </Badge>
 
                 {adminList.includes(user.email || "") ? (
-                  <DropdownMenuRequestStatus
-                    id={card.id}
-                    status={card.status}
-                  />
+                  <QueryClientProvider client={queryClient}>
+                    <DropdownMenuRequestStatus
+                      id={card.id}
+                      status={card.status}
+                    />
+                  </QueryClientProvider>
                 ) : (
+                  // <DropdownMenuRequestStatus
+                  //   id={card.id}
+                  //   status={card.status}
+                  // />
                   <Badge
                     className={`${
                       card.status === "To Do"
