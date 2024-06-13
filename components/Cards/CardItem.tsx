@@ -95,7 +95,7 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
                     }  w-full text-xs  px-2.5 py-1 `}
                     variant={"requestStatus"}
                   >
-                      card.status
+                      {card.status}
                   </Badge>
                 ) : (
                   // <QueryClientProvider client={queryClient}>
