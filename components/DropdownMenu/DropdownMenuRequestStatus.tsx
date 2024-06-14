@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,41 +26,17 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
   const [currentStatus, setCurrentStatus] = React.useState<string>(status);
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  // Función para actualizar el estado de la solicitud
-  const updateRequestStatus = async (status: string) => {
-    const response = await fetch(`/api/requests/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: status }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Error updating request status");
-    }
-
-    return response.json();
-  };
-
-  // Dentro de tu componente
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(updateRequestStatus, {
-    onSuccess: () => {
-      // Invalida y refetch la consulta de solicitud
-      queryClient.invalidateQueries("request");
-    },
-  });
-
-  const { data: request, isLoading } = useQuery("request", () =>
-    fetch(`/api/requests/${id}`).then((res) => res.json())
-  );
-
   const handleStatusChange = async (status: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await mutation.mutateAsync(status);
+      const draftResponse = await fetch(`/api/requests/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: status }),
+      });
+      const response = await draftResponse.json();
 
       if (response.message === "Request updated successfully") {
         toast({
@@ -71,6 +46,7 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
           duration: 3000,
         });
         setCurrentStatus(status);
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);
@@ -78,38 +54,6 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
       setLoading(false);
     }
   };
-
-  // const [currentStatus, setCurrentStatus] = React.useState<string>(status);
-  // const [loading, setLoading] = React.useState<boolean>(false);
-
-  // const handleStatusChange = async (status: string) => {
-  //   setLoading(true);
-  //   try {
-  //     const draftResponse = await fetch(`/api/requests/${id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ status: status }),
-  //     });
-  //     const response = await draftResponse.json();
-
-  //     if (response.message === "Request updated successfully") {
-  //       toast({
-  //         title: "¡Listo!",
-  //         description: "El status de la solicitud ha sido actualizado!",
-  //         variant: "default",
-  //         duration: 3000,
-  //       });
-  //       setCurrentStatus(status);
-  //       // window.location.reload();
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -136,9 +80,8 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
             >
               {loading ? (
                 <Loader className="h-4 w-4 animate-spin" />
-              ) : (
-                currentStatus
-              )}
+              ) : // currentStatus
+              currentStatus}
             </Badge>
           </Button>
         </DropdownMenuTrigger>
