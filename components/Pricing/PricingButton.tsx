@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { toast } from "@/components/ui/use-toast";
 
 type PricingButtonProps = {
   // customer_id: string;
@@ -27,10 +28,23 @@ PricingButtonProps) {
             headers: {
               "Content-Type": "application/json",
             },
-            // body: JSON.stringify({ priceId, customer_id }),
             body: JSON.stringify({ priceId }),
           });
           const data = await res.json();
+
+          if (data.error == "Customer not found") {
+            toast({
+              title: "Error",
+              description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                  <code className="text-white">
+                    {data.error === "Customer not found" && "Se necesita una sesión para continuar"}
+                  </code>
+                </pre>
+              ),
+            });
+            return;
+          }
           window.location.href = data.url;
         } catch (error) {
           console.error("Error:", error);

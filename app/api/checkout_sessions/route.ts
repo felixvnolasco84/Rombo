@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const data = await request.json();
 
     console.log(data);
-    const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
     const customerId = await createCustomerIfNull();
 

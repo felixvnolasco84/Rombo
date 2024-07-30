@@ -10,7 +10,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function Home() {
   return (
-    <main className="relative flex flex-col gap-4 pb-6 lg:gap-7">
+    <div className="relative flex flex-col gap-4 pb-6 lg:gap-7">
       <HeroSection />
       <CTATrial />
       <Carrousel />
@@ -20,6 +20,6 @@ export default function Home() {
       <CTAContact />
       <FAQComponent />
       <WhatsAppButton />
-    </main>
+    </div>
   );
 }

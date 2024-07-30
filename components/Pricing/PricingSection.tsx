@@ -10,7 +10,8 @@ import { Button } from "../ui/button";
 import CarrouselPlans from "../Carrousel/CarrouselPlans";
 
 async function loadPrices() {
-  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+  // const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
   const prices = await stripe.prices.list();
   const sortedPrices = prices.data.sort(
     (a, b) => (a.unit_amount || 0) - (b.unit_amount || 0)

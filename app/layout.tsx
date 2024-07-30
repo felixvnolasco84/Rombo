@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="es-Mx">
       <body className={`${AgrandirRegular.className}`}>
         <AuthProvider>
-          <div className="flex h-full flex-col justify-between">
+          <div className="flex flex-col justify-between">
             <div className="container flex min-h-screen flex-col">
               <Navbar />
               <main className="flex-grow py-4">{children}</main>
