@@ -8,10 +8,7 @@ const prisma = new PrismaClient();
 
 //price_1NarR3APMZcBliJSoefCKTi5
 
-export const stripe = new Stripe(
-  String(process.env.STRIPE_TEST_SECRET_KEY),
-  {}
-);
+export const stripe = new Stripe(String(process.env.STRIPE_SECRET_KEY), {});
 
 export async function hasSubscription() {
   const session: any = await getServerSession(authOptions);

@@ -5,7 +5,7 @@ import { Stripe } from "stripe";
 
 export async function GET(request: any) {
   const { customer_id } = request.params;
-  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
   const subscriptions = await stripe.subscriptions.list({
     customer: customer_id,
   });

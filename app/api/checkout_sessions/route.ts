@@ -5,10 +5,7 @@ import { Stripe } from "stripe";
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-
-    console.log(data);
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-
     const customerId = await createCustomerIfNull();
 
     if (!customerId) {

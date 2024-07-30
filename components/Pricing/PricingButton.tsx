@@ -32,6 +32,8 @@ PricingButtonProps) {
           });
           const data = await res.json();
 
+          console.log(data)
+
           if (data.error == "Customer not found") {
             toast({
               title: "Error",

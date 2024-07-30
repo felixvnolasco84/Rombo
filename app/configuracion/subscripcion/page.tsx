@@ -57,7 +57,7 @@ export default async function page() {
     return subscription.product;
   });
 
-  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY || "");
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
   const productsDraft = await stripe.products.list({
     ids: productsIds,
