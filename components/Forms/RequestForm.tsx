@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader, LucidePersonStanding } from "lucide-react";
+import { Loader } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,18 +23,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "convex/react";
 import { FormLabel } from "../react-hook-form";
+import { api } from "@/convex/_generated/api";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { services } from "@/lib/utils";
+import { toast } from "sonner";
+import { Id } from "@/convex/_generated/dataModel";
 
 type RequestFormProps = {
-  brandId: string;
+  brandId: Id<"brand">;
 };
 
 export default function RequestForm({ brandId }: RequestFormProps) {
+  const create = useMutation(api.requests.create);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
@@ -54,8 +61,6 @@ export default function RequestForm({ brandId }: RequestFormProps) {
     priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
 
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -72,44 +77,29 @@ export default function RequestForm({ brandId }: RequestFormProps) {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      setIsLoading(true);
-      const jsonData = JSON.stringify(data);
-
-      const response = await fetch("/api/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
+    setIsLoading(true);
+    const promise = create({
+      title: data.title,
+      description: data.description,
+      brandId: brandId,
+      category: data.category,
+      deadline: "2022-12-31",
+    })
+      .then((documentId) => {
+        router.push(`/portal/solicitudes/${documentId}`);
+      })
+      .catch((error) => {
+        toast.error("Failed to create a new Brand.");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
 
-      const responseJson = await response.json();
-
-      router.push(`/portal/solicitudes/${responseJson.request.id}`);
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
-        });
-      } else {
-        // toast({
-        //     variant: "default",
-        //     title: "¡Listo!",
-        //     description: "Tu solicitud ha sido enviada con éxito 🎉",
-        // })
-        // form.reset()
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    toast.promise(promise, {
+      loading: "Creating a new Brand...",
+      success: "Brand created successfully.",
+      error: "Failed to create a new Brand.",
+    });
   }
 
   return (

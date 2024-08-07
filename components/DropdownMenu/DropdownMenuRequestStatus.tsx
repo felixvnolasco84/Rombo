@@ -16,14 +16,17 @@ import { Badge } from "../ui/badge";
 import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
 import { getStatusColor } from "@/lib/utils";
+import { Id } from "@/convex/_generated/dataModel";
 
 type Request = {
-  id: string;
-  status: string;
+  id: Id<"requests"> | undefined;
+  status: string | undefined;
 };
 
 export default function DropdownMenuRequestStatus({ id, status }: Request) {
-  const [currentStatus, setCurrentStatus] = React.useState<string>(status);
+  const [currentStatus, setCurrentStatus] = React.useState<string | undefined>(
+    status
+  );
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const handleStatusChange = async (status: string) => {
@@ -69,19 +72,21 @@ export default function DropdownMenuRequestStatus({ id, status }: Request) {
                 currentStatus === "To Do"
                   ? "bg-green-100 text-green-800"
                   : currentStatus === "En Progreso"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : currentStatus === "Revisión"
-                  ? "bg-blue-100 text-blue-800"
-                  : currentStatus === "Completado"
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : currentStatus === "Revisión"
+                      ? "bg-blue-100 text-blue-800"
+                      : currentStatus === "Completado"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
               }  w-full text-xs  px-2.5 py-1 `}
               variant={"requestStatus"}
             >
               {loading ? (
                 <Loader className="h-4 w-4 animate-spin" />
-              ) : // currentStatus
-              currentStatus}
+              ) : (
+                // currentStatus
+                currentStatus
+              )}
             </Badge>
           </Button>
         </DropdownMenuTrigger>

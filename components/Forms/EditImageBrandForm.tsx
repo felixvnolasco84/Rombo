@@ -82,7 +82,6 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
                 name="img"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
-                    {/* <FormLabel>Seleccciona o suel</FormLabel> */}
                     <FormControl>
                       <UpdateImageFormField img={brand.img} {...field} />
                     </FormControl>
@@ -92,7 +91,7 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
               />
             </div>
           </div>
-          <DialogFooter>
+          {/* <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancelar
@@ -105,7 +104,7 @@ export default function EditImageBrandForm({ brand }: RequestFormProps) {
                 "Actualizar"
               )}
             </Button>
-          </DialogFooter>
+          </DialogFooter> */}
         </div>
       </form>
     </Form>

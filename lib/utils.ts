@@ -306,6 +306,7 @@ export const features = [
 import mexStrings from "react-timeago/lib/language-strings/es";
 // @ts-ignore
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
+import { Id } from "@/convex/_generated/dataModel";
 
 export const formatter = buildFormatter(mexStrings);
 
@@ -316,4 +317,17 @@ export const adminList = [
   "hola@rombo.design",
 ];
 
-
+export interface Brand {
+  _creationTime: number;
+  _id: Id<"brand">;
+  description: string;
+  img?: string;
+  industry: string;
+  isArchived: boolean;
+  isPublished: boolean;
+  requests: any[];
+  title: string;
+  updatedAt?: number;
+  userId: string;
+  website?: string;
+}

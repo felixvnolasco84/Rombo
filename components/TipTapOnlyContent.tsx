@@ -2,7 +2,7 @@
 
 import "../app/styles/editor.scss";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Color } from "@tiptap/extension-color";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Image from "@tiptap/extension-image";
@@ -19,6 +19,8 @@ type Props = {
 };
 
 const TipTapOnlyContent = ({ onStateChange, content }: Props) => {
+  const [description, setDescription] = useState<string>(content);
+
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.extend({
@@ -42,18 +44,18 @@ const TipTapOnlyContent = ({ onStateChange, content }: Props) => {
     }),
   ];
 
+  useEffect(() => {
+    // Lógica para actualizar el componente cuando el contenido cambie
+    setDescription(content);
+  }, [content]);
+
   return (
     <div className="flex flex-col gap-2">
       <EditorProvider
         slotBefore={<></>}
         extensions={extensions}
-        content={content}
+        content={description}
         editable={false}
-        onUpdate={({ editor }) => {
-          if (editor) {
-            onStateChange && onStateChange(editor.getHTML());
-          }
-        }}
         editorProps={{
           attributes: {
             class:

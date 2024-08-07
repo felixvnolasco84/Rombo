@@ -21,40 +21,56 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MenuIcon, Trash2Icon } from "lucide-react";
-import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import EditBrandForm from "../Forms/EditBrandForm";
+import { useMutation } from "convex/react";
+import { Brand } from "@/lib/utils";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { on } from "events";
 
-export default function DropdownMenuComponentBrand({ brand }: { brand: any }) {
+export default function DropdownMenuComponentBrand({
+  brand,
+}: {
+  brand: Brand;
+}) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
+  const remove = useMutation(api.brands.remove);
+  const restore = useMutation(api.brands.restore);
+
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const draftResponse = await fetch(`/api/brands/${brand.id}`, {
-        method: "DELETE",
-      });
-      const response = await draftResponse.json();
-
-      console.log(response)
-      if (response.message === "Brand deleted successfully") {
-        toast({
-          title: "¡Listo!",
-          description: " Tu marca ha sido eliminada",
-          variant: "default",
-          duration: 3000,
+      const onRemove = () => {
+        const promise = remove({ id: brand._id });
+        toast.promise(promise, {
+          loading: "Deleting brand...",
+          success: "Brand deleted successfully.",
+          error: "Failed to delete brand.",
         });
-        router.push("/portal/marcas");
-      }
+        router.push("/portal/brands");
+      };
+      onRemove();
     } catch (err) {
-      console.log(err);
+      toast.error("Failed to delete brand.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const onRestore = () => {
+    const promise = restore({ id: brand._id });
+
+    toast.promise(promise, {
+      loading: "Restoring brand...",
+      success: "Brand restored successfully.",
+      error: "Failed to restore brand.",
+    });
   };
 
   return (
@@ -94,11 +110,14 @@ export default function DropdownMenuComponentBrand({ brand }: { brand: any }) {
               {isEditDialogOpen ? "Editar" : "Eliminar"}
             </DialogTitle>
             <DialogDescription>
-              {isEditDialogOpen ? "Editar solicitud" : "¿Estás seguro?"}
+              {isEditDialogOpen ? "Editar Marcas" : "¿Estás seguro?"}
             </DialogDescription>
           </DialogHeader>
           {isEditDialogOpen ? (
-            <EditBrandForm setIsEditDialogOpen={setIsEditDialogOpen} brand={brand} />
+            <EditBrandForm
+              setIsEditDialogOpen={setIsEditDialogOpen}
+              brand={brand}
+            />
           ) : (
             <DialogFooter>
               <Button

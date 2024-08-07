@@ -23,41 +23,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
-import { services } from "@/lib/utils";
+import { Brand, services } from "@/lib/utils";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { toast } from "sonner";
 
 type RequestFormProps = {
-  brands: any[];
+  brands: Brand[];
 };
 
 export default function RequestFormWithoutReference({
   brands,
 }: RequestFormProps) {
-
-  
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción" }),
-    documents: z
-      .array(
-        z.object({
-          name: z.string(),
-          url: z.string(),
-        })
-      )
-      .optional(),
+    // documents: z
+    //   .array(
+    //     z.object({
+    //       name: z.string(),
+    //       url: z.string(),
+    //     })
+    //   )
+    //   .optional(),
     brandId: z.string().min(1, { message: "Por favor selecciona un proyecto" }),
-    status: z.string(),
     priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
-
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -67,48 +66,40 @@ export default function RequestFormWithoutReference({
       title: "",
       category: "",
       description: "",
-      documents: [],
+      // documents: [],
       brandId: "",
-      status: "To Do",
-      priority: "",
+      priority: "LOW",
     },
   });
 
+  const create = useMutation(api.requests.create);
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const jsonData = JSON.stringify(data);
       setIsLoading(true);
-      const response = await fetch("/api/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      });
 
-      const responseJson = await response.json();
-
-      router.push(`/portal/solicitudes/${responseJson.request.id}`);
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
+      const promise = create({
+        title: data.title,
+        category: data.category,
+        description: data.description,
+        brandId: data.brandId as Id<"brand">,
+        priority: data.priority,
+        deadline: new Date().toISOString(),
+      })
+        .then((documentId) => {
+          router.push(`/portal/solicitudes/${documentId}`);
+        })
+        .catch((error) => {
+          toast.error("Ocurrió un error al enviar la solicitud");
         });
-      } else {
-        // toast({
-        //     variant: "default",
-        //     title: "¡Listo!",
-        //     description: "Tu solicitud ha sido enviada con éxito 🎉",
-        // })
-        // form.reset()
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
+
+      toast.promise(promise, {
+        loading: "Enviando solicitud...",
+        success: "Solicitud enviada",
+        error: "Ocurrió un error al enviar la solicitud",
       });
+    } catch (error: any) {
+      toast.error("Ocurrió un error al enviar la solicitud");
     } finally {
       setIsLoading(false);
     }
@@ -117,7 +108,7 @@ export default function RequestFormWithoutReference({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
+        <div className="grid gap-4">
           <div className="grid gap-4">
             <div className="grid w-full items-center gap-1.5">
               <FormField
@@ -230,7 +221,7 @@ export default function RequestFormWithoutReference({
                 )}
               />
             </div>
-            <div className="grid w-full items-center gap-1.5">
+            {/* <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
                 name="documents"
@@ -240,23 +231,14 @@ export default function RequestFormWithoutReference({
                     <FormDescription>
                       Agregar documentos relacionados a tu marca o organización
                     </FormDescription>
-                    <FormControl>
-                      {/* <Textarea
-                      placeholder="Descripción de la marca"
-                      className="resize-none bg-transparent"
-                      autoCapitalize="none"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      disabled={isLoading}
-                      {...field}
-                    ></Textarea> */}
+                    <FormControl>                      
                       <UploadDocumentsFormField {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
 
             <div className="grid w-full items-center gap-1.5">
               <FormField
@@ -280,7 +262,7 @@ export default function RequestFormWithoutReference({
                         <SelectContent>
                           {brands.map((brand) => {
                             return (
-                              <SelectItem key={brand.id} value={brand.id}>
+                              <SelectItem key={brand._id} value={brand._id}>
                                 {brand.title}
                               </SelectItem>
                             );

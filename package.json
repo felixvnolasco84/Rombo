@@ -12,6 +12,10 @@
   "dependencies": {
     "@atlaskit/theme": "^12.8.0",
     "@auth/prisma-adapter": "^1.5.2",
+    "@clerk/clerk-react": "^5.2.10",
+    "@clerk/nextjs": "^5.2.8",
+    "@edgestore/react": "^0.2.1",
+    "@edgestore/server": "^0.2.1",
     "@emotion/styled": "^11.11.5",
     "@github/relative-time-element": "^4.4.0",
     "@hello-pangea/dnd": "^16.6.0",
@@ -44,6 +48,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
+    "convex": "^1.13.2",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.0",
     "firebase": "^10.10.0",

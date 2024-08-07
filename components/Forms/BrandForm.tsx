@@ -22,8 +22,10 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
+import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { Loader, LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
 import { uploadFile } from "@/app/utils/uploadImage";
@@ -34,6 +36,9 @@ import { industries } from "@/lib/utils";
 import UpdateImageFormField from "./UpdateImageFormField";
 
 export default function BrandForm() {
+
+  const create = useMutation(api.brands.create);
+
   const router = useRouter();
 
   const FormSchema = z.object({
@@ -56,7 +61,6 @@ export default function BrandForm() {
       .optional(),
   });
 
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -71,44 +75,39 @@ export default function BrandForm() {
     },
   });
 
+
+  const handleBrandCreate = (data: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    const promise = create({
+      title: data.title,
+      description: data.description,
+      industry: data.industry,
+      website: data.website,
+      img: data.img,
+      // orgid: organization.id,
+    })
+      // .then((documentId) => documentModal.onOpen(documentId));
+      .then((documentId) => {
+        router.push(`/portal/marcas/${documentId}`);
+      })
+      .catch((error) => {
+        toast.error("Failed to create a new Brand.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    toast.promise(promise, {
+      loading: "Creating a new Brand...",
+      success: "Brand created successfully.",
+      error: "Failed to create a new Brand.",
+    });
+  };
+
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      setIsLoading(true);
-      const jsonData = JSON.stringify(data);
-      const draftResponse = await fetch("/api/brands", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      });
 
-      const response = await draftResponse.json();
-
-      if (response.id) {
-        toast({
-          variant: "default",
-          title: "¡Listo!",
-          description: "Tu Marca se ha creado correctamente",
-        });
-        form.reset();
-        router.push(`/portal/marcas/${response.id}`);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "¡Oh!",
-          description: "Al parecer hubo un error, intentelo más tarde",
-        });
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Oops!",
-        description: "Al parecer hubo un error, intentelo más tarde",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    handleBrandCreate(data);
   }
 
   return (

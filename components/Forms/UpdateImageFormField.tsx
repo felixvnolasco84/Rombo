@@ -3,8 +3,10 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { forwardRef,  useState } from "react";
+import { forwardRef,  useEffect,  useState } from "react";
 import { uploadFile } from "@/app/utils/uploadImage";
+import { useMutation } from "react-query";
+import { api } from "@/convex/_generated/api";
 
 
 interface UploadDocumentsFormFieldProps {
@@ -20,8 +22,14 @@ interface UploadDocumentsFormFieldProps {
 
 const UpdateImageFormField = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
+
     const [img, setImg] = useState<string>(props?.img || "");
     const [uploading, setUploading] = useState(false);
+    
+    useEffect(() => {
+
+    }, [img]);
+
 
     const handleUpload = async (files: File[]) => {
       setUploading(true);

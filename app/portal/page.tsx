@@ -1,8 +1,23 @@
+"use client";
+
 import { getAuthSession } from "@/utils/AuthOptions";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleRequestDataTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import KanBan from "@/components/Cards/KanbanList";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Bell,
+  Home,
+  LucidePanelsTopLeft,
+  Menu,
+  PlusCircle,
+  Users,
+} from "lucide-react";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 import prisma from "@/utils/ConnectionPool";
 import KanBan from "@/components/Cards/KanBan";
 import {
@@ -18,76 +33,119 @@ import { adminList } from "@/lib/utils";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";
 import { SimpleRequestDataTableHome } from "@/components/Tables/Requests/SimpleRequestDataTableHome";
 import { Separator } from "@/components/ui/separator";
+import { useOrganization } from "@clerk/clerk-react";
+import { SidebarNavDashboard } from "./components/sidebar-nav-dashboard";
 
-export default async function page() {
-  const session: any = await getAuthSession();
+export default function Page() {
+  const create = useMutation(api.brands.create);
 
-  let brands: any = [];
+  const handleBrandCreate = () => {
+    const promise = create({
+      title: "Untitled",
+      description: "Description",
+      industry: "Industry",
+      website: "https://example.com",
+      // orgid: organization.id,
+    });
+    // .then((documentId) => documentModal.onOpen(documentId));
 
+    toast.promise(promise, {
+      loading: "Creating a new Brand...",
+      success: "Brand created successfully.",
+      error: "Failed to create a new Brand.",
+    });
+  };
+  // const session: any = await getAuthSession();
 
+  // let brands: any = [];
 
-  brands = await prisma.brand.findMany({
-    where: {
-      userEmail: session.user.email,
-    },
-    include: {
-      user: true,
-      requests: true,
-      Board: {
-        include: {
-          lists: {
-            include: {
-              requests: {
-                include: {
-                  brand: true,
-                  comments: true,
-                },
-                orderBy: {
-                  order: "asc",
-                },
-              },
-            },
-            orderBy: {
-              order: "asc",
-            },
-          },
-        },
-      },
-    },
-  });
+  // brands = await prisma.brand.findMany({
+  //   where: {
+  //     userEmail: session.user.email,
+  //   },
+  //   include: {
+  //     user: true,
+  //     requests: true,
+  //     Board: {
+  //       include: {
+  //         lists: {
+  //           include: {
+  //             requests: {
+  //               include: {
+  //                 brand: true,
+  //                 comments: true,
+  //               },
+  //               orderBy: {
+  //                 order: "asc",
+  //               },
+  //             },
+  //           },
+  //           orderBy: {
+  //             order: "asc",
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
 
-    if (adminList.includes(session.user.email)) {
-        brands = await prisma.brand.findMany({
+  // if (adminList.includes(session.user.email)) {
+  //     brands = await prisma.brand.findMany({
 
-          include: {
-            user: true,
-            requests: true,
-            Board: {
-              include: {
-                lists: {
-                  include: {
-                    requests: {
-                      include: {
-                        brand: true,
-                        comments: true,
-                      },
-                      orderBy: {
-                        order: "asc",
-                      },
-                    },
-                  },
-                  orderBy: {
-                    order: "asc",
-                  },
-                },
-              },
-            },
-          },
-        });
-    }
+  //       include: {
+  //         user: true,
+  //         requests: true,
+  //         Board: {
+  //           include: {
+  //             lists: {
+  //               include: {
+  //                 requests: {
+  //                   include: {
+  //                     brand: true,
+  //                     comments: true,
+  //                   },
+  //                   orderBy: {
+  //                     order: "asc",
+  //                   },
+  //                 },
+  //               },
+  //               orderBy: {
+  //                 order: "asc",
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     });
+  // }
+
+  // const { organization } = useOrganization();
+
+  const brands = useQuery(api.brands.getSidebar, {});
+
+  if (brands === undefined) {
+    return <div>cargando...</div>;
+  }
+
+  if (brands === null) {
+    return <div>404</div>;
+  }
 
   return (
-    <>
+    <div className="flex flex-col px-4">
+      <Link
+        href={"/portal/marcas/new"}
+        className="flex items-center justify-end pt-8"
+      >
+        <Button
+          size={"sm"}
+          variant={"default"}
+        >
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Crear Marca
+        </Button>
+      </Link>
+
       {brands.length === 0 ? (
         <Link className="w-full" href="/portal/marcas/new">
           <Button
@@ -98,7 +156,7 @@ export default async function page() {
           </Button>
         </Link>
       ) : (
-        <Tabs defaultValue={brands[0].title} className="w-full">
+        <Tabs defaultValue={brands[0]._id} className="w-full">
           <TabsList>
             {brands.map((brand: any) => (
               <TabsTrigger key={brand.id} value={brand.title}>
@@ -110,7 +168,7 @@ export default async function page() {
           <Separator className="my-4" />
 
           {brands.map((brand: any) => (
-            <TabsContent key={brand.id} value={brand.title}>
+            <TabsContent key={brand._id} value={brand.title}>
               <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl"></h3>
               <div className="mx-auto flex w-full flex-col gap-8">
                 <Tabs defaultValue="table" className="w-full">
@@ -141,7 +199,10 @@ export default async function page() {
                     )}
                   </TabsContent>
                   <TabsContent value="kanban">
-                    <KanBan boardId={brand.Board[0].id} list={brand.Board[0].lists} />
+                    {/* <KanBan
+                      boardId={brand.Board[0].id}
+                      list={brand.Board[0].lists}
+                    /> */}
                   </TabsContent>
                 </Tabs>
               </div>
@@ -149,7 +210,7 @@ export default async function page() {
           ))}
         </Tabs>
       )}
-    </>
+    </div>
   );
 }
 

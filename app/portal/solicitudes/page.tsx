@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CardTitle,
   CardDescription,
@@ -8,36 +10,46 @@ import {
 import Link from "next/link";
 
 import { GET as getAllRequests } from "@/app/api/requests/route";
+import {
+  Breadcrumb,
+  BreadcrumbLink,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 import { RequestsDataTable } from "@/components/Tables/Requests/RequestsDataTable";
 import { requestColumns } from "@/components/Tables/Requests/requestColumns";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-export default async function page() {
-  const data = await getAllRequests();
-  const requests = await data.json();
+export default function Page() {
+  const requests = useQuery(api.requests.getSidebar, {});
 
-  if (requests.message === "Not Authenticated!") {
-    return (
-      <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Not Authenticated!</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              {/* add callback */}
-              <Link href="/login">
-                <p className="text-blue-500">Login</p>
-              </Link>
-            </CardDescription>
-          </CardContent>
-        </Card>
-      </div>
-    );
+  if (requests === undefined) {
+    return <></>;
   }
+
   return (
-    <>
+    <div className="grid gap-2 p-8">
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="#">Portal</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="#">Solicitudes</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="ml-auto flex items-center gap-2">
         <Button size="sm">
           <Link
@@ -52,6 +64,6 @@ export default async function page() {
         </Button>
       </div>
       <RequestsDataTable columns={requestColumns} data={requests} />
-    </>
+    </div>
   );
 }

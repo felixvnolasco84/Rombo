@@ -1,48 +1,35 @@
+"use client";
+
 import Link from "next/link";
-import { GET as getAllSubscriptions } from "@/app/api/subscriptions/[email]/route";
+
 import {
   Bell,
   Home,
   LucidePanelsTopLeft,
-  MailCheckIcon,
   Menu,
-  Package2,
+  PlusCircle,
   Users,
 } from "lucide-react";
 
-import { getAuthSession } from "@/utils/AuthOptions";
-
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
 import React from "react";
 import { SidebarNavDashboard } from "./components/sidebar-nav-dashboard";
-import { DashboardIcon } from "@radix-ui/react-icons";
-import prisma from "@/utils/ConnectionPool";
-import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 
-export default async function layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const session: any = await getAuthSession();
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   // if (!session) {
   //   return <NotAutorizedComponent />;
   // }
 
-  const user = await prisma.user.findFirst({
-    where: { email: session.user?.email },
-  });
+  // const user = await prisma.user.findFirst({
+  //   where: { email: session.user?.email },
+  // });
 
-  const data = await getAllSubscriptions({
-    params: { customer_id: user?.stripe_customer_id },
-  });
+  // const data = await getAllSubscriptions({
+  //   params: { customer_id: user?.stripe_customer_id },
+  // });
 
-  const subscriptionsJson = await data.json();
+  // const subscriptionsJson = await data.json();
 
-  const subsriptions = subscriptionsJson.data;
+  // const subsriptions = subscriptionsJson.data;
 
   const sidebarNavItems = [
     {
@@ -68,54 +55,22 @@ export default async function layout({
   ];
 
   return (
-    <>
-      {/* {subsriptions.length == 0 || !session ? ( */}
-      {/* <NotAutorizedComponent /> */}
-      {/* ) : ( */}
-      <div className="py-4">
-        <div className="grid w-full overflow-hidden rounded-2xl shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
-          <div className="hidden border-r bg-muted/40 md:block">
-            <div className="flex h-full flex-col gap-2 p-4">
-              <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2 font-semibold"
-                >
-                  {/* <DashboardIcon className="h-6 w-6" /> */}
-                  <span className="">Dashboard</span>
-                </Link>
-              </div>
-              <div className="flex-1">
-                <SidebarNavDashboard items={sidebarNavItems} />{" "}
-              </div>
+    <div className="py-4">
+      <div className="grid w-full overflow-hidden rounded-2xl shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
+        <div className="hidden border-r bg-muted/40 md:block">
+          <div className="flex h-full flex-col gap-2 p-4">
+            <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+              <Link href="/" className="flex items-center gap-2 font-semibold">
+                <span className="">Dashboard</span>
+              </Link>
             </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="bg-muted/40 p-4">
-              <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px]">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="default"
-                      className="shrink-0 md:hidden"
-                    >
-                      <Menu className="h-5 w-5" />
-                      <span className="sr-only">Toggle navigation menu</span>
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="flex flex-col">
-                    <SidebarNavDashboard items={sidebarNavItems} />
-                  </SheetContent>
-                </Sheet>
-                {/* <BreadcrumbComponent /> */}
-              </header>
+            <div className="flex-1">
+              <SidebarNavDashboard items={sidebarNavItems} />{" "}
             </div>
-            {children}
           </div>
         </div>
+        <div className="flex flex-col">{children}</div>
       </div>
-      {/* )} */}
-    </>
+    </div>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,33 +22,22 @@ import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuR
 import CommentSection from "@/components/CommentSection";
 import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 import TimeAgoDate from "@/components/TimeAgoDate";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { adminList } from "@/lib/utils";
 import ApproveRequestButton from "@/components/Buttons/ApproveRequestButton";
+import { Id } from "@/convex/_generated/dataModel";
 
-export default async function page({ params }: { params: { id: string } }) {
-  const session: any = await getAuthSession();
+export default function Page({ params }: { params: { id: Id<"requests"> } }) {
+  const request = useQuery(api.requests.getById, { requestId: params.id });
 
-  const data = await getSingleRequest(params.id);
-  const request = await data.json();
-
-  if (!session) {
-    return <div>Not Authenticated!</div>;
+  if (request === undefined) {
+    return <div>cargando...</div>;
   }
 
-  const sessionEmail = session.user.email;
-  const ownerEmail = request.userEmail;
-
-  const userList = [
-    "felix@polygonag.com",
-    "alba@polygonag.com",
-    "rodrigo@polygonag.com",
-    "hola@rombo.design",
-    ownerEmail,
-  ];
-
-  // if (!userList.includes(sessionEmail)) {
-  //   return <NotAutorizedComponent />;
-  // }
+  if (request === null) {
+    return <div>404</div>;
+  }
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-8 md:px-0">
@@ -59,7 +50,7 @@ export default async function page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-1">
             <h3 className="text-[#121415]">Fecha Solicitud:</h3>
             <p className="text-[#6d6d6d]">
-              {new Date(request.createdAt).toLocaleDateString("es-Mx", {
+              {new Date(request._creationTime).toLocaleDateString("es-Mx", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -69,7 +60,7 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
           <div className="flex items-center gap-1">
             <p className="text-[#121415]">Creado Por:</p>
-            <p className="text-[#6d6d6d]">{request.userEmail}</p>
+            <p className="text-[#6d6d6d]">{request.userId}</p>
           </div>
         </div>
       </div>
@@ -82,10 +73,11 @@ export default async function page({ params }: { params: { id: string } }) {
             {request.category}
           </Badge>
 
-          {adminList.includes(session.user.email) ? (
+          {/* {adminList.includes(session.user.email) ? ( */}
+          {false ? (
             <DropdownMenuRequestStatus
-              id={request.id}
-              status={request.status}
+              id={request?._id}
+              status={request?.status}
             />
           ) : (
             <Badge
@@ -93,44 +85,44 @@ export default async function page({ params }: { params: { id: string } }) {
                 request.status === "To Do"
                   ? "bg-green-100 text-green-800"
                   : request.status === "in progress"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : request.status === "to-test"
-                  ? "bg-blue-100 text-blue-800"
-                  : request.status === "complete"
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : request.status === "to-test"
+                      ? "bg-blue-100 text-blue-800"
+                      : request.status === "complete"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
               }  w-full text-xs  px-2.5 py-1 `}
               variant={"requestStatus"}
             >
               {request.status === "To Do"
                 ? "To Do"
                 : request.status === "in progress"
-                ? "In Progress"
-                : request.status === "to-test"
-                ? "To Test"
-                : "Done"}
+                  ? "In Progress"
+                  : request.status === "to-test"
+                    ? "To Test"
+                    : "Done"}
             </Badge>
           )}
 
-          <Link className="w-full" href={`/portal/marcas/${request.brand.id}`}>
+          <Link className="w-full" href={`/portal/marcas/${request.brandId}`}>
             <Badge className="w-full px-2.5 py-1 text-xs" variant={"primary"}>
-              {request.brand.title}
+              {/* {request.brand.title} */}
             </Badge>
           </Link>
         </div>
 
         <div className="flex w-1/2 flex-col items-end gap-4">
           <DropdownMenuRequestPriority
-            priority={request.priority}
-            id={request.id}
+            priority={request.priority || ""}
+            id={request._id}
           />
           <p className="text-sm text-[#0062FF]">
-            <TimeAgoDate date={request.deadline} />
+            <TimeAgoDate date={request.deadline || ""} />
           </p>
         </div>
       </div>
 
-      {request.status == "Revisión" && (
+      {/* {request.status == "Revisión" && (
         <ApproveRequestButton
           request={request}
           autorization={request.userEmail === sessionEmail}
@@ -198,7 +190,7 @@ export default async function page({ params }: { params: { id: string } }) {
             </div>
           </AccordionContent>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
     </section>
   );
 }

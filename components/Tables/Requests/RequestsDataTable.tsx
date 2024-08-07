@@ -75,10 +75,10 @@ export function RequestsDataTable<TData, TValue>({
     },
   });
 
-  const brands = data.map((item: any) => item.brand.title);
-  const uniqueValues = brands.filter(
-    (value, index, self) => self.indexOf(value) === index
-  );
+  // const brands = data.map((item: any) => item.brand.title);
+  // const uniqueValues = brands.filter(
+  //   (value, index, self) => self.indexOf(value) === index
+  // );
 
   const priorities: string[] = ["low", "medium", "high", "critical"];
 
@@ -94,7 +94,7 @@ export function RequestsDataTable<TData, TValue>({
             }
             className="max-w-sm"
           />
-          <div className="flex w-full items-center gap-1">
+          {/* <div className="flex w-full items-center gap-1">
             <Select
               value={
                 (table.getColumn("brand_title")?.getFilterValue() as string) ??
@@ -123,7 +123,7 @@ export function RequestsDataTable<TData, TValue>({
             >
               <XIcon className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
           <div className="flex w-full items-center gap-1">
             <Select
               value={

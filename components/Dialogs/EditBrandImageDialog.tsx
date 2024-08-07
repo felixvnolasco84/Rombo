@@ -10,6 +10,7 @@ import Image from "next/image";
 import EditImageBrandForm from "../Forms/EditImageBrandForm";
 
 export default function EditBrandImageDialog({ brand }: { brand: any }) {
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -38,8 +39,6 @@ export default function EditBrandImageDialog({ brand }: { brand: any }) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle></DialogTitle>
-          <DialogDescription></DialogDescription>
           <EditImageBrandForm brand={brand} />
         </DialogHeader>
       </DialogContent>
