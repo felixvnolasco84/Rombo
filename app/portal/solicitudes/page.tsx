@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  Card,
-} from "@/components/ui/card";
 import Link from "next/link";
 
-import { GET as getAllRequests } from "@/app/api/requests/route";
 import {
   Breadcrumb,
   BreadcrumbLink,
