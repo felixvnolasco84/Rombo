@@ -56,7 +56,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="grid aspect-video w-full overflow-hidden rounded-2xl border shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
+    <div className="grid w-full overflow-hidden rounded-2xl border shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full flex-col gap-2 p-4">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
