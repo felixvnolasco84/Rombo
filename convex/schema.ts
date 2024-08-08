@@ -105,6 +105,7 @@ export default defineSchema({
       filterFields: ["orgId"],
     })
     .index("by_user", ["userId"])
+    .index("by_user_and_org", ["userId", "orgId"])
     .index("by_user_parent_and_org", ["userId", "parentBrand", "orgId"]),
 
   requests: defineTable({
@@ -132,7 +133,7 @@ export default defineSchema({
       // filterFields: ["orgId"],
     })
     .index("by_user", ["userId"])
-    // .index("by_user_parent_and_org", ["userId", "parentRequest", "orgId"]),
+    .index("by_user_and_org", ["userId", "brandId"])
     .index("by_user_parent_and_org", ["userId", "parentRequest"]),
 
   controlLists: defineTable({

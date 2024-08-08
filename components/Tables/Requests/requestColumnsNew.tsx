@@ -18,30 +18,6 @@ import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/lib/utils";
 
 export const requestColumnsNew: ColumnDef<any>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && "indeterminate")
-  //       }
-  //       onCheckedChange={(value: any) =>
-  //         table.toggleAllPageRowsSelected(!!value)
-  //       }
-  //       aria-label="Select all"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-  //       aria-label="Select row"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -60,7 +36,7 @@ export const requestColumnsNew: ColumnDef<any>[] = [
       return (
         <Link
           className="hover:underline"
-          href={`/portal/solicitudes/${row.original.id}`}
+          href={`/portal/solicitudes/${row.original._id}`}
         >
           <span>{title.length < 40 ? title : title.slice(0, 40) + "..."}</span>
         </Link>
@@ -95,20 +71,6 @@ export const requestColumnsNew: ColumnDef<any>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "user.email",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Correo del usuario
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -124,21 +86,19 @@ export const requestColumnsNew: ColumnDef<any>[] = [
     },
     cell: ({ row }) => {
       const status = row.original.status;
-      // const color = getStatusColor(status);
       return (
         <Badge
           variant={"outline"}
           className={`${
-            status === "To Do"
+            status === "TO DO"
               ? "bg-[#C0D5F7]"
-              : status === "En Progreso"
+              : status === "IN PROGRESS"
               ? "bg-[#FBDFC7]"
-              : status === "Revisión"
+              : status === "IN REVIEW"
               ? "bg-[#FCDBF9]"
-              : status === "Completado"
+              : status === "DONE"
               ? "bg-[#DFFCAD]"
               : "bg-red-100 text-red-800"
-            // } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
           } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
         >
  {status}
@@ -167,20 +127,20 @@ export const requestColumnsNew: ColumnDef<any>[] = [
         <Badge
           variant={"outline"}
           className={`text-xs font-medium w-full justify-center ${
-            priority === "low"
+            priority === "LOW"
               ? "bg-[#EAFFF7] text-[#44C195]"
-              : priority === "medium"
+              : priority === "MEDIUM"
               ? "bg-[#FEF6E7] text-[#FF9B57]"
               : "bg-[#FDE7E7] text-[#F67376]"
           }`}
         >
-          {priority === "low"
-            ? "Low"
-            : priority === "medium"
-            ? "Medium"
-            : priority === "high"
-            ? "High"
-            : "Critical"}
+          {priority === "LOW"
+            ? "LOW"
+            : priority === "MEDIUM"
+            ? "MEDIUM"
+            : priority === "HIGH"
+            ? "HIGH"
+            : "CRITICAL"}
         </Badge>
       );
     },
@@ -188,7 +148,7 @@ export const requestColumnsNew: ColumnDef<any>[] = [
   {
     accessorKey: "createdAt",
     accessorFn: (value) =>
-      new Date(value.createdAt).toLocaleDateString("es-Mx", {
+      new Date(value._creationTime).toLocaleDateString("es-Mx", {
         year: "numeric",
         month: "2-digit",
         day: "numeric",
@@ -239,14 +199,9 @@ export const requestColumnsNew: ColumnDef<any>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            {/* <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(request.title)}
-            >
-              Copiar nombre de la solicitud
-            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/portal/solicitudes/${request.id}`}>
+              <Link href={`/portal/solicitudes/${request._id}`}>
                 Ver detalles
               </Link>
             </DropdownMenuItem>

@@ -13,6 +13,7 @@ import {
 
 import React from "react";
 import { SidebarNavDashboard } from "./components/sidebar-nav-dashboard";
+import { Button } from "@/components/ui/button";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // if (!session) {
@@ -55,22 +56,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="py-4">
-      <div className="grid w-full overflow-hidden rounded-2xl shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
-        <div className="hidden border-r bg-muted/40 md:block">
-          <div className="flex h-full flex-col gap-2 p-4">
-            <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link href="/" className="flex items-center gap-2 font-semibold">
-                <span className="">Dashboard</span>
-              </Link>
-            </div>
-            <div className="flex-1">
-              <SidebarNavDashboard items={sidebarNavItems} />{" "}
-            </div>
+    <div className="grid aspect-video w-full overflow-hidden rounded-2xl border shadow-md md:grid-cols-[220px_1fr] lg:xl:grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]">
+      <div className="hidden border-r bg-muted/40 md:block">
+        <div className="flex h-full flex-col gap-2 p-4">
+          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+            <Link href="/" className="flex items-center gap-2 font-semibold">
+              <span className="">Dashboard</span>
+            </Link>
           </div>
+          <div className="flex-1">
+            <SidebarNavDashboard items={sidebarNavItems} />
+          </div>
+
+          <Button
+            variant={"ghost"}
+            className="flex w-fit items-center text-left"
+          >
+            <Link href="/" className="flex items-center gap-2 font-semibold">
+              <span className="text-sm">Regresar al sitio web</span>
+            </Link>
+          </Button>
         </div>
-        <div className="flex flex-col">{children}</div>
       </div>
+      <div className="flex flex-col p-8">{children}</div>
     </div>
   );
 }

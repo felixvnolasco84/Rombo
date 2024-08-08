@@ -25,7 +25,7 @@ export default function Page() {
   }
 
   return (
-    <div className="grid gap-2 p-8">
+    <div className="grid gap-2">
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>

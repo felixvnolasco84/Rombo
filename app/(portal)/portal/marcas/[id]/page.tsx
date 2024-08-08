@@ -22,19 +22,59 @@ import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleReque
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import TipTapEditor from "@/components/TipTap";
+import KanBan from "@/components/Cards/KanBan";
+import Spinner from "@/components/spinner";
 
 export default function Page({ params }: { params: { id: Id<"brand"> } }) {
+  const requests = useQuery(api.requests.getByBrand, {
+    brandId: params.id,
+  });
+
   const brand = useQuery(api.brands.getById, {
     brandId: params.id,
   });
 
   if (brand === undefined) {
-    return <div>cargando...</div>;
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
   }
 
   if (brand === null) {
     return <div>404</div>;
   }
+
+  if (requests === undefined) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (requests === null) {
+    return <div>404</div>;
+  }
+
+  const requestGroupByStatus: { [key: string]: any[] } = requests.reduce(
+    (acc, request) => {
+      if (request.status !== undefined) {
+        if (!acc[request.status]) {
+          acc[request.status] = [];
+        }
+        acc[request.status].push(request);
+      }
+      return acc;
+    },
+    {} as { [key: string]: any[] }
+  );
+
+  const kanbanLists = Object.keys(requestGroupByStatus).map((status) => ({
+    title: status,
+    requests: requestGroupByStatus[status],
+  }));
 
   return (
     <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-gray-100/40 py-4 dark:bg-gray-800/40">
@@ -81,9 +121,7 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
               <h1 className="text-3xl text-[#121415]">{brand.title}</h1>
               <DropdownMenuComponentBrand brand={brand} />
             </div>
-
             <TipTapOnlyContent content={brand.description} />
-            {/* <p>{JSON.stringify(brand.description)}</p> */}
             <div className="grid grid-cols-2 gap-2 text-sm">
               {brand.website && brand.website !== "" && (
                 <div className="flex items-center gap-1">
@@ -142,25 +180,28 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
               <TabsTrigger value="table">Tabla de Solicitudes</TabsTrigger>
               <TabsTrigger value="kanban">Tablero de Kanban</TabsTrigger>
             </TabsList>
-            {/* <TabsContent value="table">
-            {brand.requests.length === 0 ? (
-              <Link className="w-full" href={`/portal/marcas/${brand._id}/new`}>
-                <Button
-                  variant="ghost"
-                  className="flex h-24 w-full items-center justify-center rounded-lg border border-gray-300"
+            <TabsContent value="table">
+              {requests.length === 0 ? (
+                <Link
+                  className="w-full"
+                  href={`/portal/marcas/${brand._id}/new`}
                 >
-                  No existen solicitudes
-                </Button>
-              </Link>
-            ) : (
-              <SimpleRequestDataTable
-                columns={requestColumnsNew}
-                data={brand.requests}
-              />
-            )}
-          </TabsContent> */}
+                  <Button
+                    variant="ghost"
+                    className="flex h-24 w-full items-center justify-center rounded-lg border border-gray-300"
+                  >
+                    No existen solicitudes
+                  </Button>
+                </Link>
+              ) : (
+                <SimpleRequestDataTable
+                  columns={requestColumnsNew}
+                  data={requests}
+                />
+              )}
+            </TabsContent>
             <TabsContent value="kanban">
-              {/* <KanBan list={brand.Board[0].lists} /> */}
+              <KanBan list={kanbanLists} />
               {/* <Board initial={authorQuoteMap} /> */}
               {/* <Board initial={brand.Board[0].lists} /> */}
             </TabsContent>

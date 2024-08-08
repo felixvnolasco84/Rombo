@@ -16,28 +16,16 @@ import {
 import { Draggable } from "@hello-pangea/dnd";
 import React from "react";
 import { Grip } from "lucide-react";
-import { adminList } from "@/lib/utils";
+import { adminList, Request } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 
-const CardItem = ({ card, index }: { card: any; index: number }) => {
-  const queryClient = new QueryClient();
-
-  const { data } = useSession();
-
-  if (!data) {
-    return <div>Not Authenticated!</div>;
-  }
-
-  const user = data.user;
-
-  if (!user) {
-    return <div>Not Authenticated!</div>;
-  }
+const CardItem = ({ card, index }: { card: Request; index: number }) => {
+  console.log(card);
 
   return (
     <>
       <Draggable
-        draggableId={card.id}
+        draggableId={card._id}
         index={index}
         disableInteractiveElementBlocking
       >
@@ -47,13 +35,13 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             style={provided.draggableProps.style as React.CSSProperties}
-            key={card.id}
+            key={card._id}
             className="group w-full overflow-hidden rounded-lg bg-white shadow-md"
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b border-b-[#D1D1D1] px-4 pb-2 pt-4">
               <Link
                 className="hover:underline"
-                href={`/portal/solicitudes/${card.id}`}
+                href={`/portal/solicitudes/${card._id}`}
               >
                 <CardTitle className="text-lg font-normal leading-none text-[#121415]">
                   {card.title}
@@ -73,70 +61,66 @@ const CardItem = ({ card, index }: { card: any; index: number }) => {
                   id={card.id}
                   category={card.category}
                 /> */}
-                <Badge
+                {/* <Badge
                   variant={"outline"}
                   className="bg-[#F5F5F5] px-2.5 py-1 font-normal"
                 >
                   {card.brand.title}
-                </Badge>
+                </Badge> */}
 
-                {adminList.includes(user.email || "") ? (
+                {true ? (
                   <Badge
                     className={`${
-                      card.status === "To Do"
+                      card.status === "TO DO"
                         ? "bg-green-100 text-green-800"
-                        : card.status === "En Progreso"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : card.status === "Revisión"
-                        ? "bg-blue-100 text-blue-800"
-                        : card.status === "Completado"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                        : card.status === "IN PROGRESS"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : card.status === "IN REVIEW"
+                            ? "bg-blue-100 text-blue-800"
+                            : card.status === "DONE"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
                     }  w-full text-xs  px-2.5 py-1 `}
                     variant={"requestStatus"}
                   >
-                      {card.status}
+                    {card.status === "TO DO"
+                      ? "TO DO"
+                      : card.status === "IN PROGRESS"
+                        ? "In Progress"
+                        : card.status === "IN REVIEW"
+                          ? "IN REVIEW"
+                          : "DONE"}
                   </Badge>
                 ) : (
-                  // <QueryClientProvider client={queryClient}>
-                  //   <DropdownMenuRequestStatus
-                  //     id={card.id}
-                  //     status={card.status}
-                  //   />
-                  // </QueryClientProvider>
-                  // <DropdownMenuRequestStatus
-                  //   id={card.id}
-                  //   status={card.status}
-                  // />
                   <Badge
                     className={`${
-                      card.status === "To Do"
+                      card.status === "TO DO"
                         ? "bg-green-100 text-green-800"
-                        : card.status === "in progress"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : card.status === "to-test"
-                        ? "bg-blue-100 text-blue-800"
-                        : card.status === "complete"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                        : card.status === "IN PROGRESS"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : card.status === "IN REVIEW"
+                            ? "bg-blue-100 text-blue-800"
+                            : card.status === "DONE"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
                     }  w-full text-xs  px-2.5 py-1 `}
                     variant={"requestStatus"}
                   >
-                    {card.status === "To Do"
-                      ? "To Do"
-                      : card.status === "in progress"
-                      ? "In Progress"
-                      : card.status === "to-test"
-                      ? "To Test"
-                      : "Done"}
+                    {card.status === "TO DO"
+                      ? "TO DO"
+                      : card.status === "IN PROGRESS"
+                        ? "In Progress"
+                        : card.status === "IN REVIEW"
+                          ? "IN REVIEW"
+                          : "DONE"}
                   </Badge>
                 )}
               </div>
             </CardContent>
             <CardFooter className="flex justify-end px-3 pb-4 pt-0">
               <DropdownMenuRequestPriority
-                priority={card.priority}
-                id={card.id}
+                priority={card.priority || ""}
+                id={card._id}
               />
             </CardFooter>
           </Card>

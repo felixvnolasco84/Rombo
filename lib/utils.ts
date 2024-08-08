@@ -331,3 +331,24 @@ export interface Brand {
   userId: string;
   website?: string;
 }
+
+export interface Request {
+  _creationTime: number;
+  _id: Id<"requests">;
+  brandId: Id<"brand">;
+  category: string;
+  coverImage?: string;
+  deadline?: string;
+  description: string;
+  dueDate?: string;
+  icon?: string;
+  isArchived: boolean;
+  isPublished: boolean;
+  order?: number;
+  parentRequest?: Id<"requests">;
+  priority?: string;
+  status?: string;
+  title: string;
+  updatedAt?: string;
+  userId: string;
+}

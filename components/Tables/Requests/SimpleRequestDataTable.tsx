@@ -75,7 +75,7 @@ export function SimpleRequestDataTable<TData, TValue>({
     },
   });
 
-  const priorities: string[] = ["low", "medium", "high", "critical"];
+  const priorities: string[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 
   return (
     <div>

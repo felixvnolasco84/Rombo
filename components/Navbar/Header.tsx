@@ -6,15 +6,19 @@ import {
   UserButton,
   OrganizationSwitcher,
   useOrganization,
+  useAuth,
 } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export const Header = () => {
   const { organization } = useOrganization();
 
+  const auth = useAuth();
+
   return (
-    <div className="sticky top-0 z-50 mt-2 flex justify-between rounded-md bg-background px-4 py-6">
+    <div className="container sticky top-0 z-50 mt-2 flex justify-between rounded-md bg-background px-4 py-6">
       <Link
         href={"/"}
         className="relative h-[16.11px] w-[102.66px] xl:h-[40.44px] xl:w-[196px]"
@@ -27,7 +31,7 @@ export const Header = () => {
           className="object-fill object-center"
         />
       </Link>
-      <div className="flex items-center">
+      <div className="flex items-center gap-x-4">
         <div className="block flex-1 lg:hidden">
           <OrganizationSwitcher
             hidePersonal
@@ -54,6 +58,11 @@ export const Header = () => {
         </div>
         {/* <InviteButton organization={organization} /> */}
         <UserButton />
+        {auth.isLoaded && auth.isSignedIn && (
+          <Link href={"/portal"}>
+            <Button variant={"primary"}>Portal</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

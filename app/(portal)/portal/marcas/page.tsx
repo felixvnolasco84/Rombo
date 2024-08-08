@@ -15,9 +15,10 @@ import { api } from "@/convex/_generated/api";
 import { getAuthSession } from "@/utils/AuthOptions";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
-import BrandCard from "../../../components/Cards/BrandCard";
+import BrandCard from "../../../../components/Cards/BrandCard";
 import prisma from "@/utils/ConnectionPool";
 import { adminList } from "@/lib/utils";
+import Spinner from "@/components/spinner";
 
 export default function Page() {
   // const data = await getAllBrands();
@@ -39,7 +40,11 @@ export default function Page() {
   const brands = useQuery(api.brands.getSidebar, {});
 
   if (brands === undefined) {
-    return <div>cargando...</div>;
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
   }
 
   if (brands === null) {
@@ -47,7 +52,7 @@ export default function Page() {
   }
 
   return (
-    <div className="grid gap-8 p-8">
+    <div className="grid gap-8">
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>

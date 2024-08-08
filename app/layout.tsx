@@ -34,16 +34,15 @@ export default function RootLayout({
               storageKey="flovv-theme"
             >
               <div className="flex flex-col justify-between">
-                <div className="container flex min-h-screen flex-col">
+                <div className="flex min-h-screen flex-col">
                   {/* <Navbar /> */}
                   <Header />
                   <TooltipProvider>
-                    <main className="flex-grow py-4">{children}</main>
+                    <main className="flex-grow">{children}</main>
                   </TooltipProvider>
                   <ModalProvider />
                   <Toaster />
                 </div>
-                <FooterComponent />
               </div>
             </ThemeProvider>
           </EdgeStoreProvider>

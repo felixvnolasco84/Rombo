@@ -51,6 +51,30 @@ export const archive = mutation({
   },
 });
 
+export const getByBrand = query({
+  args: { brandId: v.id("brand") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    const tasks = await ctx.db
+      .query("requests")
+      .withIndex("by_user_and_org", (q) =>
+        q.eq("userId", userId).eq("brandId", args.brandId)
+      )
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .order("desc")
+      .collect();
+
+    return tasks;
+  },
+});
+
 export const getSidebar = query({
   args: {
     orgId: v.optional(v.string()),
@@ -67,11 +91,10 @@ export const getSidebar = query({
 
     const tasks = await ctx.db
       .query("requests")
-      .withIndex("by_user_parent_and_org", (q) =>
-        q
-          .eq("userId", userId)
-          .eq("parentRequest", args.parentRequest)
-          // .eq("orgId", args.orgId)
+      .withIndex(
+        "by_user_parent_and_org",
+        (q) => q.eq("userId", userId).eq("parentRequest", args.parentRequest)
+        // .eq("orgId", args.orgId)
       )
       .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
