@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { ThemeToggle } from "../theme-toggle";
 
 export const Header = () => {
   const { organization } = useOrganization();
@@ -63,6 +64,7 @@ export const Header = () => {
             <Button variant={"primary"}>Portal</Button>
           </Link>
         )}
+        <ThemeToggle />
       </div>
     </div>
   );
