@@ -1,6 +1,7 @@
 "use client";
 
 import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -22,17 +23,42 @@ import DropdownMenuRequestPriority from "@/components/DropdownMenu/DropdownMenuR
 import CommentSection from "@/components/CommentSection";
 import NotAutorizedComponent from "@/components/NotAutorizedComponent";
 import TimeAgoDate from "@/components/TimeAgoDate";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { adminList } from "@/lib/utils";
 import ApproveRequestButton from "@/components/Buttons/ApproveRequestButton";
 import { Id } from "@/convex/_generated/dataModel";
+import Spinner from "@/components/spinner";
+
+function BrandComponent({ brandId }: { brandId: Id<"brand"> }) {
+  const brand = useQuery(api.brands.getById, { brandId });
+
+  if (brand === undefined) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
+
+  return (
+    <Link className="w-full" href={`/portal/marcas/${brand?._id}`}>
+      <Badge className="w-full px-2.5 py-1.5 text-xs" variant={"primary"}>
+        {brand?.title}
+      </Badge>
+    </Link>
+  );
+}
 
 export default function Page({ params }: { params: { id: Id<"requests"> } }) {
   const request = useQuery(api.requests.getById, { requestId: params.id });
 
   if (request === undefined) {
-    return <div>cargando...</div>;
+    return (
+      <>
+        <Spinner />
+      </>
+    );
   }
 
   if (request === null) {
@@ -40,7 +66,7 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
   }
 
   return (
-    <section className="mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-8 md:px-0">
+    <section className="flex w-full flex-col gap-8 py-8">
       <div className="flex flex-col gap-2 rounded-2xl bg-[#F2F2F2] p-6 shadow-md">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl text-[#121415]">{request.title}</h1>
@@ -67,12 +93,11 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex w-1/2 flex-col gap-2">
           <Badge
-            className="w-full bg-[#F5F5F5] px-2.5 py-1 font-normal"
+            className="w-full bg-[#F5F5F5] px-2.5 py-1.5 font-normal"
             variant={"outline"}
           >
             {request.category}
           </Badge>
-
           {/* {adminList.includes(session.user.email) ? ( */}
           {false ? (
             <DropdownMenuRequestStatus
@@ -91,7 +116,7 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
                       : request.status === "complete"
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
-              }  w-full text-xs  px-2.5 py-1 `}
+              }  w-full text-xs  px-2.5 py-1.5 `}
               variant={"requestStatus"}
             >
               {request.status === "To Do"
@@ -103,12 +128,7 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
                     : "Done"}
             </Badge>
           )}
-
-          <Link className="w-full" href={`/portal/marcas/${request.brandId}`}>
-            <Badge className="w-full px-2.5 py-1 text-xs" variant={"primary"}>
-              {/* {request.brand.title} */}
-            </Badge>
-          </Link>
+          <BrandComponent brandId={request.brandId} />
         </div>
 
         <div className="flex w-1/2 flex-col items-end gap-4">
@@ -122,11 +142,8 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
         </div>
       </div>
 
-      {/* {request.status == "Revisión" && (
-        <ApproveRequestButton
-          request={request}
-          autorization={request.userEmail === sessionEmail}
-        />
+      {request.status == "IN REVIEW" && (
+        <ApproveRequestButton request={request} />
       )}
 
       {request.description ? (
@@ -134,7 +151,8 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
       ) : (
         <p className="text-sm text-gray-500">No existe una descripción.</p>
       )}
-      <div className="flex flex-col gap-1">
+
+      {/* <div className="flex flex-col gap-1">
         <Accordion
           defaultValue={request.documents.length === 0 ? "" : "documents"}
           type="single"

@@ -7,7 +7,7 @@ import CardItem from "./CardItem";
 import { getAuthSession } from "@/utils/AuthOptions";
 // import CreateCard from "./CreateCard";
 
-const ListItem = async ({ list, index }: { list: any; index: number }) => {
+const ListItem = ({ list, index }: { list: any; index: number }) => {
   return (
     <Draggable draggableId={list.id} index={index}>
       {(provided) => (

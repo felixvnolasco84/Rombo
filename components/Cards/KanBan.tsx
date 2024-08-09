@@ -32,7 +32,7 @@ const KanBan = ({ list, boardId }: ListProps) => {
     setListData(list);
   }, [list]);
 
-  const onDragNDrop = async (result: any) => {
+  const onDragNDrop =  (result: any) => {
     const { destination, source, type, draggableId } = result;
 
     if (!destination) return;
@@ -83,7 +83,7 @@ const KanBan = ({ list, boardId }: ListProps) => {
 
       setListData(newLists);
 
-      const response = await updateWholeBoard(newLists, boardId || "" );
+      // const response = await updateWholeBoard(newLists, boardId || "" );
 
       // if (!response.error) {
       //   toast({
@@ -127,21 +127,21 @@ const KanBan = ({ list, boardId }: ListProps) => {
       listData[listIndex] = { ...list, requests: data };
 
       console.log(listData[listIndex]);
-      const response = await updateDataOrderList({
-        listId: destination.droppableId,
-        items: listData[listIndex].requests,
-      });
+      // const response = await updateDataOrderList({
+      //   listId: destination.droppableId,
+      //   items: listData[listIndex].requests,
+      // });
 
-      console.log(response);
+      // console.log(response);
 
-      setListData([...listData]);
+      // setListData([...listData]);
 
-      if (!response.error) {
-        toast({
-          title: "Tablero Actualizado",
-          description: "Se ha actualizado el orden de las tarjetas",
-        });
-      }
+      // if (!response.error) {
+      //   toast({
+      //     title: "Tablero Actualizado",
+      //     description: "Se ha actualizado el orden de las tarjetas",
+      //   });
+      // }
     }
 
     if (type == "list") {
@@ -149,17 +149,17 @@ const KanBan = ({ list, boardId }: ListProps) => {
         (item: any, index: number) => ({ ...item, order: index })
       );
       setListData(data);
-      const response = await reorderList({
-        items: data,
-        boardId: listData[0].boardId,
-      });
+      // const response = await reorderList({
+      //   items: data,
+      //   boardId: listData[0].boardId,
+      // });
 
-      if (!response.error) {
-        toast({
-          title: "Tablero Actualizado",
-          description: "Se han reordenado las listas",
-        });
-      }
+      // if (!response.error) {
+      //   toast({
+      //     title: "Tablero Actualizado",
+      //     description: "Se han reordenado las listas",
+      //   });
+      // }
     }
   };
   return (

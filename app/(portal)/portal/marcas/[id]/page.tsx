@@ -77,8 +77,8 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
   }));
 
   return (
-    <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-gray-100/40 py-4 dark:bg-gray-800/40">
-      <div className="flex h-14 items-center border-b px-8 lg:h-[60px]">
+    <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-y-8">
+      <div className="flex items-center">
         <Breadcrumb className="hidden md:flex">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -100,7 +100,7 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
         </Breadcrumb>
       </div>
 
-      <div className="grid gap-8 p-8">
+      <div className="grid gap-8">
         <div className="ml-auto flex items-center justify-end gap-2">
           <Button size="sm">
             <Link
