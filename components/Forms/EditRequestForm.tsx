@@ -34,10 +34,13 @@ import { Loader } from "lucide-react";
 
 type RequestFormProps = {
   request: Request;
+  setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function EditRequestForm({ request }: RequestFormProps) {
-  
+export default function EditRequestForm({
+  request,
+  setIsEditDialogOpen,
+}: RequestFormProps) {
   const update = useMutation(api.requests.update);
 
   const FormSchema = z.object({
@@ -76,6 +79,7 @@ export default function EditRequestForm({ request }: RequestFormProps) {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    
     try {
       setIsLoading(true);
 

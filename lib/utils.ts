@@ -352,3 +352,8 @@ export interface Request {
   updatedAt?: string;
   userId: string;
 }
+
+export const CURRENCIES = {
+  USD: "usd",
+  EUR: "eur",
+} as const;

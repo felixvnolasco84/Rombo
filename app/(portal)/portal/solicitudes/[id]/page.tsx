@@ -102,13 +102,13 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="flex flex-col gap-2 rounded-2xl bg-[#F2F2F2] p-6 shadow-md">
+      <div className="flex flex-col gap-4 rounded-2xl bg-[#F2F2F2] p-6 shadow-md">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl text-[#121415]">{request.title}</h1>
           <DropdownMenuComponentRequest request={request} />
         </div>
-        <div className="flex items-center gap-8 text-sm">
-          <div className="flex items-center gap-1">
+        <div className="grid grid-cols-2 items-center gap-8 text-sm">
+          <div className="flex items-center gap-x-2">
             <h3 className="text-[#121415]">Fecha Solicitud:</h3>
             <p className="text-[#6d6d6d]">
               {new Date(request._creationTime).toLocaleDateString("es-Mx", {
@@ -119,7 +119,7 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
               })}
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-x-2">
             <p className="text-[#121415]">Creado Por:</p>
             <div className="flex items-center gap-x-1">
               <Image
@@ -151,25 +151,25 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
           ) : (
             <Badge
               className={`${
-                request.status === "To Do"
+                request.status === "TO DO"
                   ? "bg-green-100 text-green-800"
-                  : request.status === "in progress"
+                  : request.status === "IN PROGRESS"
                     ? "bg-yellow-100 text-yellow-800"
-                    : request.status === "to-test"
+                    : request.status === "IN REVIEW"
                       ? "bg-blue-100 text-blue-800"
-                      : request.status === "complete"
+                      : request.status === "DONE"
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
               }  w-full text-xs  px-2.5 py-1.5 `}
               variant={"requestStatus"}
             >
-              {request.status === "To Do"
-                ? "To Do"
-                : request.status === "in progress"
-                  ? "In Progress"
-                  : request.status === "to-test"
-                    ? "To Test"
-                    : "Done"}
+              {request.status === "TO DO"
+                ? "TO DO"
+                : request.status === "IN PROGRESS"
+                  ? "IN PROGRESS"
+                  : request.status === "IN REVIEW"
+                    ? "IN REVIEW"
+                    : "DONE"}
             </Badge>
           )}
           <BrandComponent brandId={request.brandId} />
