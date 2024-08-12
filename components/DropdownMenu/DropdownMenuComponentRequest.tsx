@@ -59,7 +59,7 @@ export default function DropdownMenuComponentRequest({
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="flex items-center gap-1">
       <DropdownMenu>
@@ -99,10 +99,7 @@ export default function DropdownMenuComponentRequest({
             </DialogDescription>
           </DialogHeader>
           {isEditDialogOpen ? (
-            <EditRequestForm
-              setIsEditDialogOpen={setIsEditDialogOpen}
-              request={request}
-            />
+            <EditRequestForm request={request} />
           ) : (
             <DialogFooter>
               <Button

@@ -13,64 +13,64 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "../ui/badge";
-import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
 import { getPriorityColor } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { toast } from "sonner";
 
 type Request = {
-  id: string;
+  id: Id<"requests">;
   priority: string;
 };
 
-export default function DropdownMenuRequestPriority({ id, priority }: Request) {
-  const [currentPriority, setCurrentPriority] = useState<string>(priority);
+export default function DropdownMenuRequestPriority({ id }: Request) {
+  const update = useMutation(api.requests.update);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const request = useQuery(api.requests.getById, {
+    requestId: id,
+  });
 
   const handleStatusChange = async (priority: string) => {
-    setLoading(true);
     try {
-      const draftResponse = await fetch(`/api/requests/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ priority: priority }),
+      const promise = update({
+        id: id,
+        priority,
       });
-      const response = await draftResponse.json();
 
-      if (response.message === "Request updated successfully") {
-        toast({
-          title: "¡Listo!",
-          description: "La Prioridad de la solicitud ha sido actualizada!",
-          variant: "default",
-          duration: 3000,
-        });
-        setCurrentPriority(priority);
-      }
+      toast.promise(promise, {
+        loading: "Cambiando prioridad...",
+        success: "Prioridad actualizada",
+        error: "Error al cambiar prioridad",
+      });
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const color = getPriorityColor(currentPriority);
+  if (request === undefined) {
+    return <Loader />;
+  }
+
+  if (request === null) {
+    return <div>404</div>;
+  }
+
+  const color = getPriorityColor(request.priority);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          disabled={loading}
           variant={"ghost"}
           className="h-fit p-0 hover:bg-transparent focus-visible:ring-transparent"
         >
-          <Badge className={`${color} px-2.5 py-1 w-full rounded-md`} variant={"requestPriority"}>
-            {loading ? (
-              <Loader className="h-4 w-4 animate-spin" />
-            ) : (
-              currentPriority
-            )}
+          <Badge
+            className={`${color} px-2.5 py-1 w-full rounded-md`}
+            variant={"requestPriority"}
+          >
+            {request.priority}
           </Badge>
         </Button>
       </DropdownMenuTrigger>
@@ -78,20 +78,20 @@ export default function DropdownMenuRequestPriority({ id, priority }: Request) {
         <DropdownMenuLabel>Cambiar Prioridad</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
-          value={currentPriority}
+          value={request.priority}
           onValueChange={handleStatusChange}
         >
-          <DropdownMenuRadioItem key={"low"} value={"low"}>
-            low
+          <DropdownMenuRadioItem key={"LOW"} value={"LOW"}>
+            LOW
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem key={"medium"} value={"medium"}>
-            medium
+          <DropdownMenuRadioItem key={"MEDIUM"} value={"MEDIUM"}>
+            MEDIUM
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem key={"high"} value={"high"}>
-            high
+          <DropdownMenuRadioItem key={"HIGH"} value={"HIGH"}>
+            HIGH
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem key={"critical"} value={"critical"}>
-            critical
+          <DropdownMenuRadioItem key={"CRITICAL"} value={"CRITICAL"}>
+            CRITICAL
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>

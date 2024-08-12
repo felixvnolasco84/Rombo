@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Toaster } from "@/components/ui/toaster";
+
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
@@ -10,6 +10,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import "./globals.css";
 import { Header } from "@/components/Navbar/Header";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Rombo",

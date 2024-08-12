@@ -1,11 +1,17 @@
 "use client";
 
-import { GET as getSingleRequest } from "@/app/api/requests/[id]/route";
-import { useUser, useAuth } from "@clerk/clerk-react";
 
+import { useUser, useAuth } from "@clerk/clerk-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbLink,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { getAuthSession } from "@/utils/AuthOptions";
 import CommentForm from "@/components/Forms/CommentForm";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import DropdownMenuComponentRequest from "@/components/DropdownMenu/DropdownMenuComponentRequest";
@@ -29,8 +35,10 @@ import { adminList } from "@/lib/utils";
 import ApproveRequestButton from "@/components/Buttons/ApproveRequestButton";
 import { Id } from "@/convex/_generated/dataModel";
 import Spinner from "@/components/spinner";
+import Image from "next/image";
 
 function BrandComponent({ brandId }: { brandId: Id<"brand"> }) {
+
   const brand = useQuery(api.brands.getById, { brandId });
 
   if (brand === undefined) {
@@ -51,6 +59,8 @@ function BrandComponent({ brandId }: { brandId: Id<"brand"> }) {
 }
 
 export default function Page({ params }: { params: { id: Id<"requests"> } }) {
+  const { user } = useUser();
+
   const request = useQuery(api.requests.getById, { requestId: params.id });
 
   if (request === undefined) {
@@ -65,8 +75,33 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
     return <div>404</div>;
   }
 
+  // if (request.userId !== user?.id) {
+  //   return <NotAutorizedComponent />;
+  // }
+
   return (
-    <section className="flex w-full flex-col gap-8 py-8">
+    <section className="flex w-full flex-col gap-8">
+      <div className="flex items-center">
+        <Breadcrumb className="hidden md:flex">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/portal">Portal</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/portal/solicitudes">Solicitudes</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{request.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <div className="flex flex-col gap-2 rounded-2xl bg-[#F2F2F2] p-6 shadow-md">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl text-[#121415]">{request.title}</h1>
@@ -86,7 +121,16 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
           </div>
           <div className="flex items-center gap-1">
             <p className="text-[#121415]">Creado Por:</p>
-            <p className="text-[#6d6d6d]">{request.userId}</p>
+            <div className="flex items-center gap-x-1">
+              <Image
+                src={user?.imageUrl || ""}
+                width={24}
+                height={24}
+                alt="user profile"
+                className="aspect-square rounded-full"
+              />
+              <p className="">{user?.fullName}</p>
+            </div>
           </div>
         </div>
       </div>

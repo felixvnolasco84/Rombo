@@ -1,9 +1,8 @@
 "use client";
 
+import * as z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
-import { revalidatePath } from "next/cache";
 import {
   Select,
   SelectContent,
@@ -12,9 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -24,43 +20,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
-import { DialogClose, DialogFooter } from "../ui/dialog";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
-import { services } from "@/lib/utils";
+import { Request, services } from "@/lib/utils";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { DialogClose, DialogFooter } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Loader } from "lucide-react";
 
 type RequestFormProps = {
-  request: any;
-  setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  request: Request;
 };
 
-export default function EditRequestForm({
-  request,
-  setIsEditDialogOpen,
-}: RequestFormProps) {
+export default function EditRequestForm({ request }: RequestFormProps) {
+  
+  const update = useMutation(api.requests.update);
+
   const FormSchema = z.object({
     title: z.string().min(1, { message: "Por favor ingresa un título" }),
     category: z.string().min(1, { message: "Por favor ingresa una categoría" }),
     description: z
       .string()
       .min(1, { message: "Por favor ingresa una descripción" }),
-    documents: z
-      .array(
-        z.object({
-          name: z.string(),
-          url: z.string(),
-        })
-      )
-      .optional(),
+    // documents: z
+    //   .array(
+    //     z.object({
+    //       name: z.string(),
+    //       url: z.string(),
+    //     })
+    //   )
+    //   .optional(),
     brandId: z.string(),
     status: z.string(),
     priority: z.string().min(1, { message: "Por favor ingresa una prioridad" }),
   });
 
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -70,43 +68,24 @@ export default function EditRequestForm({
       title: request.title,
       category: request.category,
       description: request.description,
-      documents: request.documents,
       brandId: request.brandId,
       status: request.status,
       priority: request.priority,
+      // documents: request.documents,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setIsLoading(true);
-      const jsonData = JSON.stringify(data);
 
-      const response = await fetch(`/api/requests/${request.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
+      const promise = update({
+        id: request._id,
+        title: data.title,
+        description: data.description,
+        category: data.category,
       });
-
-      // const response = await UpdateRequest(data, request.id);
-      const responseJson = await response.json();
-
-      if (responseJson.message === "Request updated successfully") {
-        toast({
-          variant: "default",
-          title: "¡Listo!",
-          description: "La solicitud ha sido actualizada 🎉",
-        });
-        setIsEditDialogOpen && setIsEditDialogOpen(false);
-      }
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -186,16 +165,16 @@ export default function EditRequestForm({
                           <SelectValue placeholder="Prioridad del Entregable" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem key={"low"} value={"low"}>
+                          <SelectItem key={"LOW"} value={"LOW"}>
                             Bajo
                           </SelectItem>
-                          <SelectItem key={"medium"} value={"medium"}>
+                          <SelectItem key={"MEDIUM"} value={"MEDIUM"}>
                             Medio
                           </SelectItem>
-                          <SelectItem key={"high"} value={"high"}>
+                          <SelectItem key={"HIGH"} value={"HIGH"}>
                             Alto
                           </SelectItem>
-                          <SelectItem key={"critical"} value={"critical"}>
+                          <SelectItem key={"CRITICAL"} value={"CRITICAL"}>
                             Urgente
                           </SelectItem>
                         </SelectContent>
@@ -228,7 +207,7 @@ export default function EditRequestForm({
               />
             </div>
 
-            <div className="grid w-full items-center gap-1.5">
+            {/* <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
                 name="documents"
@@ -249,7 +228,7 @@ export default function EditRequestForm({
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
           </div>
           <DialogFooter>
             <DialogClose asChild>
@@ -257,7 +236,7 @@ export default function EditRequestForm({
                 Cancelar
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} variant={"primary"}>
               {isLoading ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : (

@@ -237,11 +237,11 @@ export const services = [
   },
 ];
 
-export function getPriorityColor(priority: string): string {
+export function getPriorityColor(priority: string | null | undefined): string {
   switch (priority) {
-    case "low":
+    case "LOW":
       return "bg-green-100 text-green-800";
-    case "medium":
+    case "MEDIUM":
       return "bg-yellow-100 text-yellow-800";
     default:
       return "bg-red-100 text-red-800";
@@ -250,9 +250,9 @@ export function getPriorityColor(priority: string): string {
 
 export function getStatusColor(status: string): string {
   switch (status) {
-    case "todo":
+    case "TO DO":
       return "bg-green-200";
-    case "in progress":
+    case "IN PROGRESS":
       return "bg-yellow-200";
     default:
       return "bg-red-200";
