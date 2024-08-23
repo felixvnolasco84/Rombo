@@ -317,42 +317,6 @@ export const adminList = [
   "hola@rombo.design",
 ];
 
-export interface Brand {
-  _creationTime: number;
-  _id: Id<"brand">;
-  description: string;
-  img?: string;
-  industry: string;
-  isArchived: boolean;
-  isPublished: boolean;
-  requests: any[];
-  title: string;
-  updatedAt?: number;
-  userId: string;
-  website?: string;
-}
-
-export interface Request {
-  _creationTime: number;
-  _id: Id<"requests">;
-  brandId: Id<"brand">;
-  category: string;
-  coverImage?: string;
-  deadline?: string;
-  description: string;
-  dueDate?: string;
-  icon?: string;
-  isArchived: boolean;
-  isPublished: boolean;
-  order?: number;
-  parentRequest?: Id<"requests">;
-  priority?: string;
-  status?: string;
-  title: string;
-  updatedAt?: string;
-  userId: string;
-}
-
 export const CURRENCIES = {
   USD: "usd",
   EUR: "eur",

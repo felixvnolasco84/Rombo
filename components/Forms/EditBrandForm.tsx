@@ -27,15 +27,16 @@ import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { DialogClose, DialogFooter } from "../ui/dialog";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
-import { Brand, industries } from "@/lib/utils";
+import { industries } from "@/lib/utils";
 import UpdateImageFormField from "./UpdateImageFormField";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { Label } from "../ui/label";
+import { Doc } from "@/convex/_generated/dataModel";
 
 type RequestFormProps = {
-  brand: Brand;
+  brand: Doc<"brand">;
   setIsEditDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

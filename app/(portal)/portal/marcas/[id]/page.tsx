@@ -26,6 +26,8 @@ import KanBan from "@/components/Cards/KanBan";
 import Spinner from "@/components/spinner";
 
 export default function Page({ params }: { params: { id: Id<"brand"> } }) {
+
+  
   const requests = useQuery(api.requests.getByBrand, {
     brandId: params.id,
   });

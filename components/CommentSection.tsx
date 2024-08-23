@@ -3,18 +3,15 @@ import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenu
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
 import RenderDocuments from "@/components/Forms/components/renderDocuments";
 import prisma from "@/utils/ConnectionPool";
+import { useUser } from "@clerk/clerk-react";
+import { Doc } from "@/convex/_generated/dataModel";
 
 type Props = {
-  userEmail: string;
-  comments: any[];
+  comments: Doc<"requestsComments">[];
 };
 
-export default async function CommentSection({ comments, userEmail }: Props) {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail,
-    },
-  });
+export default function CommentSection({ comments }: Props) {
+  const { user } = useUser();
 
   if (!user) {
     return <div>Usuario no encontrado</div>;
@@ -26,17 +23,17 @@ export default async function CommentSection({ comments, userEmail }: Props) {
       className="flex items-start space-x-4 rounded-md border p-4"
     >
       <Avatar className="h-10 w-10">
-        <AvatarImage alt={user.name || ""} src={user?.image || ""} />
-        <AvatarFallback>{comment.userEmail.slice(0, 2)}</AvatarFallback>
+        <AvatarImage alt={user.firstName || ""} src={user.imageUrl || ""} />
+        {/* <AvatarFallback>{comment.userEmail.slice(0, 2)}</AvatarFallback> */}
       </Avatar>
       <div className="w-full">
-        <div className="mb-4 flex items-center justify-between">
-          <p className="font-semibold">{user.name}</p>
+        {/* <div className="mb-4 flex items-center justify-between">
+          <p className="font-semibold">{user.fullName}</p>
           {userEmail === comment.userEmail && (
             <DropdownMenuComponentComment comment={comment} />
           )}
-        </div>
-        <TipTapOnlyContent content={comment.desc} />
+        </div> */}
+        <TipTapOnlyContent content={comment.content} />
         <div className="mt-4">
           <RenderDocuments documents={comment.documents} />
         </div>

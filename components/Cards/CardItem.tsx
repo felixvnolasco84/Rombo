@@ -16,10 +16,11 @@ import {
 import { Draggable } from "@hello-pangea/dnd";
 import React from "react";
 import { Grip } from "lucide-react";
-import { adminList, Request } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 
-const CardItem = ({ card, index }: { card: Request; index: number }) => {
+import { useSession } from "next-auth/react";
+import { Doc } from "@/convex/_generated/dataModel";
+
+const CardItem = ({ card, index }: { card: Doc<"requests">; index: number }) => {
   console.log(card);
 
   return (

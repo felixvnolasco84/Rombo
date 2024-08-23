@@ -26,15 +26,15 @@ import { Input } from "@/components/ui/input";
 
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
-import { Brand, services } from "@/lib/utils";
+import { services } from "@/lib/utils";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
 
 type RequestFormProps = {
-  brands: Brand[];
+  brands: Doc<"brand">[];
 };
 
 export default function RequestFormWithoutReference({

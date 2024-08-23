@@ -24,15 +24,15 @@ import { MenuIcon, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import EditBrandForm from "../Forms/EditBrandForm";
 import { useMutation } from "convex/react";
-import { Brand } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { on } from "events";
+import { Doc } from "@/convex/_generated/dataModel";
 
 export default function DropdownMenuComponentBrand({
   brand,
 }: {
-  brand: Brand;
+  brand: Doc<"brand">;
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 

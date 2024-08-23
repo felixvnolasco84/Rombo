@@ -24,16 +24,17 @@ import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
-import { Request, services } from "@/lib/utils";
+import { services } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { DialogClose, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Loader } from "lucide-react";
+import { Doc } from "@/convex/_generated/dataModel";
 
 type RequestFormProps = {
-  request: Request;
+  request: Doc<"requests">;
   setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

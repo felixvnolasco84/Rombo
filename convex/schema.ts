@@ -203,16 +203,16 @@ export default defineSchema({
       "controlListId",
       "status",
     ]),
-  comment: defineTable({
+  requestsComments: defineTable({
+    requestId: v.id("requests"),
+    parentEntity: v.optional(v.id("requestsComments")),
+    isArchived: v.boolean(),
     content: v.string(),
     userId: v.string(),
-    entityId: v.id("entity"),
-    entityType: v.string(),
     updatedAt: v.optional(v.string()),
   })
-    .index("by_entity", ["entityId"])
     .index("by_user", ["userId"])
-    .index("by_user_entity", ["userId", "entityId"]),
+    .index("by_user_request", ["userId", "requestId"]),
   plans: defineTable({
     key: planKeyValidator,
     stripeId: v.string(),

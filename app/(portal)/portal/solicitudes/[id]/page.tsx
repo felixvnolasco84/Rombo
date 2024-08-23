@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -36,9 +35,56 @@ import ApproveRequestButton from "@/components/Buttons/ApproveRequestButton";
 import { Id } from "@/convex/_generated/dataModel";
 import Spinner from "@/components/spinner";
 import Image from "next/image";
+import { use } from "react";
+
+function CommnetsComponent({ requestId }: { requestId: Id<"requests"> }) {
+  const comments = useQuery(api.comment.getByRequestId, {
+    requestId: requestId,
+  });
+
+  if (comments === undefined) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
+  if (comments === null) {
+    return <div>404</div>;
+  }
+
+  return (
+    <Accordion
+      defaultValue={comments.length === 0 ? "" : "comments"}
+      type="single"
+      collapsible
+      className="w-full"
+    >
+      <AccordionItem value="comments">
+        <AccordionTrigger>
+          <h2 className="mb-4 text-2xl text-[#121415]">Comentarios</h2>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <div className="space-y-4">
+              {comments.length === 0 ? (
+                <p className="text-sm text-gray-500">No existen comentarios.</p>
+              ) : (
+                <CommentSection comments={comments} />
+              )}
+            </div>
+
+            <div className="space-y-4">
+              <CommentForm requestId={requestId} />
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
 
 function BrandComponent({ brandId }: { brandId: Id<"brand"> }) {
-
   const brand = useQuery(api.brands.getById, { brandId });
 
   if (brand === undefined) {
@@ -196,8 +242,8 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
         <p className="text-sm text-gray-500">No existe una descripción.</p>
       )}
 
-      {/* <div className="flex flex-col gap-1">
-        <Accordion
+      <div className="flex flex-col gap-1">
+        {/* <Accordion
           defaultValue={request.documents.length === 0 ? "" : "documents"}
           type="single"
           collapsible
@@ -219,40 +265,9 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
               )}
             </AccordionContent>
           </AccordionItem>
-        </Accordion>
+        </Accordion> */}
+        <CommnetsComponent requestId={request._id} />
       </div>
-      <Accordion
-        defaultValue={request.comments.length === 0 ? "" : "comments"}
-        type="single"
-        collapsible
-        className="w-full"
-      >
-        <AccordionItem value="comments">
-          <AccordionTrigger>
-            <h2 className="mb-4 text-2xl text-[#121415]">Comentarios</h2>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4">
-              <div className="space-y-4">
-                {request.comments.length === 0 ? (
-                  <p className="text-sm text-gray-500">
-                    No existen comentarios.
-                  </p>
-                ) : (
-                  <CommentSection
-                    userEmail={sessionEmail}
-                    comments={request.comments}
-                  />
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <CommentForm requestId={request.id} />
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion> */}
     </section>
   );
 }

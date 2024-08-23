@@ -1,7 +1,6 @@
 "use client";
 
 import * as z from "zod";
-import { toast } from "../ui/use-toast";
 import {
   Form,
   FormControl,
@@ -16,8 +15,18 @@ import UploadDocumentsFormFieldButton from "./UploadDocumentsFormFieldButton";
 import TipTapComment from "../TipTapComment";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
-export default function CommentForm({ requestId }: { requestId: string }) {
+export default function CommentForm({
+  requestId,
+}: {
+  requestId: Id<"requests">;
+}) {
+  const create = useMutation(api.comment.create);
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const FormSchema = z.object({
@@ -39,35 +48,25 @@ export default function CommentForm({ requestId }: { requestId: string }) {
       documents: [],
     },
   });
-  
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
-      const desc = data.comment;
-      const documents = data.documents;
-      const draftResponse = await fetch("/api/comments", {
-        method: "POST",
-        body: JSON.stringify({ requestId, desc, documents }),
+
+      const promise = create({
+        content: data.comment,
+        entityId: requestId,
       });
 
-      const response = await draftResponse.json();
+      toast.promise(promise, {
+        loading: "Enviando comentario...",
+        success: "Comentario enviado",
+        error: "Error al enviar comentario",
+      });
 
-      if (response.message == "Comment created!") {
-        toast({
-          title: "¡Listo!",
-          description: "Tu comentario se ha enviado!",
-          variant: "default",
-          duration: 3000,
-        });
-        form.reset();
-        
-      }
+      // const desc = data.comment;
+      // const documents = data.documents;
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
-      });
     } finally {
       setLoading(false);
     }

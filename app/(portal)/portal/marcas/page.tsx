@@ -12,31 +12,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { getAuthSession } from "@/utils/AuthOptions";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import BrandCard from "../../../../components/Cards/BrandCard";
-import prisma from "@/utils/ConnectionPool";
-import { adminList } from "@/lib/utils";
 import Spinner from "@/components/spinner";
 
 export default function Page() {
-  // const data = await getAllBrands();
-  // const brands = await data.json();
-  // const session: any = await getAuthSession();
-
-  // let brands = [];
-
-  // if (adminList.includes(session.user.email)) {
-  //   brands = await prisma.brand.findMany();
-  // } else {
-  //   brands = await prisma.brand.findMany({
-  //     where: {
-  //       userEmail: session.user.email,
-  //     },
-  //   });
-  // }
-
   const brands = useQuery(api.brands.getSidebar, {});
 
   if (brands === undefined) {
@@ -80,9 +61,9 @@ export default function Page() {
       </div>
       <div className="w-full">
         {brands.length > 0 ? (
-          <div className="grid w-fit grid-cols-2 gap-4">
-            {brands.map((project: any, index: any) => (
-              <BrandCard key={index} project={project} />
+          <div className="grid grid-cols-2 gap-4">
+            {brands.map((brand) => (
+              <BrandCard key={brand._id} brand={brand} />
             ))}
           </div>
         ) : (
