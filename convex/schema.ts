@@ -209,9 +209,20 @@ export default defineSchema({
     isArchived: v.boolean(),
     content: v.string(),
     userId: v.string(),
+    userName: v.string(),
+    userProfile: v.string(),
     updatedAt: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
+    .index("by_user_request", ["userId", "requestId"]),
+  notifications: defineTable({
+    userId: v.string(),
+    requestId: v.id("requests"),
+    isRead: v.boolean(),
+    content: v.string(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_request", ["requestId"])
     .index("by_user_request", ["userId", "requestId"]),
   plans: defineTable({
     key: planKeyValidator,

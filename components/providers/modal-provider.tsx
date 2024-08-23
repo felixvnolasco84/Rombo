@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EditRequestModal } from "../modals/edit-request-modal";
+import { DeleteRequestModal } from "../modals/delete-request-modal";
+import { EditRequestCommentModal } from "../modals/edit-request-comment-modal";
+import { DeleteRequestCommentModal } from "../modals/delete-request-comment-modal";
 
 // import { SettingsModal } from "@/components/modals/settings-modal";
 // import { CoverImageModal } from "@/components/modals/cover-image-modal";
@@ -24,6 +28,10 @@ export const ModalProvider = () => {
 
   return (
     <>
+      <EditRequestModal />
+      <DeleteRequestModal />
+      <EditRequestCommentModal />
+      <DeleteRequestCommentModal />
       {/* <SettingsModal />
       <CoverImageModal />
       <TaskCoverImageModal />

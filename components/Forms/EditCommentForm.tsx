@@ -15,27 +15,34 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/components/ui/use-toast";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import { PUT as UpdateRequest } from "@/app/api/requests/[id]/route";
 import UploadDocumentsFormField from "./UploadDocumentsFormField";
+import { Doc } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 
 type RequestFormProps = {
-  comment: any;
+  comment: Doc<"requestsComments">;
+  onClose: () => void;
 };
 
-export default function EditCommentForm({ comment }: RequestFormProps) {
-  const { toast } = useToast();
+export default function EditCommentForm({
+  comment,
+  onClose,
+}: RequestFormProps) {
+  const update = useMutation(api.comment.update);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const FormSchema = z.object({
-    id: z.string(),
-    desc: z.string().min(1, { message: "Por favor ingresa una descripción" }),
+    content: z
+      .string()
+      .min(1, { message: "Por favor ingresa una descripción" }),
     documents: z
       .array(
         z.object({
@@ -49,41 +56,25 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      id: comment.id,
-      desc: comment.desc,
-      documents: comment.documents,
+      content: comment.content,
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      setIsLoading(true);
-      const jsonData = JSON.stringify(data);
-      const response = await fetch(`/api/comments/${comment.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      });
-      const responseJson = await response.json();
-      if (responseJson.message === "Comment updated!") {
-        toast({
-          title: "¡Listo!",
-          description: "Tu comentario se ha actualizado!",
-          variant: "default",
-          duration: 3000,
-        });
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "¡Oh!",
-        description: "Al parecer hubo un error, intentelo más tarde 🎉",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    const promise = update({
+      commentId: comment._id,
+      content: data.content,
+    });
+
+    toast.promise(promise, {
+      loading: "Actualizando comentario...",
+      success: () => {
+        // router.push("/");
+        onClose();
+        return "Comentario actualizado";
+      },
+      error: "Error al actualizar comentario",
+    });
   }
 
   return (
@@ -94,11 +85,10 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
             <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
-                name="desc"
+                name="content"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
                     <FormLabel>Comentario</FormLabel>
-                    <FormDescription></FormDescription>
                     <FormControl>
                       <TipTapEditor
                         hasContent={true}
@@ -111,7 +101,7 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
                 )}
               />
             </div>
-            <div className="grid w-full items-center gap-1.5">
+            {/* <div className="grid w-full items-center gap-1.5">
               <FormField
                 control={form.control}
                 name="documents"
@@ -132,15 +122,20 @@ export default function EditCommentForm({ comment }: RequestFormProps) {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
           </div>
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <DialogClose asChild>
-              <Button type="button" variant="outline">
+              <Button type="button" variant="outline" size={"sm"}>
                 Cancelar
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isLoading}>
+            <Button
+              variant={"primary"}
+              type="submit"
+              disabled={isLoading}
+              size={"sm"}
+            >
               {isLoading ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : (

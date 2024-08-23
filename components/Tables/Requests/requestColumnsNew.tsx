@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/lib/utils";
+import { Doc } from "@/convex/_generated/dataModel";
 
-export const requestColumnsNew: ColumnDef<any>[] = [
+export const requestColumnsNew: ColumnDef<Doc<"requests">>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -93,60 +94,60 @@ export const requestColumnsNew: ColumnDef<any>[] = [
             status === "TO DO"
               ? "bg-[#C0D5F7]"
               : status === "IN PROGRESS"
-              ? "bg-[#FBDFC7]"
-              : status === "IN REVIEW"
-              ? "bg-[#FCDBF9]"
-              : status === "DONE"
-              ? "bg-[#DFFCAD]"
-              : "bg-red-100 text-red-800"
+                ? "bg-[#FBDFC7]"
+                : status === "IN REVIEW"
+                  ? "bg-[#FCDBF9]"
+                  : status === "DONE"
+                    ? "bg-[#DFFCAD]"
+                    : "bg-red-100 text-red-800"
           } w-full text-xs font-normal text-[#121415] justify-center leading-none`}
         >
- {status}
+          {status}
         </Badge>
       );
     },
   },
+  // {
+  //   accessorKey: "priority",
+  //   accessorFn: (value) =>
+  //     value.priority.charAt(0).toUpperCase() + value.priority.slice(1),
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Prioridad
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const priority = row.original.priority;
+  //     return (
+  //       <Badge
+  //         variant={"outline"}
+  //         className={`text-xs font-medium w-full justify-center ${
+  //           priority === "LOW"
+  //             ? "bg-[#EAFFF7] text-[#44C195]"
+  //             : priority === "MEDIUM"
+  //             ? "bg-[#FEF6E7] text-[#FF9B57]"
+  //             : "bg-[#FDE7E7] text-[#F67376]"
+  //         }`}
+  //       >
+  //         {priority === "LOW"
+  //           ? "LOW"
+  //           : priority === "MEDIUM"
+  //           ? "MEDIUM"
+  //           : priority === "HIGH"
+  //           ? "HIGH"
+  //           : "CRITICAL"}
+  //       </Badge>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "priority",
-    accessorFn: (value) =>
-      value.priority.charAt(0).toUpperCase() + value.priority.slice(1),
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Prioridad
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const priority = row.original.priority;
-      return (
-        <Badge
-          variant={"outline"}
-          className={`text-xs font-medium w-full justify-center ${
-            priority === "LOW"
-              ? "bg-[#EAFFF7] text-[#44C195]"
-              : priority === "MEDIUM"
-              ? "bg-[#FEF6E7] text-[#FF9B57]"
-              : "bg-[#FDE7E7] text-[#F67376]"
-          }`}
-        >
-          {priority === "LOW"
-            ? "LOW"
-            : priority === "MEDIUM"
-            ? "MEDIUM"
-            : priority === "HIGH"
-            ? "HIGH"
-            : "CRITICAL"}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
+    accessorKey: "_creationTime",
     accessorFn: (value) =>
       new Date(value._creationTime).toLocaleDateString("es-Mx", {
         year: "numeric",

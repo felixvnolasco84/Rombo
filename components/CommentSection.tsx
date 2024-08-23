@@ -13,30 +13,29 @@ type Props = {
 export default function CommentSection({ comments }: Props) {
   const { user } = useUser();
 
-  if (!user) {
-    return <div>Usuario no encontrado</div>;
-  }
-
-  return comments.map((comment: any, index: any) => (
+  return comments.map((comment) => (
     <div
-      key={index}
+      key={comment._id}
       className="flex items-start space-x-4 rounded-md border p-4"
     >
       <Avatar className="h-10 w-10">
-        <AvatarImage alt={user.firstName || ""} src={user.imageUrl || ""} />
-        {/* <AvatarFallback>{comment.userEmail.slice(0, 2)}</AvatarFallback> */}
+        {user?.fullName === comment.userName ? (
+          <AvatarImage src={user?.imageUrl} />
+        ) : (
+          <AvatarFallback>{comment.userName.slice(0, 2)}</AvatarFallback>
+        )}
       </Avatar>
       <div className="w-full">
-        {/* <div className="mb-4 flex items-center justify-between">
-          <p className="font-semibold">{user.fullName}</p>
-          {userEmail === comment.userEmail && (
+        <div className="mb-4 flex items-center justify-between">
+          <p className="font-semibold">{comment.userName}</p>
+          {user?.fullName === comment.userName && (
             <DropdownMenuComponentComment comment={comment} />
           )}
-        </div> */}
-        <TipTapOnlyContent content={comment.content} />
-        <div className="mt-4">
-          <RenderDocuments documents={comment.documents} />
         </div>
+        <TipTapOnlyContent content={comment.content} />
+        {/* <div className="mt-4">
+          <RenderDocuments documents={comment.documents} />
+        </div> */}
       </div>
     </div>
   ));

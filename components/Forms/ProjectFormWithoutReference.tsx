@@ -110,7 +110,6 @@ export default function ProjectFormWithoutReference({
     } finally {
       setIsLoading(false);
     }
-
   }
 
   return (

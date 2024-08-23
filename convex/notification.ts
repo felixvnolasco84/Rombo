@@ -63,11 +63,10 @@ export const getByRequestId = query({
     const userId = identity.subject;
 
     const comments = await ctx.db
-      .query("requestsComments")
+      .query("notifications")
       .withIndex("by_user_request", (q) =>
         q.eq("userId", userId).eq("requestId", args.requestId)
       )
-      .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
       .collect();
 
@@ -75,10 +74,10 @@ export const getByRequestId = query({
   },
 });
 
-export const getSidebar = query({
+export const getAll = query({
   args: {
-    orgId: v.optional(v.string()),
-    parentRequest: v.optional(v.id("requests")),
+    // orgId: v.optional(v.string()),
+    // parentRequest: v.optional(v.id("requests")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -87,18 +86,7 @@ export const getSidebar = query({
       throw new Error("Not authenticated");
     }
 
-    const userId = identity.subject;
-
-    const tasks = await ctx.db
-      .query("requests")
-      .withIndex(
-        "by_user_parent_and_org",
-        (q) => q.eq("userId", userId).eq("parentRequest", args.parentRequest)
-        // .eq("orgId", args.orgId)
-      )
-      .filter((q) => q.eq(q.field("isArchived"), false))
-      .order("desc")
-      .collect();
+    const tasks = await ctx.db.query("notifications").order("desc").collect();
 
     return tasks;
   },
@@ -106,8 +94,7 @@ export const getSidebar = query({
 
 export const create = mutation({
   args: {
-    entityId: v.id("requests"),
-    parentEntity: v.optional(v.id("requests")),
+    requestId: v.id("requests"),
     content: v.string(),
   },
   handler: async (ctx, args) => {
@@ -118,14 +105,12 @@ export const create = mutation({
     }
 
     const userId = identity.subject;
-    
-    const comment = await ctx.db.insert("requestsComments", {
-      requestId: args.entityId,
-      userProfile: identity.profileUrl || "",
-      userName: identity.name || "",
+
+    const comment = await ctx.db.insert("notifications", {
+      requestId: args.requestId,
+      isRead: false,
       content: args.content,
       userId: userId,
-      isArchived: false,
     });
 
     return comment;
@@ -295,8 +280,12 @@ export const getById = query({
 
 export const update = mutation({
   args: {
-    commentId: v.id("requestsComments"), 
+    entityId: v.id("requests"),
+    entityType: v.string(),
+    parentEntity: v.optional(v.id("requests")),
+    isArchived: v.boolean(),
     content: v.string(),
+    userId: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -307,9 +296,9 @@ export const update = mutation({
 
     const userId = identity.subject;
 
-    const { commentId, ...rest } = args;
+    const { entityId, ...rest } = args;
 
-    const existingComment = await ctx.db.get(args.commentId);
+    const existingComment = await ctx.db.get(args.entityId);
 
     if (!existingComment) {
       throw new Error("Not found");
@@ -320,7 +309,7 @@ export const update = mutation({
     //   throw new Error("Unauthorized");
     // }
 
-    const comment = await ctx.db.patch(args.commentId, {
+    const comment = await ctx.db.patch(args.entityId, {
       ...rest,
     });
 

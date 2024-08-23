@@ -101,19 +101,19 @@ function RequestsKanban({ brandId }: { brandId: Id<"brand"> }) {
     {
       id: "TODO",
       title: "TO DO",
-      requests: requests.filter((request: any) => request.status === "TO DO"),
+      requests: requests.filter((request) => request.status === "TO DO"),
     },
     {
       id: "IN PROGRESS",
       title: "IN PROGRESS",
       requests: requests.filter(
-        (request: any) => request.status === "IN PROGRESS"
+        (request) => request.status === "IN PROGRESS"
       ),
     },
     {
       id: "DONE",
       title: "DONE",
-      requests: requests.filter((request: any) => request.status === "DONE"),
+      requests: requests.filter((request) => request.status === "DONE"),
     },
   ];
 
@@ -174,7 +174,7 @@ export default function Page() {
       ) : (
         <Tabs defaultValue={brands[0]._id}>
           <TabsList>
-            {brands.map((brand: any) => (
+            {brands.map((brand) => (
               <TabsTrigger key={brand._id} value={brand.title}>
                 {brand.title}
               </TabsTrigger>
@@ -183,7 +183,7 @@ export default function Page() {
 
           <Separator className="my-4" />
 
-          {brands.map((brand: any) => (
+          {brands.map((brand) => (
             <TabsContent key={brand._id} value={brand.title}>
               <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl"></h3>
               <div className="mx-auto flex w-full flex-col gap-8">

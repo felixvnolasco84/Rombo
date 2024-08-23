@@ -35,12 +35,12 @@ import { Doc } from "@/convex/_generated/dataModel";
 
 type RequestFormProps = {
   request: Doc<"requests">;
-  setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
 };
 
 export default function EditRequestForm({
   request,
-  setIsEditDialogOpen,
+  onClose,
 }: RequestFormProps) {
   const update = useMutation(api.requests.update);
 
@@ -80,15 +80,22 @@ export default function EditRequestForm({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    
     try {
       setIsLoading(true);
-
       const promise = update({
         id: request._id,
         title: data.title,
         description: data.description,
         category: data.category,
+      });
+
+      toast.promise(promise, {
+        loading: "Actualizando solicitud...",
+        success: () => {
+          onClose();
+          return "Solicitud actualizada con éxito";
+        },
+        error: "Error al actualizar la solicitud",
       });
     } catch (error: any) {
     } finally {

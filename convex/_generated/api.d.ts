@@ -17,6 +17,7 @@ import type {
 import type * as app from "../app.js";
 import type * as brands from "../brands.js";
 import type * as comment from "../comment.js";
+import type * as notification from "../notification.js";
 import type * as requests from "../requests.js";
 
 /**
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   app: typeof app;
   brands: typeof brands;
   comment: typeof comment;
+  notification: typeof notification;
   requests: typeof requests;
 }>;
 export declare const api: FilterApi<

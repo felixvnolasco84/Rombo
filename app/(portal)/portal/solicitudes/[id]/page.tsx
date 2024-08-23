@@ -38,6 +38,7 @@ import Image from "next/image";
 import { use } from "react";
 
 function CommnetsComponent({ requestId }: { requestId: Id<"requests"> }) {
+  
   const comments = useQuery(api.comment.getByRequestId, {
     requestId: requestId,
   });
