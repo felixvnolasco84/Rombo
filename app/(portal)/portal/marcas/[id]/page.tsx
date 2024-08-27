@@ -24,6 +24,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import TipTapEditor from "@/components/TipTap";
 import KanBan from "@/components/Cards/KanBan";
 import Spinner from "@/components/spinner";
+import ActivitySheet from "@/components/ActivitySheet";
 
 export default function Page({ params }: { params: { id: Id<"brand"> } }) {
 
@@ -115,6 +116,7 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
               </span>
             </Link>
           </Button>
+          <ActivitySheet entityId={brand._id} />
         </div>
         <div className="mx-auto flex w-full items-center gap-4">
           <EditBrandImageDialog brand={brand} />

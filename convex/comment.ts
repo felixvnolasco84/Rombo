@@ -107,6 +107,7 @@ export const getSidebar = query({
 export const create = mutation({
   args: {
     entityId: v.id("requests"),
+    brandId: v.id("brand"),
     parentEntity: v.optional(v.id("requests")),
     content: v.string(),
   },
@@ -118,16 +119,28 @@ export const create = mutation({
     }
 
     const userId = identity.subject;
-    
+
     const comment = await ctx.db.insert("requestsComments", {
       requestId: args.entityId,
-      userProfile: identity.profileUrl || "",
+      brandId: args.brandId,
+      userProfile: identity.pictureUrl || "",
       userName: identity.name || "",
       content: args.content,
       userId: userId,
       isArchived: false,
     });
 
+    await ctx.db.insert("AuditLog", {
+      action: "CREATE",
+      entityId: args.entityId,
+      entityTitle: args.content,
+      entityType: "Comment",
+      userId,
+      brandId: args.brandId,
+      updatedAt: new Date().toISOString(),
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
     return comment;
   },
 });
@@ -233,6 +246,18 @@ export const remove = mutation({
 
     const comment = await ctx.db.delete(args.id);
 
+    await ctx.db.insert("AuditLog", {
+      action: "DELETE",
+      entityId: existingComment.requestId,
+      entityTitle: existingComment.content,
+      entityType: "Comment",
+      userId,
+      brandId: existingComment.brandId,
+      updatedAt: new Date().toISOString(),
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return comment;
   },
 });
@@ -295,7 +320,7 @@ export const getById = query({
 
 export const update = mutation({
   args: {
-    commentId: v.id("requestsComments"), 
+    commentId: v.id("requestsComments"),
     content: v.string(),
   },
   handler: async (ctx, args) => {
@@ -322,6 +347,18 @@ export const update = mutation({
 
     const comment = await ctx.db.patch(args.commentId, {
       ...rest,
+    });
+
+    await ctx.db.insert("AuditLog", {
+      action: "UPDATE",
+      entityId: existingComment.requestId,
+      entityTitle: existingComment.content,
+      entityType: "Comment",
+      userId,
+      brandId: existingComment.brandId,
+      updatedAt: new Date().toISOString(),
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
     });
 
     return comment;

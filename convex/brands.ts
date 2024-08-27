@@ -47,6 +47,18 @@ export const archive = mutation({
 
     recursiveArchive(args.id);
 
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: args.id,
+      updatedAt: Date.now().toLocaleString(),
+      action: "ARCHIVE",
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return document;
   },
 });
@@ -67,11 +79,10 @@ export const getSidebar = query({
 
     const tasks = await ctx.db
       .query("brand")
-      .withIndex("by_user_parent_and_org", (q) =>
-        q
-          .eq("userId", userId)
-          .eq("parentBrand", args.parentBrand)
-          // .eq("orgId", args.orgId)
+      .withIndex(
+        "by_user_parent_and_org",
+        (q) => q.eq("userId", userId).eq("parentBrand", args.parentBrand)
+        // .eq("orgId", args.orgId)
       )
       .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
@@ -99,7 +110,7 @@ export const create = mutation({
 
     const userId = identity.subject;
 
-    const request = await ctx.db.insert("brand", {
+    const brandId = await ctx.db.insert("brand", {
       img: args.img,
       title: args.title,
       description: args.description,
@@ -113,7 +124,19 @@ export const create = mutation({
       // orgId: args.orgId,
     });
 
-    return request;
+    await ctx.db.insert("AuditLog", {
+      entityTitle: args.title,
+      userId,
+      updatedAt: Date.now().toLocaleString(),
+      action: "CREATE",
+      brandId,
+      entityId: brandId,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
+    return brandId;
   },
 });
 
@@ -191,6 +214,18 @@ export const restore = mutation({
 
     recursiveRestore(args.id);
 
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      updatedAt: Date.now().toLocaleString(),
+      action: "RESTORE",
+      brandId: args.id,
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return document;
   },
 });
@@ -206,17 +241,29 @@ export const remove = mutation({
 
     const userId = identity.subject;
 
-    const existingDocument = await ctx.db.get(args.id);
+    const existingBrand = await ctx.db.get(args.id);
 
-    if (!existingDocument) {
+    if (!existingBrand) {
       throw new Error("Not found");
     }
 
-    if (existingDocument.userId !== userId) {
+    if (existingBrand.userId !== userId) {
       throw new Error("Unauthorized");
     }
 
     const document = await ctx.db.delete(args.id);
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingBrand.title,
+      userId,
+      brandId: args.id,
+      updatedAt: Date.now().toLocaleString(),
+      action: "DELETE",
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
 
     return document;
   },
@@ -246,7 +293,6 @@ export const getSearch = query({
 export const getById = query({
   args: { brandId: v.optional(v.id("brand")) },
   handler: async (ctx, args) => {
-
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -264,8 +310,6 @@ export const getById = query({
     const request = await ctx.db
       .query("requests")
       .withIndex("by_user", (q) => q.eq("userId", userId));
-
-      
 
     if (!brand) {
       throw new Error("Not found");
@@ -320,6 +364,18 @@ export const update = mutation({
       updatedAt: Date.now(),
     });
 
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingBrand.title,
+      userId,
+      brandId: args.id,
+      updatedAt: Date.now().toLocaleString(),
+      action: "UPDATE",
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return brand;
   },
 });
@@ -335,18 +391,30 @@ export const removeIcon = mutation({
 
     const userId = identity.subject;
 
-    const existingDocument = await ctx.db.get(args.id);
+    const existingBrand = await ctx.db.get(args.id);
 
-    if (!existingDocument) {
+    if (!existingBrand) {
       throw new Error("Not found");
     }
 
-    if (existingDocument.userId !== userId) {
+    if (existingBrand.userId !== userId) {
       throw new Error("Unauthorized");
     }
 
     const document = await ctx.db.patch(args.id, {
       icon: undefined,
+    });
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingBrand.title,
+      userId,
+      brandId: args.id,
+      updatedAt: Date.now().toLocaleString(),
+      action: "REMOVE_ICON",
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
     });
 
     return document;
@@ -376,6 +444,18 @@ export const removeCoverImage = mutation({
 
     const document = await ctx.db.patch(args.id, {
       img: undefined,
+    });
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: args.id,
+      updatedAt: Date.now().toLocaleString(),
+      action: "REMOVE_COVER_IMAGE",
+      entityId: args.id,
+      entityType: "BRAND",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
     });
 
     return document;

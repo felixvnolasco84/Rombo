@@ -15,6 +15,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as app from "../app.js";
+import type * as auditLog from "../auditLog.js";
 import type * as brands from "../brands.js";
 import type * as comment from "../comment.js";
 import type * as notification from "../notification.js";
@@ -30,6 +31,7 @@ import type * as requests from "../requests.js";
  */
 declare const fullApi: ApiFromModules<{
   app: typeof app;
+  auditLog: typeof auditLog;
   brands: typeof brands;
   comment: typeof comment;
   notification: typeof notification;

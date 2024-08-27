@@ -37,8 +37,13 @@ import Spinner from "@/components/spinner";
 import Image from "next/image";
 import { use } from "react";
 
-function CommnetsComponent({ requestId }: { requestId: Id<"requests"> }) {
-  
+function CommnetsComponent({
+  requestId,
+  brandId,
+}: {
+  requestId: Id<"requests">;
+  brandId: Id<"brand">;
+}) {
   const comments = useQuery(api.comment.getByRequestId, {
     requestId: requestId,
   });
@@ -76,7 +81,7 @@ function CommnetsComponent({ requestId }: { requestId: Id<"requests"> }) {
             </div>
 
             <div className="space-y-4">
-              <CommentForm requestId={requestId} />
+              <CommentForm requestId={requestId} brandId={brandId} />
             </div>
           </div>
         </AccordionContent>
@@ -267,7 +272,7 @@ export default function Page({ params }: { params: { id: Id<"requests"> } }) {
             </AccordionContent>
           </AccordionItem>
         </Accordion> */}
-        <CommnetsComponent requestId={request._id} />
+        <CommnetsComponent requestId={request._id} brandId={request.brandId} />
       </div>
     </section>
   );

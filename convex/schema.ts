@@ -206,6 +206,7 @@ export default defineSchema({
   requestsComments: defineTable({
     requestId: v.id("requests"),
     parentEntity: v.optional(v.id("requestsComments")),
+    brandId: v.id("brand"),
     isArchived: v.boolean(),
     content: v.string(),
     userId: v.string(),
@@ -250,4 +251,18 @@ export default defineSchema({
   })
     .index("userId", ["userId"])
     .index("stripeId", ["stripeId"]),
+  AuditLog: defineTable({
+    action: v.string(),
+    brandId: v.id("brand"),
+    entityType: v.string(),
+    entityTitle: v.string(),
+    entityId: v.string(),
+    userId: v.string(),
+    userImage: v.string(),
+    userName: v.string(),
+    updatedAt: v.string(),
+  })
+    .index("by_entity", ["entityId"])
+    .index("by_user", ["userId"])
+    .index("by_brand", ["brandId"]),
 });

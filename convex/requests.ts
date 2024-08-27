@@ -47,6 +47,18 @@ export const archive = mutation({
 
     recursiveArchive(args.id);
 
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: existingDocument.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "ARCHIVE",
+      entityId: args.id,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return document;
   },
 });
@@ -153,6 +165,20 @@ export const create = mutation({
       requests: [],
     });
 
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: args.title,
+      userId,
+      brandId: args.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "CREATE",
+      entityId: request,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+      
+
     return request;
   },
 });
@@ -231,6 +257,18 @@ export const restore = mutation({
 
     recursiveRestore(args.id);
 
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: existingDocument.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "RESTORE",
+      entityId: args.id,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
     return document;
   },
 });
@@ -257,6 +295,18 @@ export const remove = mutation({
     }
 
     const document = await ctx.db.delete(args.id);
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: existingDocument.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "DELETE",
+      entityId: args.id,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
 
     return document;
   },
@@ -358,6 +408,18 @@ export const update = mutation({
 
     const document = await ctx.db.patch(args.id, {
       ...rest,
+    });
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: existingDocument.title,
+      userId,
+      brandId: existingDocument.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "UPDATE",
+      entityId: args.id,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
     });
 
     return document;

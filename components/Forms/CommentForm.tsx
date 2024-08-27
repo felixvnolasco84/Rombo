@@ -22,8 +22,10 @@ import { toast } from "sonner";
 
 export default function CommentForm({
   requestId,
+  brandId,
 }: {
   requestId: Id<"requests">;
+  brandId: Id<"brand">;
 }) {
   const create = useMutation(api.comment.create);
 
@@ -55,6 +57,7 @@ export default function CommentForm({
 
       const promise = create({
         content: data.comment,
+        brandId: brandId,
         entityId: requestId,
       });
 
