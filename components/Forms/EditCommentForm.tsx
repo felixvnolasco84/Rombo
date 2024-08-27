@@ -24,6 +24,7 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import TipTapComment from "../TipTapComment";
 
 type RequestFormProps = {
   comment: Doc<"requestsComments">;
@@ -90,7 +91,7 @@ export default function EditCommentForm({
                   <FormItem className="space-y-1">
                     <FormLabel>Comentario</FormLabel>
                     <FormControl>
-                      <TipTapEditor
+                      <TipTapComment
                         hasContent={true}
                         postContent={field.value}
                         onStateChange={field.onChange}
