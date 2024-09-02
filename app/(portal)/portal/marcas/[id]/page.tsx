@@ -74,10 +74,30 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
     {} as { [key: string]: any[] }
   );
 
-  const kanbanLists = Object.keys(requestGroupByStatus).map((status) => ({
-    title: status,
-    requests: requestGroupByStatus[status],
-  }));
+  const lists =  [
+    {
+      id: "TODO",
+      title: "TO DO",
+      requests: requests.filter((request) => request.status === "TO DO"),
+    },
+    {
+      id: "IN PROGRESS",
+      title: "IN PROGRESS",
+      requests: requests.filter(
+        (request) => request.status === "IN PROGRESS"
+      ),
+    },
+    {
+      id: "TEST", 
+      title: "TEST",
+      requests: requests.filter((request) => request.status === "TEST"),
+    },
+    {
+      id: "DONE",
+      title: "DONE",
+      requests: requests.filter((request) => request.status === "DONE"),
+    },
+  ]
 
   return (
     <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-y-8">
@@ -205,7 +225,7 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
               )}
             </TabsContent>
             <TabsContent value="kanban">
-              <KanBan list={kanbanLists} />
+              <KanBan list={lists} />
               {/* <Board initial={authorQuoteMap} /> */}
               {/* <Board initial={brand.Board[0].lists} /> */}
             </TabsContent>

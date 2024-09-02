@@ -20,15 +20,18 @@ import { Grip } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Doc } from "@/convex/_generated/dataModel";
 
-const CardItem = ({ card, index }: { card: Doc<"requests">; index: number }) => {
-  console.log(card);
-
+const CardItem = ({
+  card,
+  index,
+}: {
+  card: Doc<"requests">;
+  index: number;
+}) => {
   return (
     <>
       <Draggable
         draggableId={card._id}
         index={index}
-        disableInteractiveElementBlocking
       >
         {(provided) => (
           <Card

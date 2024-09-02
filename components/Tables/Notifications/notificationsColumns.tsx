@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { format } from "date-fns";
+
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -17,52 +20,63 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/lib/utils";
 import { Doc } from "@/convex/_generated/dataModel";
+import { generateLogMessage } from "@/lib/generate-log-message";
+import { Avatars } from "@/components/AvatarComponent";
+import BrandItem from "./_components/BrandItem";
 
-export const notificationsColumns: ColumnDef<Doc<"notifications">>[] = [
+export const notificationsColumns: ColumnDef<Doc<"AuditLog">>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "userId",
+    accessorKey: "entityTitle",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          User
+          Mensaje
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const userId = row.original.userId;
+      const item = row.original;
       return (
-        <div className="flex items-center gap-1">
-          <span>{userId}</span>
-        </div>
+        <li className="flex items-center gap-x-2">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={item.userImage} />
+          </Avatar>
+          <div className="flex flex-col space-y-0.5">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold lowercase text-neutral-700">
+                {item.userName}
+              </span>{" "}
+              {generateLogMessage(item)}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {format(new Date(item._creationTime), "MMM d, yyyy 'at' h:mm a")}
+            </p>
+          </div>
+        </li>
       );
+    },
+  },
+
+  {
+    accessorKey: "brandId",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Marca
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const brandId = row.original.brandId;
+      return <BrandItem brandId={brandId} />;
     },
   },
   // {
@@ -98,25 +112,25 @@ export const notificationsColumns: ColumnDef<Doc<"notifications">>[] = [
   //     );
   //   },
   // },
-  {
-    accessorKey: "content",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const content = row.original.content;
+  // {
+  //   accessorKey: "content",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Status
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const content = row.original.content;
 
-      return <span>{content}</span>;
-    },
-  },
+  //     return <span>{content}</span>;
+  //   },
+  // },
 
   {
     accessorKey: "_creationTime",
@@ -139,65 +153,24 @@ export const notificationsColumns: ColumnDef<Doc<"notifications">>[] = [
     },
   },
 
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const request = row.original;
-  //     const id =
-  //       request.type === "request"
-  //         ? request.requestId
-  //         : request.type === "comment"
-  //           ? request.requestId
-  //           : request.brandId;
-
-  //     let url = "";
-
-  //     if (request.type === "request" && request.requestId) {
-  //       url = `/portal/solicitudes/${id}`;
-  //     } else if (request.type === "comment" && request.requestId) {
-  //       url = `/portal/solicitudes/${id}`;
-  //     } else if (request.type === "brand" && request.brandId) {
-  //       url = `/portal/marcas/${id}`;
-  //     } else {
-  //       url = "";
-  //     }
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-  //           {/* <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(request.title)}
-  //           >
-  //             Copiar nombre de la solicitud
-  //           </DropdownMenuItem> */}
-  //           <DropdownMenuSeparator />
-  //           {url !== "" ? (
-  //             <DropdownMenuItem>
-  //               <Link href={url}>
-  //                 {request.type === "request" && request.requestId
-  //                   ? "Ver solicitud"
-  //                   : request.type === "comment" && request.requestId
-  //                     ? "Ver comentario"
-  //                     : request.type === "brand" && request.brandId
-  //                       ? "Ver marca"
-  //                       : ""}
-  //               </Link>
-  //             </DropdownMenuItem>
-  //           ) : (
-  //             <DropdownMenuItem>
-  //               No existen acciones disponibles
-  //             </DropdownMenuItem>
-  //           )}
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem></DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];

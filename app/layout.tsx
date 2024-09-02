@@ -29,7 +29,7 @@ export default function RootLayout({
           <EdgeStoreProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+            defaultTheme="system"
               enableSystem
               disableTransitionOnChange
               storageKey="flovv-theme"

@@ -368,12 +368,62 @@ export const getById = query({
   },
 });
 
+
+export const orderUpdate = mutation({
+  args: {
+    requests: v.array(
+      v.object({
+        _id: v.id("requests"),
+        order: v.number(),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    for (const request of args.requests) {
+      const existingDocument = await ctx.db.get(request._id);
+
+      if (!existingDocument) {
+        throw new Error("Not found");
+      }
+
+      console.log(request._id, request.order);
+
+      const document = await ctx.db.patch(request._id, {
+        order: request.order,
+      });
+
+      // await ctx.db.insert("AuditLog", {
+      //   entityTitle: existingDocument.title,
+      //   userId,
+      //   brandId: existingDocument.brandId,
+      //   updatedAt: new Date().toISOString.toString(),
+      //   action: "UPDATE",
+      //   entityId: args.id,
+      //   entityType: "Request",
+      //   userImage: identity.pictureUrl || "",
+      //   userName: identity.name || "",
+      // });
+
+      return document;
+    }
+  },
+});
+
 export const update = mutation({
   args: {
     id: v.id("requests"),
     title: v.optional(v.string()),
     description: v.optional(v.string()),
     category: v.optional(v.string()),
+    order: v.optional(v.number()),
     content: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),

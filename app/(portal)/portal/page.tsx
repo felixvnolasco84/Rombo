@@ -106,9 +106,12 @@ function RequestsKanban({ brandId }: { brandId: Id<"brand"> }) {
     {
       id: "IN PROGRESS",
       title: "IN PROGRESS",
-      requests: requests.filter(
-        (request) => request.status === "IN PROGRESS"
-      ),
+      requests: requests.filter((request) => request.status === "IN PROGRESS"),
+    },
+    {
+      id: "TEST",
+      title: "TEST",
+      requests: requests.filter((request) => request.status === "TEST"),
     },
     {
       id: "DONE",

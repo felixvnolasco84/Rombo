@@ -75,7 +75,7 @@ export function SimpleRequestDataTable<TData, TValue>({
     },
   });
 
-  const priorities: string[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+  // const priorities: string[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 
   return (
     <div>
@@ -119,11 +119,11 @@ export function SimpleRequestDataTable<TData, TValue>({
             </Button>
           </div> */}
 
-          <div className="flex w-full items-center gap-1">
+          {/* <div className="flex w-full items-center gap-1">
             <Select
               value={
                 (table.getColumn("priority")?.getFilterValue() as string) ?? ""
-              }
+              } 
               onValueChange={(value: any) => {
                 table.getColumn("priority")?.setFilterValue(value);
               }}
@@ -145,7 +145,7 @@ export function SimpleRequestDataTable<TData, TValue>({
             >
               <XIcon className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
 
         <DropdownMenu>

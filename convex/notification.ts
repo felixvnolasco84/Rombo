@@ -86,9 +86,10 @@ export const getAll = query({
       throw new Error("Not authenticated");
     }
 
-    const tasks = await ctx.db.query("notifications").order("desc").collect();
+    // const tasks = await ctx.db.query("notifications").order("desc").collect();
+    const logs = await ctx.db.query("AuditLog").order("desc").collect();
 
-    return tasks;
+    return logs;
   },
 });
 
