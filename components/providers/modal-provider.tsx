@@ -7,6 +7,7 @@ import { EditRequestCommentModal } from "../modals/edit-request-comment-modal";
 import { DeleteRequestCommentModal } from "../modals/delete-request-comment-modal";
 import { EditBrandModal } from "../modals/edit-brand-modal";
 import { DeleteBrandModal } from "../modals/delete-brand-modal";
+import { RequestModal } from "../modals/request-modal";
 
 // import { SettingsModal } from "@/components/modals/settings-modal";
 // import { CoverImageModal } from "@/components/modals/cover-image-modal";
@@ -36,6 +37,7 @@ export const ModalProvider = () => {
       <DeleteBrandModal />
       <EditRequestCommentModal />
       <DeleteRequestCommentModal />
+      <RequestModal />
       {/* <SettingsModal />
       <CoverImageModal />
       <TaskCoverImageModal />

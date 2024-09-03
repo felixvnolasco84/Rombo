@@ -9,7 +9,7 @@ import {
   updateWholeBoard,
 } from "@/services/list";
 import ListItem from "./ListItem";
-import { Doc } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
@@ -21,11 +21,15 @@ export interface List {
 }
 
 interface ListProps {
-  boardId?: string;
+  brandId: Id<"brand">;
   list: List[];
 }
 // re order data
-const reOrderData = (list: Doc<"requests">[], desIndex: number, sourceIndex: number) : Doc<"requests">[] => {
+const reOrderData = (
+  list: Doc<"requests">[],
+  desIndex: number,
+  sourceIndex: number
+): Doc<"requests">[] => {
   const result = Array.from(list);
   const [removed] = result.splice(sourceIndex, 1);
   result.splice(desIndex, 0, removed);
@@ -33,7 +37,7 @@ const reOrderData = (list: Doc<"requests">[], desIndex: number, sourceIndex: num
   return result;
 };
 
-const KanBan = ({ list, boardId }: ListProps) => {
+const KanBan = ({ list, brandId }: ListProps) => {
   const updateRequest = useMutation(api.requests.update);
 
   const orderUpdate = useMutation(api.requests.orderUpdate);
@@ -136,15 +140,13 @@ const KanBan = ({ list, boardId }: ListProps) => {
         (item) => item._id === draggableId
       );
 
-
       if (!card) return;
 
+      // const response = Promise.all(listData) updateRequest({
+      //   id: card._id,
+      //   order: destination.index,
 
-    // const response = Promise.all(listData) updateRequest({
-    //   id: card._id,
-    //   order: destination.index,
-      
-    // });
+      // });
 
       const item = listData.find(
         (item: any) => item.id === destination.droppableId
@@ -157,13 +159,12 @@ const KanBan = ({ list, boardId }: ListProps) => {
         item.requests,
         destination.index,
         source.index
-      // ).map((item: any, index: number) => ({ ...item, order: index }));
+        // ).map((item: any, index: number) => ({ ...item, order: index }));
       ).map((item: any, index: number) => ({ _id: item._id, order: index }));
 
       const promise = orderUpdate({
         requests: data,
       });
-
 
       toast.promise(promise, {
         loading: "Actualizando orden...",
@@ -175,11 +176,8 @@ const KanBan = ({ list, boardId }: ListProps) => {
       //   (list: any) => list.id == destination.droppableId
       // );
 
-
-
       // const list = listData[listIndex];
       // listData[listIndex] = { ...list, requests: data };
-
 
       // const response = await updateDataOrderList({
       //   listId: destination.droppableId,
@@ -226,7 +224,12 @@ const KanBan = ({ list, boardId }: ListProps) => {
             className="flex h-full w-full gap-x-3"
           >
             {listData?.map((list, index: number) => (
-              <ListItem key={list.id} list={list} index={index} />
+              <ListItem
+                key={list.id}
+                list={list}
+                index={index}
+                brandId={brandId}
+              />
             ))}
             {provided.placeholder}
             {/* <CreateList boardId={boardId} /> */}

@@ -116,6 +116,59 @@ export const getSidebar = query({
   },
 });
 
+
+export const createWithStatus = mutation({
+  args: {
+    title: v.string(),
+    brandId: v.id("brand"),
+    category: v.string(),
+    description: v.string(),
+    deadline: v.string(),
+    parentRequest: v.optional(v.id("requests")),
+    priority: v.optional(v.string()),
+    status: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    const request = await ctx.db.insert("requests", {
+      title: args.title,
+      description: args.description,
+      category: args.category,
+      parentRequest: args.parentRequest,
+      order: 0,
+      brandId: args.brandId,
+      userId,
+      isArchived: false,
+      isPublished: false,
+      priority: args.priority,
+      status: args.status,
+      deadline: args.deadline,
+      updatedAt: new Date().toISOString.toString(),
+    });
+
+    await ctx.db.insert("AuditLog", {
+      entityTitle: args.title,
+      userId,
+      brandId: args.brandId,
+      updatedAt: new Date().toISOString.toString(),
+      action: "CREATE",
+      entityId: request,
+      entityType: "Request",
+      userImage: identity.pictureUrl || "",
+      userName: identity.name || "",
+    });
+
+    return request;
+  },
+});
+
 export const create = mutation({
   args: {
     title: v.string(),

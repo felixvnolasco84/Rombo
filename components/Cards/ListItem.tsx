@@ -1,14 +1,39 @@
 // import { Card, List } from "@/interfaces";
-import React from "react";
+import React, { ElementRef, useRef, useState } from "react";
 import ListHeader from "./ListHeader";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { adminList, cn } from "@/lib/utils";
 import CardItem from "./CardItem";
 import { getAuthSession } from "@/utils/AuthOptions";
 import { List } from "./KanBan";
+import { CardForm } from "./CardForm";
+import { Id } from "@/convex/_generated/dataModel";
 // import CreateCard from "./CreateCard";
 
-const ListItem = ({ list, index }: { list: List; index: number }) => {
+const ListItem = ({
+  list,
+  index,
+  brandId,
+}: {
+  list: List;
+  index: number;
+  brandId: Id<"brand">;
+}) => {
+  const textareaRef = useRef<ElementRef<"textarea">>(null);
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const disableEditing = () => {
+    setIsEditing(false);
+  };
+
+  const enableEditing = () => {
+    setIsEditing(true);
+    setTimeout(() => {
+      textareaRef.current?.focus();
+    });
+  };
+
   return (
     <Draggable draggableId={list.id} index={index}>
       {(provided) => (
@@ -19,7 +44,7 @@ const ListItem = ({ list, index }: { list: List; index: number }) => {
           className="w-1/4 select-none"
         >
           <div
-            {...provided.dragHandleProps}
+            // {...provided.dragHandleProps}
             className="mt-4 w-full rounded-md bg-slate-50 shadow-md"
           >
             <ListHeader list={list} />
@@ -40,7 +65,15 @@ const ListItem = ({ list, index }: { list: List; index: number }) => {
                 </ol>
               )}
             </Droppable>
-            {/* <CreateCard listId={list.id} /> */}
+            <CardForm
+              status={list.title}
+              brandId={brandId}
+              listId={list.id}
+              ref={textareaRef}
+              isEditing={isEditing}
+              enableEditing={enableEditing}
+              disableEditing={disableEditing}
+            />
           </div>
         </li>
       )}

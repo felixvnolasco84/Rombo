@@ -225,7 +225,7 @@ export default function Page({ params }: { params: { id: Id<"brand"> } }) {
               )}
             </TabsContent>
             <TabsContent value="kanban">
-              <KanBan list={lists} />
+              <KanBan brandId={params.id} list={lists} />
               {/* <Board initial={authorQuoteMap} /> */}
               {/* <Board initial={brand.Board[0].lists} /> */}
             </TabsContent>

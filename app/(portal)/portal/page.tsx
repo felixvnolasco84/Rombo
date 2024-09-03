@@ -120,7 +120,7 @@ function RequestsKanban({ brandId }: { brandId: Id<"brand"> }) {
     },
   ];
 
-  return <KanBan boardId={brandId} list={lists} />;
+  return <KanBan brandId={brandId} list={lists} />;
 }
 
 export default function Page() {

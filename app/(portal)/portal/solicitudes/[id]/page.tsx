@@ -36,79 +36,9 @@ import { Id } from "@/convex/_generated/dataModel";
 import Spinner from "@/components/spinner";
 import Image from "next/image";
 import { use } from "react";
+import { CommnetsComponent } from "../../components/CommentsComponent";
+import { BrandComponent } from "../../components/BrandComponent";
 
-function CommnetsComponent({
-  requestId,
-  brandId,
-}: {
-  requestId: Id<"requests">;
-  brandId: Id<"brand">;
-}) {
-  const comments = useQuery(api.comment.getByRequestId, {
-    requestId: requestId,
-  });
-
-  if (comments === undefined) {
-    return (
-      <>
-        <Spinner />
-      </>
-    );
-  }
-  if (comments === null) {
-    return <div>404</div>;
-  }
-
-  return (
-    <Accordion
-      defaultValue={comments.length === 0 ? "" : "comments"}
-      type="single"
-      collapsible
-      className="w-full"
-    >
-      <AccordionItem value="comments">
-        <AccordionTrigger>
-          <h2 className="mb-4 text-2xl text-[#121415]">Comentarios</h2>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="space-y-4">
-            <div className="space-y-4">
-              {comments.length === 0 ? (
-                <p className="text-sm text-gray-500">No existen comentarios.</p>
-              ) : (
-                <CommentSection comments={comments} />
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <CommentForm requestId={requestId} brandId={brandId} />
-            </div>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-}
-
-function BrandComponent({ brandId }: { brandId: Id<"brand"> }) {
-  const brand = useQuery(api.brands.getById, { brandId });
-
-  if (brand === undefined) {
-    return (
-      <>
-        <Spinner />
-      </>
-    );
-  }
-
-  return (
-    <Link className="w-full" href={`/portal/marcas/${brand?._id}`}>
-      <Badge className="w-full px-2.5 py-1.5 text-xs" variant={"primary"}>
-        {brand?.title}
-      </Badge>
-    </Link>
-  );
-}
 
 export default function Page({ params }: { params: { id: Id<"requests"> } }) {
   const { user } = useUser();

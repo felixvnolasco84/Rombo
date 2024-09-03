@@ -15,12 +15,14 @@ import {
 } from "@/components/ui/card";
 import { Draggable } from "@hello-pangea/dnd";
 import React from "react";
-import { Grip } from "lucide-react";
+import { AppWindow, Grip } from "lucide-react";
 
 import { useSession } from "next-auth/react";
 import { Doc } from "@/convex/_generated/dataModel";
 import { adminList } from "@/lib/utils";
 import { useUser } from "@clerk/clerk-react";
+import { useRequestModal } from "@/hooks/request-modal";
+import { Button } from "../ui/button";
 
 const CardItem = ({
   card,
@@ -29,6 +31,8 @@ const CardItem = ({
   card: Doc<"requests">;
   index: number;
 }) => {
+
+  const requestModal = useRequestModal();
   const { user } = useUser();
 
   if (!user) return null;
@@ -36,7 +40,9 @@ const CardItem = ({
   return (
     <>
       <Draggable
-        isDragDisabled={!adminList.includes(user.emailAddresses[0].emailAddress)}
+        isDragDisabled={
+          !adminList.includes(user.emailAddresses[0].emailAddress)
+        }
         draggableId={card._id}
         index={index}
       >
@@ -58,7 +64,16 @@ const CardItem = ({
                   {card.title}
                 </CardTitle>
               </Link>
-              <Grip className="hidden h-3 w-3 cursor-grab text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
+              <div className="flex items-center space-x-1">
+                <Grip className="hidden h-3 w-3 cursor-grab text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
+                <Button
+                  onClick={() => requestModal.onOpen(card)}
+                  variant={"ghost"}
+                  size={"icon"}
+                >
+                  <AppWindow className="hidden h-3 w-3 cursor-pointer text-[#121415] transition-opacity duration-300 ease-linear group-hover:block" />
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="p-4">
               <div className="flex flex-col gap-y-2">
