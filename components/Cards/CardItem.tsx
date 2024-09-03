@@ -19,6 +19,8 @@ import { Grip } from "lucide-react";
 
 import { useSession } from "next-auth/react";
 import { Doc } from "@/convex/_generated/dataModel";
+import { adminList } from "@/lib/utils";
+import { useUser } from "@clerk/clerk-react";
 
 const CardItem = ({
   card,
@@ -27,9 +29,14 @@ const CardItem = ({
   card: Doc<"requests">;
   index: number;
 }) => {
+  const { user } = useUser();
+
+  if (!user) return null;
+
   return (
     <>
       <Draggable
+        isDragDisabled={!adminList.includes(user.emailAddresses[0].emailAddress)}
         draggableId={card._id}
         index={index}
       >
