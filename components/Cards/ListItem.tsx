@@ -4,11 +4,9 @@ import ListHeader from "./ListHeader";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { adminList, cn } from "@/lib/utils";
 import CardItem from "./CardItem";
-import { getAuthSession } from "@/utils/AuthOptions";
 import { List } from "./KanBan";
 import { CardForm } from "./CardForm";
 import { Id } from "@/convex/_generated/dataModel";
-// import CreateCard from "./CreateCard";
 
 const ListItem = ({
   list,

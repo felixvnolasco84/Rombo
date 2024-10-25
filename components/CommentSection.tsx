@@ -1,8 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DropdownMenuComponentComment from "@/components/DropdownMenu/DropdownMenuComponentComment";
 import TipTapOnlyContent from "@/components/TipTapOnlyContent";
-import RenderDocuments from "@/components/Forms/components/renderDocuments";
-import prisma from "@/utils/ConnectionPool";
 import { useUser } from "@clerk/clerk-react";
 import { Doc } from "@/convex/_generated/dataModel";
 

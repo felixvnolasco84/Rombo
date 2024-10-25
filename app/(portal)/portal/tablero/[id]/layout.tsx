@@ -1,5 +1,3 @@
-import BoardNavbar from "@/components/Cards/BoardNavbar";
-import prisma from "@/utils/ConnectionPool";
 import React from "react";
 
 const BoardLayout = async ({

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
 import AuthSection from "./AuthSection";
-import { getAuthSession } from "@/utils/AuthOptions";
 
 type NavbarItem = {
   title: string;
@@ -40,7 +39,6 @@ const navbarItems: NavbarItem[] = [
 ];
 
 export default async function Navbar() {
-  const session: any = await getAuthSession();
 
   return (
     <div className="sticky top-0 z-50 mt-2 flex justify-between bg-background px-4 py-6">
@@ -95,19 +93,6 @@ export default async function Navbar() {
         </Link>
       </div>
 
-      <div className="hidden items-center gap-9 lg:flex">
-        {!session &&
-          navbarItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.link}
-              className="text-lg font-medium tracking-tighter"
-            >
-              {item.title}
-            </Link>
-          ))}
-        <AuthSection />
-      </div>
     </div>
   );
 }

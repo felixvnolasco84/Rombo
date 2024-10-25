@@ -1,5 +1,4 @@
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
-import prisma from "@/utils/ConnectionPool";
 import { CalendarIcon, RefreshCwIcon } from "lucide-react";
 import Link from "next/link";
 
