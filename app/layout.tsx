@@ -35,7 +35,7 @@ export default function RootLayout({
               storageKey="flovv-theme"
             >
               <div className="flex flex-col justify-between">
-                <div className="flex min-h-screen flex-col">
+                <div className="flex flex-col">
                   {/* <Navbar /> */}
                   <Header />
                   <TooltipProvider>

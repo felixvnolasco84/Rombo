@@ -2,11 +2,7 @@
 
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import RenderDocuments from "@/components/Forms/components/renderDocuments";
-import { SimpleRequestDataTable } from "@/components/Tables/Requests/SimpleRequestDataTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import KanBan from "@/components/Cards/KanbanList";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import {
   Breadcrumb,
@@ -14,24 +10,9 @@ import {
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-  BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import {
-  Bell,
-  Home,
-  LucidePanelsTopLeft,
-  Menu,
-  PlusCircle,
-  Users,
-} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import KanBan from "@/components/Cards/KanBan";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import KanbanBoard from "@/components/Kanban/KanbanBoard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { requestColumnsNew } from "@/components/Tables/Requests/requestColumnsNew";

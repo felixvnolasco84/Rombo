@@ -23,8 +23,8 @@ export const archive = mutation({
     if (existingDocument.userId !== userId) {
       throw new Error("Unauthorized");
     }
-
     const recursiveArchive = async (documentId: Id<"requests">) => {
+
       const children = await ctx.db
         .query("requests")
         .withIndex("by_user_parent_and_org", (q) =>
