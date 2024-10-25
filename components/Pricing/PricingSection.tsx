@@ -1,7 +1,6 @@
 import { Stripe } from "stripe";
 
 import Image from "next/image";
-import { GET as getAllSubscriptions } from "@/app/api/subscriptions/[email]/route";
 import PricingItem, { PricingItemType } from "./PricingItem";
 
 import Computer from "@/public/svg/Computer.svg";

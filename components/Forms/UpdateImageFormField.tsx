@@ -3,11 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { forwardRef,  useEffect,  useState } from "react";
-import { uploadFile } from "@/app/utils/uploadImage";
-import { useMutation } from "react-query";
-import { api } from "@/convex/_generated/api";
-
+import { forwardRef, useEffect, useState } from "react";
 
 interface UploadDocumentsFormFieldProps {
   onChange: (...event: any[]) => void;
@@ -19,36 +15,33 @@ interface UploadDocumentsFormFieldProps {
   ref: React.Ref<any>;
 }
 
-
 const UpdateImageFormField = forwardRef(
   (props: UploadDocumentsFormFieldProps, ref) => {
-
     const [img, setImg] = useState<string>(props?.img || "");
     const [uploading, setUploading] = useState(false);
-    
-    useEffect(() => {
 
-    }, [img]);
+    useEffect(() => {}, [img]);
 
+    // const handleUpload = async (files: File[]) => {
+    //   setUploading(true);
+    //   const image = await uploadFile(files[0]);
 
-    const handleUpload = async (files: File[]) => {
-      setUploading(true);
-      const image = await uploadFile(files[0]);
+    //   setImg(image);
+    //   setUploading(false);
+    //   props.onChange({ target: { name: props.name, value: image } });
+    // };
 
-      setImg(image);
-      setUploading(false);
-      props.onChange({ target: { name: props.name, value: image } });
-    };
-
-    const handleFiles = (fileList: FileList) => {
-      const filesArray = Array.from(fileList);
-      handleUpload(filesArray);
-    };
+    // const handleFiles = (fileList: FileList) => {
+    //   const filesArray = Array.from(fileList);
+    //   handleUpload(filesArray);
+    // };
 
     return (
       <div className="w-full">
         <div className="space-y-8">
-          <div
+          <></>
+          {/* <div
+
             className="flex flex-col items-center justify-center space-y-4 rounded-lg border-2 border-dashed border-gray-300 p-8"
             onDragOver={(e) => {
               e.preventDefault();
@@ -82,10 +75,6 @@ const UpdateImageFormField = forwardRef(
                 width="200"
               />
             )}
-            {/* <UploadIcon className="h-8 w-8 text-gray-400" />
-            <p className="text-gray-500">
-              Arrastra y Suelta tu imagen de perfil aquí
-            </p> */}
             <Input
               className="hidden"
               id="file-upload"
@@ -102,7 +91,7 @@ const UpdateImageFormField = forwardRef(
             >
               {img ? "Cambiar Imagen" : "Seleccionar Imagen"}
             </Label>
-          </div>
+          </div> */}
           {/* {img && (
             <div>
               <h3 className="text-lg font-semibold">

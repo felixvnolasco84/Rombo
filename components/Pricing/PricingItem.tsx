@@ -3,7 +3,6 @@ import { Button } from "../ui/button";
 import CheckIcon from "@/public/svg/Check.svg";
 import Image from "next/image";
 import PricingButton from "./PricingButton";
-import { createCustomerIfNull } from "@/lib/stripeUtils";
 
 export type PricingItemType = {
   plan: string;

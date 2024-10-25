@@ -28,7 +28,6 @@ import { FormLabel } from "../react-hook-form";
 import { api } from "@/convex/_generated/api";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { services } from "@/lib/utils";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
@@ -230,7 +229,8 @@ export default function RequestForm({ brandId }: RequestFormProps) {
                       Agregar documentos relacionados a tu marca o organización
                     </FormDescription>
                     <FormControl>
-                      <UploadDocumentsFormField {...field} />
+                      <></>
+                      {/* <UploadDocumentsFormField {...field} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

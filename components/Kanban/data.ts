@@ -1,5 +1,4 @@
 import { colors } from "@atlaskit/theme";
-import seedrandom from "seedrandom";
 import type { Author, Quote, QuoteMap } from "./types";
 import finnImg from "../static/media/finn-min.png";
 import bmoImg from "../static/media/bmo-min.png";
@@ -120,49 +119,3 @@ export const quotes: Quote[] = [
     author: princess,
   },
 ];
-
-// So we do not have any clashes with our hardcoded ones
-let idCount: number;
-let predictableMathRandom: seedrandom.PRNG;
-
-// FIXME: This doesn't work well with StrictMode
-export const resetData = (seed: string) => {
-  idCount = 1;
-  predictableMathRandom = seedrandom(seed);
-};
-
-resetData("base");
-
-export const getQuotes = (count: number = quotes.length): Quote[] =>
-  // eslint-disable-next-line no-restricted-syntax
-  Array.from({ length: count }, (v, k) => k).map(() => {
-    const random: Quote =
-      quotes[Math.floor(predictableMathRandom() * quotes.length)];
-
-    const custom: Quote = {
-      ...random,
-      id: `G${idCount++}`,
-    };
-
-    return custom;
-  });
-
-const getByAuthor = (author: Author, items: Quote[]): Quote[] =>
-  items.filter((quote: Quote) => quote.author === author);
-
-export const authorQuoteMap: QuoteMap = authors.reduce(
-  (previous: QuoteMap, author: Author) => ({
-    ...previous,
-    [author.name]: getByAuthor(author, quotes),
-  }),
-  {}
-);
-
-export const generateQuoteMap = (quoteCount: number): QuoteMap =>
-  authors.reduce(
-    (previous: QuoteMap, author: Author) => ({
-      ...previous,
-      [author.name]: getQuotes(quoteCount / authors.length),
-    }),
-    {}
-  );

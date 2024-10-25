@@ -28,8 +28,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "../ui/textarea";
 import { LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
-import { uploadFile } from "@/app/utils/uploadImage";
-import TipTapEditor from "../TipTap";
 
 type ProjectFormProp = {
   brands: any[];
@@ -54,15 +52,15 @@ export default function ProjectFormWithoutReference({
 
   const [cover, setCover] = useState<string>("");
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const image = await uploadFile(file);
-      setCover(image);
-    } else {
-      setCover("");
-    }
-  };
+  // const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const image = await uploadFile(file);
+  //     setCover(image);
+  //   } else {
+  //     setCover("");
+  //   }
+  // };
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

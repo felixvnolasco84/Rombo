@@ -26,7 +26,6 @@ import { Input } from "@/components/ui/input";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { industries } from "@/lib/utils";
 import UpdateImageFormField from "./UpdateImageFormField";
 import { useMutation } from "convex/react";
@@ -215,28 +214,6 @@ export default function EditBrandForm({ brand, onClose }: RequestFormProps) {
                 )}
               />
             </div>
-
-            {/* <div className="grid w-full items-center gap-1.5">
-              <FormField
-                control={form.control}
-                name="documents"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Archivos Adjuntos</FormLabel>
-                    <FormDescription>
-                      Agregar documentos relacionados a tu marca o organización
-                    </FormDescription>
-                    <FormControl>
-                      <UploadDocumentsFormField
-                        files={brand?.documents}
-                        objectId={{ id: brand.id, type: "brand" }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div> */}
           </div>
           <DialogFooter>
             <DialogClose asChild>

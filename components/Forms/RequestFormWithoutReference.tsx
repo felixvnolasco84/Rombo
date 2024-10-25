@@ -27,7 +27,6 @@ import { Input } from "@/components/ui/input";
 import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { services } from "@/lib/utils";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";

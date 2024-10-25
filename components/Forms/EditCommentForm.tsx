@@ -19,7 +19,6 @@ import { FormLabel } from "../react-hook-form";
 import TipTapEditor from "../TipTap";
 import { useRouter } from "next/navigation";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { Doc } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";

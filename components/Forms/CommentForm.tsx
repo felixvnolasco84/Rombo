@@ -11,7 +11,6 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import UploadDocumentsFormFieldButton from "./UploadDocumentsFormFieldButton";
 import TipTapComment from "../TipTapComment";
 import { useState } from "react";
 import { Loader } from "lucide-react";
@@ -83,7 +82,7 @@ export default function CommentForm({
           render={({ field }) => (
             <FormItem className="mb-2">
               <FormControl>
-                <UploadDocumentsFormFieldButton {...field} />
+                <></>
               </FormControl>
               <FormMessage />
             </FormItem>

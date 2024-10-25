@@ -54,7 +54,6 @@ import {
 } from "lucide-react";
 
 import { Button } from "./ui/button";
-import { uploadFile } from "@/app/utils/uploadImage";
 
 type Props = {
   onStateChange?: (state: any) => void;
@@ -105,13 +104,13 @@ const TipTapComment = ({
         .run();
     }, [editor]);
 
-    const addImage = async (e: any) => {
-      const urlFile = await uploadFile(e.target.files[0]);
+    // const addImage = async (e: any) => {
+    //   const urlFile = await uploadFile(e.target.files[0]);
 
-      if (urlFile) {
-        editor?.chain().focus().setImage({ src: urlFile }).run();
-      }
-    };
+    //   if (urlFile) {
+    //     editor?.chain().focus().setImage({ src: urlFile }).run();
+    //   }
+    // };
 
     if (!editor) {
       return (

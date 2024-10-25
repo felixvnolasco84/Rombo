@@ -1,10 +1,7 @@
 "use client";
 
 import Link from "next/link";
-// import DropdownMenuRequestCategory from "../DropdownMenu/DropdownMenuRequestCategory";
-import { QueryClient, QueryClientProvider } from "react-query";
 import DropdownMenuRequestPriority from "../DropdownMenu/DropdownMenuRequestPriority";
-import DropdownMenuRequestStatus from "../DropdownMenu/DropdownMenuRequestStatus";
 import { Badge } from "../ui/badge";
 import {
   Card,
@@ -17,7 +14,6 @@ import { Draggable } from "@hello-pangea/dnd";
 import React from "react";
 import { AppWindow, Grip } from "lucide-react";
 
-import { useSession } from "next-auth/react";
 import { Doc } from "@/convex/_generated/dataModel";
 import { adminList } from "@/lib/utils";
 import { useUser } from "@clerk/clerk-react";

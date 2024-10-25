@@ -1,13 +1,7 @@
 "use client";
-// import { List } from "@/interfaces";
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-// import CreateList from "./CreateList";
-import {
-  reorderList,
-  updateDataOrderList,
-  updateWholeBoard,
-} from "@/services/list";
+
 import ListItem from "./ListItem";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";

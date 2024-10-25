@@ -20,8 +20,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "../ui/textarea";
 import { Loader, LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
-import { uploadFile } from "@/app/utils/uploadImage";
-import TipTapEditor from "../TipTap";
 
 type ProjectFormProp = {
   brandId: string;
@@ -43,16 +41,6 @@ export default function ProjectForm({ brandId }: ProjectFormProp) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [cover, setCover] = useState<string>("");
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const image = await uploadFile(file);
-      setCover(image);
-    } else {
-      setCover("");
-    }
-  };
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

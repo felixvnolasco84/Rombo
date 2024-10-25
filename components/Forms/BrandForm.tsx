@@ -28,9 +28,7 @@ import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Loader, LucidePersonStanding } from "lucide-react";
 import { FormLabel } from "../react-hook-form";
-import { uploadFile } from "@/app/utils/uploadImage";
 import TipTapEditor from "../TipTap";
-import UploadDocumentsFormField from "./UploadDocumentsFormField";
 import { useRouter } from "next/navigation";
 import { industries } from "@/lib/utils";
 import UpdateImageFormField from "./UpdateImageFormField";
@@ -220,6 +218,7 @@ export default function BrandForm() {
             />
           </div>
           <div className="grid w-full items-center gap-1.5">
+            
             <FormField
               control={form.control}
               name="documents"
@@ -230,7 +229,7 @@ export default function BrandForm() {
                     Agregar documentos relacionados a tu marca o organización
                   </FormDescription>
                   <FormControl>
-                    <UploadDocumentsFormField {...field} />
+                    {/* <UploadDocumentsFormField {...field} /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
